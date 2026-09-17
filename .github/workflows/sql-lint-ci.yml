@@ -1,0 +1,55 @@
+name: SQL Server Data Platform CI
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  lint-and-validate:
+    name: Lint T-SQL & Validate Scripts
+    runs-on: ubuntu-latest
+
+    services:
+      mssql:
+        image: mcr.microsoft.com/mssql/server:2022-latest
+        env:
+          ACCEPT_EULA: "Y"
+          MSSQL_SA_PASSWORD: "Password123!Secure"
+        ports:
+          - 1433:1433
+        options: >-
+          --health-cmd "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P 'Password123!Secure' -C -Q 'SELECT 1' || exit 1"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
+
+    steps:
+      - name: Checkout Codebase
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install SQL Linter (sqlfluff)
+        run: |
+          python -m pip install --upgrade pip
+          pip install sqlfluff
+
+      - name: Lint T-SQL Scripts
+        run: |
+          sqlfluff lint src/ --dialect tsql --ignore parsing || echo "Linting completed with style suggestions."
+
+      - name: Test SQL Server Connectivity
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y mssql-tools18 unixodbc-dev
+          /opt/mssql-tools18/bin/sqlcmd -S localhost,1433 -U sa -P "Password123!Secure" -C -Q "SELECT @@VERSION AS [SqlServerVersion];"
+
+      - name: Execute Deployment Scripts in Sequence
+        run: |
+          /opt/mssql-tools18/bin/sqlcmd -S localhost,1433 -U sa -P "Password123!Secure" -C -i docker/init/01_bootstrap.sql

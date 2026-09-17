@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>OmniFlow.SqlClr</AssemblyName>
+    <RootNamespace>OmniFlow.SqlClr</RootNamespace>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+</Project>
