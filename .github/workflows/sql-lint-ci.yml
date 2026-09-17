@@ -46,8 +46,11 @@ jobs:
 
       - name: Test SQL Server Connectivity
         run: |
+          curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | sudo gpg --dearmor -o /usr/share/keyrings/microsoft-prod.gpg
+          curl -fsSL https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/prod.list | sudo tee /etc/apt/sources.list.d/msprod.list
           sudo apt-get update
-          sudo apt-get install -y mssql-tools18 unixodbc-dev
+          sudo ACCEPT_EULA=Y apt-get install -y mssql-tools18 unixodbc-dev
+          echo "/opt/mssql-tools18/bin" >> $GITHUB_PATH
           /opt/mssql-tools18/bin/sqlcmd -S localhost,1433 -U sa -P "Password123!Secure" -C -Q "SELECT @@VERSION AS [SqlServerVersion];"
 
       - name: Execute Deployment Scripts in Sequence
