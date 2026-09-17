@@ -20,7 +20,8 @@ This repository serves as an operational codebase and architectural proof of com
 
 Rather than a loose collection of academic lecture scripts, it is designed as a unified enterprise database platform demonstrating physical storage design, ACID transaction management, high-throughput procedural ETL, database governance, automated administrative operations via SMO, disaster recovery strategies, and an analytical dimensional warehouse (Kimball Star Schema).
 
-* 🌐 **Interactive Web App (GitHub Pages)**: [https://sohila-khaled-abbas.github.io/sql-server-data-platform/](https://sohila-khaled-abbas.github.io/sql-server-data-platform/) (In-browser WASM SQL runner, interactive Chen ERD explorer, and execution plan simulator)
+* 🌐 **Interactive Web App (GitHub Pages)**: [https://sohila-khaled-abbas.github.io/sql-server-data-platform/](https://sohila-khaled-abbas.github.io/sql-server-data-platform/) (Dynamic Learning Roadmap, 25-Video Hub, WASM SQL Engine, LeetCode Challenges, and Plan Simulator)
+* 🗺️ **Course Roadmap & 25-Video Curriculum**: Interactive 5-stage progression tracking with cross-cutting skills and persistent course attachments
 * 🏢 **Case Study ERD**: [Company Database Peter Chen ERD & Relational Mapping](docs/ch01-case-study-erd-and-implementation.md)
 * 📖 **Deep-Dive Handbook**: [Learning Guidance & DBRE Deep-Dive](docs/learning-guidance.md)
 * ⚡ **Performance Tuning**: [Query Optimizer, Indexing & Wait Stats Handbook](docs/performance-tuning-handbook.md)

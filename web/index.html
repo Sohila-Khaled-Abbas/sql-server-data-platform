@@ -56,9 +56,23 @@
     <div class="app-body">
       <!-- Sidebar Navigation -->
       <aside id="appSidebar" class="app-sidebar">
+        <div class="sidebar-section-title">Course Learning Journey</div>
+        <nav class="sidebar-nav">
+          <button class="nav-item active" data-tab="roadmap">
+            <span class="nav-icon">🗺️</span>
+            <span class="nav-label">Course Roadmap</span>
+            <span class="nav-pill badge-purple">5 Stages</span>
+          </button>
+          <button class="nav-item" data-tab="resources">
+            <span class="nav-icon">📚</span>
+            <span class="nav-label">25-Video Hub</span>
+            <span class="nav-pill badge-cyan">25 Vids</span>
+          </button>
+        </nav>
+
         <div class="sidebar-section-title">Interactive Labs</div>
         <nav class="sidebar-nav">
-          <button class="nav-item active" data-tab="playground">
+          <button class="nav-item" data-tab="playground">
             <span class="nav-icon">⚡</span>
             <span class="nav-label">SQL Query Playground</span>
             <span class="nav-pill">WASM</span>
@@ -82,11 +96,6 @@
             <span class="nav-icon">📊</span>
             <span class="nav-label">Execution Plan Simulator</span>
             <span class="nav-pill badge-green">Tuning</span>
-          </button>
-          <button class="nav-item" data-tab="resources">
-            <span class="nav-icon">📚</span>
-            <span class="nav-label">Videos & Cheatsheets</span>
-            <span class="nav-pill badge-cyan">Library</span>
           </button>
           <button class="nav-item" data-tab="quiz">
             <span class="nav-icon">🧠</span>
@@ -121,12 +130,12 @@
 
         <div class="sidebar-footer">
           <div class="platform-meta-card">
-            <div class="meta-title">OmniFlow v1.2</div>
-            <div class="meta-desc">SQL Server 2022 DBRE Sandbox</div>
+            <div class="meta-title">OmniFlow v1.3</div>
+            <div class="meta-desc">MaharaTech Course 2305 Platform</div>
             <div class="meta-tags">
+              <span class="meta-tag">25 Lectures</span>
               <span class="meta-tag">OLTP</span>
               <span class="meta-tag">Kimball DW</span>
-              <span class="meta-tag">SMO</span>
             </div>
           </div>
         </div>
@@ -134,8 +143,15 @@
 
       <!-- Main Content Stage -->
       <main class="app-main">
+        <!-- View 0: Dynamic Learning Roadmap & Skill Matrix -->
+        <section id="tab-roadmap" class="tab-content active">
+          <div id="learningRoadmapContainer">
+            <!-- Injected dynamically by learning-roadmap.js -->
+          </div>
+        </section>
+
         <!-- View 1: Interactive SQL Query Playground -->
-        <section id="tab-playground" class="tab-content active">
+        <section id="tab-playground" class="tab-content">
           <div class="module-header">
             <div>
               <h1 class="module-title">In-Browser SQL Query Playground</h1>
@@ -505,6 +521,16 @@
         <div class="chat-input-hint">Press <strong>Enter</strong> to send, <strong>Shift+Enter</strong> for newline. Queries can be executed with 1 click in Playground!</div>
       </div>
     </aside>
+
+    <!-- Lesson Inspector Modal Overlay -->
+    <div id="lessonModalOverlay" class="lesson-modal-overlay" aria-label="Lesson Details Modal">
+      <div class="lesson-modal-dialog">
+        <button id="lessonModalCloseBtn" class="lesson-modal-close" aria-label="Close Lesson Modal">✕</button>
+        <div id="lessonModalBody" class="lesson-modal-body">
+          <!-- Injected dynamically by lesson-modal.js -->
+        </div>
+      </div>
+    </div>
   </div>
 
   <script type="module" src="./src/main.js"></script>

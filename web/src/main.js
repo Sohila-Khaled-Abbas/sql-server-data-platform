@@ -9,6 +9,8 @@ import { setupDocsViewer } from './components/docs-viewer.js';
 import { setupChallengesArena } from './components/sql-challenges.js';
 import { setupProjectBlueprints } from './components/project-blueprints.js';
 import { setupChatbot } from './components/db-chatbot.js';
+import { setupLearningRoadmap } from './components/learning-roadmap.js';
+import { setupLessonModal } from './components/lesson-modal.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   const engineStatusText = document.getElementById('engineStatusText');
@@ -25,7 +27,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-  // Global keyboard shortcuts: '/' to search, 'Esc' to close drawers
+  // Global keyboard shortcuts: '/' to search, 'Esc' to close drawers/modals
   window.addEventListener('keydown', (e) => {
     if (e.key === '/' && document.activeElement !== searchInput && document.activeElement.tagName !== 'TEXTAREA') {
       e.preventDefault();
@@ -43,7 +45,9 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (!term) return;
 
       // Quick keyword routing
-      if (term.includes('challenge') || term.includes('problem') || term.includes('leetcode')) {
+      if (term.includes('roadmap') || term.includes('stage') || term.includes('curriculum')) {
+        switchTab('roadmap');
+      } else if (term.includes('challenge') || term.includes('problem') || term.includes('leetcode')) {
         switchTab('challenges');
       } else if (term.includes('project') || term.includes('blueprint') || term.includes('alpha') || term.includes('tvp')) {
         switchTab('projects');
@@ -53,7 +57,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         switchTab('plan-simulator');
       } else if (term.includes('quiz') || term.includes('test') || term.includes('question')) {
         switchTab('quiz');
-      } else if (term.includes('video') || term.includes('cheatsheet') || term.includes('dmv') || term.includes('resource')) {
+      } else if (term.includes('video') || term.includes('cheatsheet') || term.includes('dmv') || term.includes('resource') || term.includes('lesson')) {
         switchTab('resources');
       } else if (term.includes('perf') || term.includes('join')) {
         switchTab('docs-perf');
@@ -100,7 +104,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   });
 
-  // Switch to playground and run custom SQL string (e.g. from Chatbot or Projects)
+  // Switch to playground and run custom SQL string (e.g. from Chatbot, Lessons, or Projects)
   function runCustomQueryInPlayground(sqlText) {
     switchTab('playground');
     const sqlInput = document.getElementById('sqlInput');
@@ -126,11 +130,27 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  // 1. Initialize Labs & Resources
+  // 1. Initialize Labs, Roadmap, Hub & Resources
+  setupLessonModal({
+    onRunQueryInPlayground: runCustomQueryInPlayground,
+    onSwitchTab: switchTab
+  });
+
+  setupLearningRoadmap(
+    (videoId) => {
+      if (window.openLessonModal) window.openLessonModal(videoId);
+    },
+    switchTab
+  );
+
+  setupLearningResources({
+    onRunQueryInPlayground: runCustomQueryInPlayground,
+    onSwitchTab: switchTab
+  });
+
   setupErdExplorer(switchTabAndSetQuery);
   setupPlanSimulator();
   setupQuizMaster();
-  setupLearningResources();
   setupChallengesArena();
   setupProjectBlueprints(runCustomQueryInPlayground);
   setupChatbot(runCustomQueryInPlayground);
