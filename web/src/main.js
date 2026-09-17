@@ -6,6 +6,9 @@ import { setupPlanSimulator } from './components/plan-simulator.js';
 import { setupQuizMaster } from './components/quiz-master.js';
 import { setupLearningResources } from './components/learning-resources.js';
 import { setupDocsViewer } from './components/docs-viewer.js';
+import { setupChallengesArena } from './components/sql-challenges.js';
+import { setupProjectBlueprints } from './components/project-blueprints.js';
+import { setupChatbot } from './components/db-chatbot.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   const engineStatusText = document.getElementById('engineStatusText');
@@ -13,6 +16,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const appSidebar = document.getElementById('appSidebar');
   const navItems = document.querySelectorAll('.nav-item');
   const searchInput = document.getElementById('globalSearchInput');
+  const chatbotDrawer = document.getElementById('chatbotDrawer');
 
   // Mobile sidebar toggle
   if (sidebarToggle && appSidebar) {
@@ -21,11 +25,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-  // Global search shortcut '/'
+  // Global keyboard shortcuts: '/' to search, 'Esc' to close drawers
   window.addEventListener('keydown', (e) => {
     if (e.key === '/' && document.activeElement !== searchInput && document.activeElement.tagName !== 'TEXTAREA') {
       e.preventDefault();
       if (searchInput) searchInput.focus();
+    } else if (e.key === 'Escape') {
+      if (chatbotDrawer) chatbotDrawer.classList.remove('open');
+      if (appSidebar) appSidebar.classList.remove('open');
     }
   });
 
@@ -36,7 +43,11 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (!term) return;
 
       // Quick keyword routing
-      if (term.includes('erd') || term.includes('chen') || term.includes('company') || term.includes('emp')) {
+      if (term.includes('challenge') || term.includes('problem') || term.includes('leetcode')) {
+        switchTab('challenges');
+      } else if (term.includes('project') || term.includes('blueprint') || term.includes('alpha') || term.includes('tvp')) {
+        switchTab('projects');
+      } else if (term.includes('erd') || term.includes('chen') || term.includes('company') || term.includes('emp')) {
         switchTab('erd');
       } else if (term.includes('plan') || term.includes('index') || term.includes('lookup') || term.includes('tipping')) {
         switchTab('plan-simulator');
@@ -89,6 +100,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   });
 
+  // Switch to playground and run custom SQL string (e.g. from Chatbot or Projects)
+  function runCustomQueryInPlayground(sqlText) {
+    switchTab('playground');
+    const sqlInput = document.getElementById('sqlInput');
+    const runBtn = document.getElementById('runQueryBtn');
+
+    if (sqlInput && sqlText) {
+      sqlInput.value = sqlText;
+      if (runBtn) runBtn.click();
+    }
+  }
+
   // Switch to playground and set preset query from ERD Explorer
   function switchTabAndSetQuery(presetKey) {
     switchTab('playground');
@@ -108,11 +131,19 @@ document.addEventListener('DOMContentLoaded', async () => {
   setupPlanSimulator();
   setupQuizMaster();
   setupLearningResources();
+  setupChallengesArena();
+  setupProjectBlueprints(runCustomQueryInPlayground);
+  setupChatbot(runCustomQueryInPlayground);
 
   // 2. Initialize in-browser WASM Database Engine
   try {
     await initDatabase((status) => {
-      if (engineStatusText) engineStatusText.textContent = status;
+      if (engineStatusText) {
+        engineStatusText.textContent = status;
+        if (status.includes('Online')) {
+          engineStatusText.parentElement.style.color = 'var(--accent-emerald)';
+        }
+      }
     });
 
     setupQueryPlayground();
@@ -122,5 +153,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       engineStatusText.parentElement.style.color = '#f43f5e';
     }
     console.error('SQL Engine init error:', err);
+    // Still initialize playground so UI is responsive
+    setupQueryPlayground();
   }
 });

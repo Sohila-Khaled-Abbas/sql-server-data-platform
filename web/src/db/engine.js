@@ -5,6 +5,7 @@
  */
 
 import initSqlJs from 'sql.js';
+import sqlWasmUrl from 'sql.js/dist/sql-wasm.wasm?url';
 
 let db = null;
 let isReady = false;
@@ -92,11 +93,44 @@ export async function initDatabase(onStatusUpdate) {
 
   if (onStatusUpdate) onStatusUpdate('Initializing WebAssembly SQL Engine...');
 
-  try {
-    const SQL = await initSqlJs({
-      locateFile: file => `https://sql.js.org/dist/${file}`
-    });
+  const wasmLocations = [
+    // 1. Vite bundled asset URL
+    () => sqlWasmUrl,
+    // 2. Local public directory relative path
+    () => './sql-wasm.wasm',
+    // 3. Cloudflare CDN fallback
+    () => 'https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.12.0/sql-wasm.wasm',
+    // 4. jsDelivr CDN fallback
+    () => 'https://cdn.jsdelivr.net/npm/sql.js@1.12.0/dist/sql-wasm.wasm'
+  ];
 
+  let lastError = null;
+  let SQL = null;
+
+  for (let i = 0; i < wasmLocations.length; i++) {
+    try {
+      const locateFn = wasmLocations[i];
+      SQL = await initSqlJs({
+        locateFile: (file) => {
+          if (file.endsWith('.wasm')) {
+            return locateFn();
+          }
+          return file;
+        }
+      });
+      if (SQL) break;
+    } catch (err) {
+      console.warn(`WASM candidate ${i + 1} failed:`, err);
+      lastError = err;
+    }
+  }
+
+  if (!SQL) {
+    console.error('All WASM locations failed to initialize:', lastError);
+    throw lastError || new Error('Failed to initialize WebAssembly SQL engine.');
+  }
+
+  try {
     db = new SQL.Database();
 
     if (onStatusUpdate) onStatusUpdate('Bootstrapping Company Case Study Schema...');
@@ -106,10 +140,10 @@ export async function initDatabase(onStatusUpdate) {
     seedKimballDW(db);
 
     isReady = true;
-    if (onStatusUpdate) onStatusUpdate('SQL Engine Ready');
+    if (onStatusUpdate) onStatusUpdate('Engine Online (sql.js WASM) 🟢');
     return db;
   } catch (err) {
-    console.error('Failed to initialize sql.js:', err);
+    console.error('Failed to bootstrap database schemas:', err);
     throw err;
   }
 }

@@ -63,6 +63,16 @@
             <span class="nav-label">SQL Query Playground</span>
             <span class="nav-pill">WASM</span>
           </button>
+          <button class="nav-item" data-tab="challenges">
+            <span class="nav-icon">🏆</span>
+            <span class="nav-label">SQL Challenge Arena</span>
+            <span class="nav-pill badge-amber" id="challengeTotalXp">0 XP</span>
+          </button>
+          <button class="nav-item" data-tab="projects">
+            <span class="nav-icon">🏗️</span>
+            <span class="nav-label">Enterprise Blueprints</span>
+            <span class="nav-pill badge-cyan">Projects</span>
+          </button>
           <button class="nav-item" data-tab="erd">
             <span class="nav-icon">🏢</span>
             <span class="nav-label">Case Study Chen ERD</span>
@@ -289,6 +299,107 @@
           </div>
         </section>
 
+        <!-- View: Interactive SQL Challenge Arena -->
+        <section id="tab-challenges" class="tab-content">
+          <div class="module-header">
+            <div>
+              <h1 class="module-title">SQL Challenge Arena & Problem Solver</h1>
+              <p class="module-desc">Master data engineering concepts through hands-on LeetCode-style database problems with automated assertion checks against the in-memory engine.</p>
+            </div>
+            <div class="quiz-score-card">
+              <span class="score-label">Challenge Mastery:</span>
+              <strong class="score-val" id="challengeScoreDisplay">Level 1 Database Engineer</strong>
+            </div>
+          </div>
+
+          <div class="challenge-arena-layout">
+            <!-- Left sidebar: Challenge Selector -->
+            <div class="challenge-sidebar-pane card">
+              <div class="pane-header">
+                <h3>Problem Sets</h3>
+                <span class="badge badge-cyan">5 Problems</span>
+              </div>
+              <div id="challengeList" class="challenge-list">
+                <!-- Dynamically rendered -->
+              </div>
+            </div>
+
+            <!-- Right area: Problem Details & Code Runner -->
+            <div class="challenge-workspace-pane">
+              <div class="card challenge-detail-card">
+                <div class="challenge-detail-header">
+                  <div>
+                    <h2 id="challengeActiveTitle" class="challenge-active-title">Loading Challenge...</h2>
+                    <div class="challenge-badges-row">
+                      <span id="challengeActiveDiff" class="badge badge-emerald">Easy</span>
+                      <span id="challengeActiveTopic" class="badge badge-purple">Aggregations</span>
+                      <span id="challengeActiveXp" class="badge badge-amber">+50 XP</span>
+                    </div>
+                  </div>
+                  <div class="challenge-actions-row">
+                    <button id="challengeHintBtn" class="btn btn-sm btn-ghost">💡 Hint</button>
+                    <button id="challengeSolutionBtn" class="btn btn-sm btn-ghost">📖 Reference Solution</button>
+                    <button id="challengeResetBtn" class="btn btn-sm btn-ghost">↺ Reset</button>
+                  </div>
+                </div>
+
+                <div id="challengeActiveDesc" class="challenge-active-desc">
+                  <!-- Description inserted -->
+                </div>
+
+                <div id="challengeHintContainer" class="challenge-hint-container" style="display: none;"></div>
+              </div>
+
+              <!-- SQL Editor Card -->
+              <div class="card challenge-editor-card">
+                <div class="console-toolbar">
+                  <div class="console-label">
+                    <span class="status-dot online"></span>
+                    <span>T-SQL Query Solution</span>
+                  </div>
+                  <div class="console-actions">
+                    <button id="challengeTestBtn" class="btn btn-sm btn-ghost">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                      Run Test 🧪
+                    </button>
+                    <button id="challengeSubmitBtn" class="btn btn-sm btn-primary">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                      Submit Solution 🚀
+                    </button>
+                  </div>
+                </div>
+
+                <textarea id="challengeSqlEditor" class="sql-textarea" rows="7" spellcheck="false"></textarea>
+
+                <div id="challengeStatusContainer" class="challenge-status-wrapper"></div>
+
+                <div class="challenge-result-section">
+                  <div class="result-header">
+                    <span class="result-title">Execution Output</span>
+                  </div>
+                  <div id="challengeResultTable" class="query-result-wrapper">
+                    <!-- Table rendered here -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- View: Enterprise Project Blueprints -->
+        <section id="tab-projects" class="tab-content">
+          <div class="module-header">
+            <div>
+              <h1 class="module-title">Enterprise Project Blueprints & Architectures</h1>
+              <p class="module-desc">Production-grade project reference architectures implementing high-throughput bulk ingestion, audit change capture, and Kimball star schemas.</p>
+            </div>
+          </div>
+
+          <div id="projectBlueprintsContainer">
+            <!-- Dynamically rendered -->
+          </div>
+        </section>
+
         <!-- View 4: DBRE Knowledge Check & Quiz Master -->
         <section id="tab-quiz" class="tab-content">
           <div class="module-header">
@@ -327,6 +438,73 @@
         </section>
       </main>
     </div>
+
+    <!-- Floating AI Study Assistant Trigger Button -->
+    <button id="chatbotTrigger" class="chatbot-trigger-btn" aria-label="Open AI Study Assistant">
+      <div class="chatbot-trigger-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2 2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"/>
+          <rect x="4" y="8" width="16" height="12" rx="2"/>
+          <path d="M9 13v2"/><path d="M15 13v2"/>
+        </svg>
+      </div>
+      <div class="chatbot-trigger-text">
+        <span class="trigger-label">AI Study Assistant</span>
+        <span class="trigger-sub">Course 2305 & DBRE</span>
+      </div>
+      <span class="pulse-indicator"></span>
+    </button>
+
+    <!-- Slide-Out AI Chatbot Drawer -->
+    <aside id="chatbotDrawer" class="chatbot-drawer" aria-label="AI Study Assistant Drawer">
+      <div class="chatbot-header">
+        <div class="chatbot-header-info">
+          <div class="chatbot-avatar-badge">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2 2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"/>
+              <rect x="4" y="8" width="16" height="12" rx="2"/>
+              <path d="M9 13v2"/><path d="M15 13v2"/>
+            </svg>
+          </div>
+          <div>
+            <div class="chatbot-header-title">OmniFlow AI Study Mentor</div>
+            <div class="chatbot-header-sub">MaharaTech Course 2305 • ITI Data Engineering</div>
+          </div>
+        </div>
+        <div class="chatbot-header-actions">
+          <button id="chatbotClearBtn" class="btn-icon" title="Clear Chat History" aria-label="Clear Chat History">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+          </button>
+          <button id="chatbotCloseBtn" class="btn-icon" title="Close Drawer" aria-label="Close Drawer">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Chat Messages Scroll Area -->
+      <div id="chatMessages" class="chat-messages">
+        <!-- Messages rendered dynamically -->
+      </div>
+
+      <!-- Quick Prompt Chips -->
+      <div class="chat-quick-section">
+        <div class="chat-quick-label">Recommended Prompts:</div>
+        <div id="chatbotQuickChips" class="chat-quick-chips">
+          <!-- Chips rendered dynamically -->
+        </div>
+      </div>
+
+      <!-- Chat Input Area -->
+      <div class="chatbot-footer">
+        <div class="chat-input-wrapper">
+          <textarea id="chatInput" placeholder="Ask about ERD rules, B-Trees, ACID, SCD2, or paste a T-SQL error..." rows="2"></textarea>
+          <button id="chatSendBtn" class="btn btn-cyan btn-icon-send" aria-label="Send Message">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+        </div>
+        <div class="chat-input-hint">Press <strong>Enter</strong> to send, <strong>Shift+Enter</strong> for newline. Queries can be executed with 1 click in Playground!</div>
+      </div>
+    </aside>
   </div>
 
   <script type="module" src="./src/main.js"></script>
