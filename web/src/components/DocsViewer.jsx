@@ -1,9 +1,11 @@
+import React from 'react';
 import { marked } from 'marked';
+import { BookOpen, FileText, ArrowLeft } from 'lucide-react';
 
-// Embedded Markdown content for instant zero-latency client-side rendering
 const DOCS_DATA = {
   'docs-case-study': {
     title: 'Chapter 1 Case Study: Company ERD & Implementation',
+    category: 'Relational Design',
     markdown: `# Chapter 1 Case Study: Company ERD & Relational Implementation
 
 A comprehensive architectural breakdown of the **Company Enterprise Case Study** introduced in **MaharaTech Course 2305: Implementing and Developing SQL Server Objects** (*CH01_VID02* through *CH01_VID05* by Eng. Rami Mohamed Abonagi).
@@ -25,7 +27,7 @@ A comprehensive architectural breakdown of the **Company Enterprise Case Study**
 2. **Weak Entities**: \`Dependent\` receives composite PK \`(ESSN, DependentName)\` with \`ON DELETE CASCADE\`.
 3. **Multi-Valued Attributes**: \`Dept.loc\` becomes \`DeptLocations\` with composite PK \`(DNum, Location)\`.
 4. **M:N Relationships**: \`Works_On\` becomes associative table with composite PK \`(ESSN, PNo)\` and \`Hours DECIMAL(5,2)\`.
-5. **Circular Dependency Resolution**: Base tables are created first; foreign keys \`FK_Employee_Department_Dno\` and \`FK_Department_Employee_MgrSSN\` are attached via \`ALTER TABLE\` to prevent chicken-and-egg compilation errors.
+5. **Circular Dependency Resolution**: Base tables are created first; foreign keys \`FK_Employee_Department_Dno\` and \`FK_Department_Employee_MgrSSN\` are attached via \`ALTER TABLE\` to prevent circular compilation errors.
 
 ---
 
@@ -36,6 +38,7 @@ All tables, constraints, and benchmark seed data are implemented in \`src/01_sto
 
   'docs-perf': {
     title: 'SQL Server Performance Tuning & Query Optimization',
+    category: 'Engine Internals',
     markdown: `# SQL Server Performance Tuning & Query Optimization Handbook
 
 An advanced practical guide to query execution internals, indexing mechanics, and database engine diagnostics for the **OmniFlow Data Platform**.
@@ -73,6 +76,7 @@ INCLUDE (OrderDate, TotalAmount);
 
   'docs-dr': {
     title: 'High Availability & Disaster Recovery Runbook',
+    category: 'DBRE Operations',
     markdown: `# SQL Server High Availability & Disaster Recovery Runbook
 
 Operational incident response manual and disaster recovery (DR) procedures for the **OmniFlow Data Platform**.
@@ -107,6 +111,7 @@ WITH STOPAT = '2026-09-17 14:32:09.999', RECOVERY;
 
   'docs-learning': {
     title: 'Learning Guidance & DBRE Handbook',
+    category: 'Curriculum Guide',
     markdown: `# Enterprise SQL Server Engineering: Learning Guidance & Deep-Dive Handbook
 
 A comprehensive companion guide to the **MaharaTech: Implementing and Developing SQL Server Objects** course.
@@ -129,6 +134,7 @@ A comprehensive companion guide to the **MaharaTech: Implementing and Developing
 
   'docs-syllabus': {
     title: 'MaharaTech Course Syllabus to DBRE Architecture Mapping',
+    category: 'Curriculum Guide',
     markdown: `# MaharaTech Course Syllabus to Enterprise DBRE Architecture Mapping
 
 Direct alignment between **MaharaTech Course 2305: Implementing and Developing SQL Server Objects** (ITI) and the **OmniFlow Data Platform**.
@@ -145,17 +151,33 @@ Direct alignment between **MaharaTech Course 2305: Implementing and Developing S
   }
 };
 
-export function setupDocsViewer(targetDocKey = 'docs-case-study') {
-  const container = document.getElementById('docArticleContent');
-  const titleBadge = document.getElementById('currentDocTitle');
-  if (!container) return;
+export default function DocsViewer({ docKey, onBack }) {
+  const doc = DOCS_DATA[docKey] || DOCS_DATA['docs-case-study'];
 
-  const doc = DOCS_DATA[targetDocKey] || DOCS_DATA['docs-case-study'];
-  if (titleBadge) titleBadge.textContent = doc.title;
-
+  let htmlContent = '';
   try {
-    container.innerHTML = marked.parse(doc.markdown);
-  } catch (err) {
-    container.innerHTML = `<pre>${doc.markdown}</pre>`;
+    htmlContent = marked.parse(doc.markdown);
+  } catch {
+    htmlContent = `<pre>${doc.markdown}</pre>`;
   }
+
+  return (
+    <div className="docs-viewer-hub">
+      <div className="docs-viewer-header">
+        <div className="flex items-center gap-3">
+          {onBack && (
+            <button onClick={onBack} className="back-btn" title="Back to Roadmap">
+              <ArrowLeft className="w-4 h-4" />
+            </button>
+          )}
+          <div>
+            <span className="ms-badge">{doc.category}</span>
+            <h1>{doc.title}</h1>
+          </div>
+        </div>
+      </div>
+
+      <div className="docs-viewer-body markdown-body" dangerouslySetInnerHTML={{ __html: htmlContent }} />
+    </div>
+  );
 }

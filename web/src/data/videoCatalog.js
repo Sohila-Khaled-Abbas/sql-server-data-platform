@@ -2,6 +2,7 @@
  * Official Video Catalog: MaharaTech Course 2305
  * Implementing and Developing SQL Server Objects
  * Instructor: Eng. Rami Mohamed Abonagi (ITI / MCIT Egypt)
+ * Integrated with Microsoft Learn Documentation references.
  */
 
 export const COURSE_METADATA = {
@@ -49,7 +50,9 @@ SELECT
       { id: "att-ch1-1", name: "Physical Storage Architecture Notes", type: "DOC", path: "docs/CH01_CASE_STUDY_IMPLEMENTATION.md" },
       { id: "att-ch1-2", name: "Database & Filegroups DDL Script", type: "SQL", path: "sql/schemas/01_create_database.sql" }
     ],
-    maharatechUrl: "https://maharatech.gov.eg/course/view.php?id=2305"
+    maharatechUrl: "https://maharatech.gov.eg/course/view.php?id=2305",
+    microsoftDocTitle: "Database Files and Filegroups Architecture",
+    microsoftDocsUrl: "https://learn.microsoft.com/en-us/sql/relational-databases/databases/database-files-and-filegroups"
   },
   {
     id: "ch01-vid02",
@@ -86,7 +89,9 @@ ORDER BY d.DName, e.Salary DESC;`,
       { id: "att-ch1-3", name: "Company Case Study Peter Chen ERD Guide", type: "DOC", path: "docs/CH01_CASE_STUDY_IMPLEMENTATION.md" },
       { id: "att-ch1-4", name: "3NF Relational Tables DDL", type: "SQL", path: "sql/schemas/02_create_tables.sql" }
     ],
-    maharatechUrl: "https://maharatech.gov.eg/course/view.php?id=2305"
+    maharatechUrl: "https://maharatech.gov.eg/course/view.php?id=2305",
+    microsoftDocTitle: "CREATE TABLE (Transact-SQL) Guide",
+    microsoftDocsUrl: "https://learn.microsoft.com/en-us/sql/t-sql/statements/create-table-transact-sql"
   },
   {
     id: "ch01-vid03",
@@ -120,7 +125,9 @@ LEFT JOIN Employee e ON d.MgrSSN = e.SSN;`,
       { id: "att-ch1-5", name: "Circular FK Architecture Guide", type: "DOC", path: "docs/CH01_CASE_STUDY_IMPLEMENTATION.md" },
       { id: "att-ch1-6", name: "Foreign Key Constraints Script", type: "SQL", path: "sql/schemas/02_create_tables.sql" }
     ],
-    maharatechUrl: "https://maharatech.gov.eg/course/view.php?id=2305"
+    maharatechUrl: "https://maharatech.gov.eg/course/view.php?id=2305",
+    microsoftDocTitle: "Primary and Foreign Key Constraints",
+    microsoftDocsUrl: "https://learn.microsoft.com/en-us/sql/relational-databases/tables/primary-and-foreign-key-constraints"
   },
   {
     id: "ch01-vid04",
@@ -156,7 +163,9 @@ WHERE Salary >= 25000;`,
     attachments: [
       { id: "att-ch1-7", name: "Constraint Validation Reference", type: "DOC", path: "docs/CH01_CASE_STUDY_IMPLEMENTATION.md" }
     ],
-    maharatechUrl: "https://maharatech.gov.eg/course/view.php?id=2305"
+    maharatechUrl: "https://maharatech.gov.eg/course/view.php?id=2305",
+    microsoftDocTitle: "Unique Constraints and Check Constraints",
+    microsoftDocsUrl: "https://learn.microsoft.com/en-us/sql/relational-databases/tables/unique-constraints-and-check-constraints"
   },
   {
     id: "ch01-vid05",
@@ -192,7 +201,9 @@ FROM Employee;`,
     attachments: [
       { id: "att-ch1-8", name: "Disaster Recovery Runbook (Snapshots & Backups)", type: "DOC", path: "docs/DISASTER_RECOVERY_RUNBOOK.md" }
     ],
-    maharatechUrl: "https://maharatech.gov.eg/course/view.php?id=2305"
+    maharatechUrl: "https://maharatech.gov.eg/course/view.php?id=2305",
+    microsoftDocTitle: "Database Snapshots (SQL Server)",
+    microsoftDocsUrl: "https://learn.microsoft.com/en-us/sql/relational-databases/databases/database-snapshots-sql-server"
   },
 
   // ========================================================
@@ -231,7 +242,9 @@ FROM Employee;`,
     attachments: [
       { id: "att-ch2-1", name: "T-SQL Procedural Handbook", type: "DOC", path: "docs/PERFORMANCE_TUNING_HANDBOOK.md" }
     ],
-    maharatechUrl: "https://maharatech.gov.eg/course/view.php?id=2305"
+    maharatechUrl: "https://maharatech.gov.eg/course/view.php?id=2305",
+    microsoftDocTitle: "Control-of-Flow Language (Transact-SQL)",
+    microsoftDocsUrl: "https://learn.microsoft.com/en-us/sql/t-sql/language-elements/control-of-flow"
   },
   {
     id: "ch02-vid02",
@@ -262,7 +275,9 @@ FROM Employee;`,
     attachments: [
       { id: "att-ch2-2", name: "ACID Concurrency Deep Dive", type: "DOC", path: "docs/LEARNING_GUIDE_ACID_CONCURRENCY.md" }
     ],
-    maharatechUrl: "https://maharatech.gov.eg/course/view.php?id=2305"
+    maharatechUrl: "https://maharatech.gov.eg/course/view.php?id=2305",
+    microsoftDocTitle: "Transaction Management & Locking",
+    microsoftDocsUrl: "https://learn.microsoft.com/en-us/sql/t-sql/statements/begin-transaction-transact-sql"
   },
   {
     id: "ch02-vid03",
@@ -295,7 +310,9 @@ GROUP BY d.DName;`,
     attachments: [
       { id: "att-ch2-3", name: "Locking & Concurrency Matrix", type: "DOC", path: "docs/LEARNING_GUIDE_ACID_CONCURRENCY.md" }
     ],
-    maharatechUrl: "https://maharatech.gov.eg/course/view.php?id=2305"
+    maharatechUrl: "https://maharatech.gov.eg/course/view.php?id=2305",
+    microsoftDocTitle: "Transaction Locking & Row Versioning Guide",
+    microsoftDocsUrl: "https://learn.microsoft.com/en-us/sql/relational-databases/sql-server-transaction-locking-and-row-versioning-guide"
   },
   {
     id: "ch02-vid04",
@@ -329,7 +346,9 @@ JOIN Department d ON e.Dno = d.DNum;`,
     attachments: [
       { id: "att-ch2-4", name: "UDF Refactoring & Performance Handbook", type: "DOC", path: "docs/PERFORMANCE_TUNING_HANDBOOK.md" }
     ],
-    maharatechUrl: "https://maharatech.gov.eg/course/view.php?id=2305"
+    maharatechUrl: "https://maharatech.gov.eg/course/view.php?id=2305",
+    microsoftDocTitle: "Scalar UDF Inlining in SQL Server",
+    microsoftDocsUrl: "https://learn.microsoft.com/en-us/sql/relational-databases/user-defined-functions/scalar-udf-inlining"
   },
   {
     id: "ch02-vid05",
@@ -363,7 +382,9 @@ HAVING COUNT(e.SSN) > 0;`,
     attachments: [
       { id: "att-ch2-5", name: "MSTVF Cardinality Deep-Dive", type: "DOC", path: "docs/PERFORMANCE_TUNING_HANDBOOK.md" }
     ],
-    maharatechUrl: "https://maharatech.gov.eg/course/view.php?id=2305"
+    maharatechUrl: "https://maharatech.gov.eg/course/view.php?id=2305",
+    microsoftDocTitle: "Table-Valued Functions Architecture",
+    microsoftDocsUrl: "https://learn.microsoft.com/en-us/sql/relational-databases/user-defined-functions/create-user-defined-functions-database-engine"
   },
   {
     id: "ch02-vid06",
@@ -398,7 +419,9 @@ HAVING SUM(w.Hours) >= 20;`,
     attachments: [
       { id: "att-ch2-6", name: "ITVF Optimization Patterns", type: "DOC", path: "docs/PERFORMANCE_TUNING_HANDBOOK.md" }
     ],
-    maharatechUrl: "https://maharatech.gov.eg/course/view.php?id=2305"
+    maharatechUrl: "https://maharatech.gov.eg/course/view.php?id=2305",
+    microsoftDocTitle: "User-Defined Functions (Database Engine)",
+    microsoftDocsUrl: "https://learn.microsoft.com/en-us/sql/relational-databases/user-defined-functions/user-defined-functions"
   },
 
   // ==========================================================
@@ -439,7 +462,9 @@ ORDER BY TargetPartition;`,
     attachments: [
       { id: "att-ch3-1", name: "Horizontal Partitioning DDL Script", type: "SQL", path: "sql/partitioning/01_partition_scheme.sql" }
     ],
-    maharatechUrl: "https://maharatech.gov.eg/course/view.php?id=2305"
+    maharatechUrl: "https://maharatech.gov.eg/course/view.php?id=2305",
+    microsoftDocTitle: "Partitioned Tables and Indexes",
+    microsoftDocsUrl: "https://learn.microsoft.com/en-us/sql/relational-databases/partitions/partitioned-tables-and-indexes"
   },
   {
     id: "ch03-vid02",
@@ -471,7 +496,9 @@ FROM FactSales;`,
     attachments: [
       { id: "att-ch3-2", name: "Sliding Window Automation Script", type: "SQL", path: "sql/partitioning/02_sliding_window.sql" }
     ],
-    maharatechUrl: "https://maharatech.gov.eg/course/view.php?id=2305"
+    maharatechUrl: "https://maharatech.gov.eg/course/view.php?id=2305",
+    microsoftDocTitle: "Transferring Data with Partition Switching",
+    microsoftDocsUrl: "https://learn.microsoft.com/en-us/sql/relational-databases/partitions/switch-partitions"
   },
   {
     id: "ch03-vid03",
@@ -504,7 +531,9 @@ GROUP BY p.Pname;`,
     attachments: [
       { id: "att-ch3-3", name: "TVP Batch Ingestion Procedure Script", type: "SQL", path: "sql/procedures/02_tvp_batch_ingest.sql" }
     ],
-    maharatechUrl: "https://maharatech.gov.eg/course/view.php?id=2305"
+    maharatechUrl: "https://maharatech.gov.eg/course/view.php?id=2305",
+    microsoftDocTitle: "Use Table-Valued Parameters (Database Engine)",
+    microsoftDocsUrl: "https://learn.microsoft.com/en-us/sql/relational-databases/tables/use-table-valued-parameters-database-engine"
   },
   {
     id: "ch03-vid04",
@@ -536,7 +565,9 @@ GROUP BY d.DName;`,
     attachments: [
       { id: "att-ch3-4", name: "XML Processing Reference", type: "DOC", path: "docs/PERFORMANCE_TUNING_HANDBOOK.md" }
     ],
-    maharatechUrl: "https://maharatech.gov.eg/course/view.php?id=2305"
+    maharatechUrl: "https://maharatech.gov.eg/course/view.php?id=2305",
+    microsoftDocTitle: "XML Data (SQL Server)",
+    microsoftDocsUrl: "https://learn.microsoft.com/en-us/sql/relational-databases/xml/xml-data-sql-server"
   },
   {
     id: "ch03-vid05",
@@ -572,7 +603,9 @@ SELECT
     attachments: [
       { id: "att-ch3-5", name: "Disaster Recovery & HA Runbook", type: "DOC", path: "docs/DISASTER_RECOVERY_RUNBOOK.md" }
     ],
-    maharatechUrl: "https://maharatech.gov.eg/course/view.php?id=2305"
+    maharatechUrl: "https://maharatech.gov.eg/course/view.php?id=2305",
+    microsoftDocTitle: "Always On Availability Groups Overview",
+    microsoftDocsUrl: "https://learn.microsoft.com/en-us/sql/database-engine/availability-groups/windows/overview-of-always-on-availability-groups-sql-server"
   },
 
   // ==========================================================
@@ -610,7 +643,9 @@ WHERE e.Salary >= 30000;`,
     attachments: [
       { id: "att-ch4-1", name: "Production Stored Procedures Script", type: "SQL", path: "sql/procedures/01_production_procedures.sql" }
     ],
-    maharatechUrl: "https://maharatech.gov.eg/course/view.php?id=2305"
+    maharatechUrl: "https://maharatech.gov.eg/course/view.php?id=2305",
+    microsoftDocTitle: "Stored Procedures (Database Engine)",
+    microsoftDocsUrl: "https://learn.microsoft.com/en-us/sql/relational-databases/stored-procedures/stored-procedures-database-engine"
   },
   {
     id: "ch04-vid02",
@@ -645,7 +680,9 @@ WHERE e.SSN = '112233445';`,
     attachments: [
       { id: "att-ch4-2", name: "DML Audit Triggers DDL Script", type: "SQL", path: "sql/triggers/01_audit_triggers.sql" }
     ],
-    maharatechUrl: "https://maharatech.gov.eg/course/view.php?id=2305"
+    maharatechUrl: "https://maharatech.gov.eg/course/view.php?id=2305",
+    microsoftDocTitle: "DML Triggers & Inserted/Deleted Pseudo-Tables",
+    microsoftDocsUrl: "https://learn.microsoft.com/en-us/sql/relational-databases/triggers/use-the-inserted-and-deleted-tables"
   },
   {
     id: "ch04-vid03",
@@ -677,7 +714,9 @@ SELECT
     attachments: [
       { id: "att-ch4-3", name: "DDL Security Triggers Script", type: "SQL", path: "sql/triggers/02_ddl_security_triggers.sql" }
     ],
-    maharatechUrl: "https://maharatech.gov.eg/course/view.php?id=2305"
+    maharatechUrl: "https://maharatech.gov.eg/course/view.php?id=2305",
+    microsoftDocTitle: "DDL Triggers & EVENTDATA() Architecture",
+    microsoftDocsUrl: "https://learn.microsoft.com/en-us/sql/relational-databases/triggers/ddl-triggers"
   },
   {
     id: "ch04-vid04",
@@ -710,7 +749,9 @@ FROM Employee e;`,
     attachments: [
       { id: "att-ch4-4", name: "SQL CLR Integration Architecture", type: "DOC", path: "docs/PERFORMANCE_TUNING_HANDBOOK.md" }
     ],
-    maharatechUrl: "https://maharatech.gov.eg/course/view.php?id=2305"
+    maharatechUrl: "https://maharatech.gov.eg/course/view.php?id=2305",
+    microsoftDocTitle: "Common Language Runtime (CLR) Integration",
+    microsoftDocsUrl: "https://learn.microsoft.com/en-us/sql/relational-databases/clr-integration/common-language-runtime-integration"
   },
   {
     id: "ch04-vid05",
@@ -740,7 +781,9 @@ SELECT
     attachments: [
       { id: "att-ch4-5", name: "PowerShell SMO Deployment Script", type: "SCRIPT", path: "automation/deploy_platform.ps1" }
     ],
-    maharatechUrl: "https://maharatech.gov.eg/course/view.php?id=2305"
+    maharatechUrl: "https://maharatech.gov.eg/course/view.php?id=2305",
+    microsoftDocTitle: "SQL Server Management Objects (SMO)",
+    microsoftDocsUrl: "https://learn.microsoft.com/en-us/sql/relational-databases/server-management-objects-smo/overview-smo"
   },
 
   // ==========================================================
@@ -779,7 +822,9 @@ GROUP BY p.Category, c.Country;`,
     attachments: [
       { id: "att-ch5-1", name: "Kimball Star Schema DDL", type: "SQL", path: "sql/warehouse/01_star_schema.sql" }
     ],
-    maharatechUrl: "https://maharatech.gov.eg/course/view.php?id=2305"
+    maharatechUrl: "https://maharatech.gov.eg/course/view.php?id=2305",
+    microsoftDocTitle: "Relational vs Dimensional Analytics",
+    microsoftDocsUrl: "https://learn.microsoft.com/en-us/azure/architecture/data-guide/relational-data/etl"
   },
   {
     id: "ch05-vid02",
@@ -815,7 +860,9 @@ ORDER BY Revenue DESC;`,
     attachments: [
       { id: "att-ch5-2", name: "Kimball Star Schema DDL Script", type: "SQL", path: "sql/warehouse/01_star_schema.sql" }
     ],
-    maharatechUrl: "https://maharatech.gov.eg/course/view.php?id=2305"
+    maharatechUrl: "https://maharatech.gov.eg/course/view.php?id=2305",
+    microsoftDocTitle: "Data Warehouse Table Design Guidance",
+    microsoftDocsUrl: "https://learn.microsoft.com/en-us/azure/synapse-analytics/sql-data-warehouse/design-guidance-for-replicated-tables"
   },
   {
     id: "ch05-vid03",
@@ -852,7 +899,9 @@ ORDER BY CustomerCode, EffectiveStartDate;`,
     attachments: [
       { id: "att-ch5-3", name: "SCD Type 2 Implementation Script", type: "SQL", path: "sql/warehouse/02_scd_type2_customer.sql" }
     ],
-    maharatechUrl: "https://maharatech.gov.eg/course/view.php?id=2305"
+    maharatechUrl: "https://maharatech.gov.eg/course/view.php?id=2305",
+    microsoftDocTitle: "Temporal Tables & Historical Versioning",
+    microsoftDocsUrl: "https://learn.microsoft.com/en-us/sql/relational-databases/tables/temporal-tables"
   },
   {
     id: "ch05-vid04",
@@ -888,6 +937,8 @@ ORDER BY TotalSpent DESC;`,
     attachments: [
       { id: "att-ch5-4", name: "SSRS Reporting Datasets Guide", type: "DOC", path: "docs/CH01_CASE_STUDY_IMPLEMENTATION.md" }
     ],
-    maharatechUrl: "https://maharatech.gov.eg/course/view.php?id=2305"
+    maharatechUrl: "https://maharatech.gov.eg/course/view.php?id=2305",
+    microsoftDocTitle: "SQL Server Reporting Services (SSRS)",
+    microsoftDocsUrl: "https://learn.microsoft.com/en-us/sql/reporting-services/create-deploy-and-manage-mobile-and-paginated-reports"
   }
 ];
