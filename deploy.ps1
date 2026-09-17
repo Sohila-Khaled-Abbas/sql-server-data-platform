@@ -45,8 +45,14 @@ Write-Host "================================================================="
 # Locate sqlcmd
 $sqlcmdPath = (Get-Command sqlcmd -ErrorAction SilentlyContinue).Source
 if (-not $sqlcmdPath) {
-    Write-Error "sqlcmd utility is required but not found in PATH."
-    exit 1
+    if (Test-Path "/opt/mssql-tools18/bin/sqlcmd") {
+        $sqlcmdPath = "/opt/mssql-tools18/bin/sqlcmd"
+    } elseif (Test-Path "/opt/mssql-tools/bin/sqlcmd") {
+        $sqlcmdPath = "/opt/mssql-tools/bin/sqlcmd"
+    } else {
+        Write-Error "sqlcmd utility is required but not found in PATH."
+        exit 1
+    }
 }
 
 # 2. Ordered Script Manifest
