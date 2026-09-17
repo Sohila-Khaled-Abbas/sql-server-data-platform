@@ -9,6 +9,7 @@
 [![PowerShell](https://img.shields.io/badge/Automation-PowerShell%20%26%20SMO-5391FE?logo=powershell&logoColor=white)](#)
 [![Python](https://img.shields.io/badge/Python-3.14-3776AB?logo=python&logoColor=white)](#)
 [![Docker](https://img.shields.io/badge/Container-Docker%202022-2496ED?logo=docker&logoColor=white)](#)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-blue?logo=github-pages&logoColor=white)](https://sohila-khaled-abbas.github.io/sql-server-data-platform/)
 [![CI Tests](https://img.shields.io/badge/CI%20Tests-Passing-success?logo=github-actions&logoColor=white)](#)
 [![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-brightgreen.svg)](CONTRIBUTING.md)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](CODE_OF_CONDUCT.md)
@@ -19,6 +20,7 @@ This repository serves as an operational codebase and architectural proof of com
 
 Rather than a loose collection of academic lecture scripts, it is designed as a unified enterprise database platform demonstrating physical storage design, ACID transaction management, high-throughput procedural ETL, database governance, automated administrative operations via SMO, disaster recovery strategies, and an analytical dimensional warehouse (Kimball Star Schema).
 
+* 🌐 **Interactive Web App (GitHub Pages)**: [https://sohila-khaled-abbas.github.io/sql-server-data-platform/](https://sohila-khaled-abbas.github.io/sql-server-data-platform/) (In-browser WASM SQL runner, interactive Chen ERD explorer, and execution plan simulator)
 * 🏢 **Case Study ERD**: [Company Database Peter Chen ERD & Relational Mapping](docs/ch01-case-study-erd-and-implementation.md)
 * 📖 **Deep-Dive Handbook**: [Learning Guidance & DBRE Deep-Dive](docs/learning-guidance.md)
 * ⚡ **Performance Tuning**: [Query Optimizer, Indexing & Wait Stats Handbook](docs/performance-tuning-handbook.md)
@@ -95,6 +97,7 @@ sql-server-data-platform/
 │   │   └── performance_issue.yml       # Query plan & index regression triage
 │   ├── workflows/
 │   │   ├── db-integration-tests.yml    # End-to-end containerized SQL Server 2022 CI
+│   │   ├── deploy-pages.yml            # GitHub Pages automated build & deployment
 │   │   ├── markdown-lint.yml           # Documentation validation & markdown linting
 │   │   ├── release-drafter.yml         # Automated semantic release drafting
 │   │   └── sql-lint-ci.yml             # T-SQL linting and migration verification
@@ -158,6 +161,10 @@ sql-server-data-platform/
 ├── tests/
 │   └── tSQLt/                                   # Unit testing test cases for stored procedures
 │       └── test_stored_procedures.sql
+├── web/                                         # Interactive GitHub Pages Web Application (Vite + WASM)
+│   ├── src/                                     # In-browser SQL engine, ERD & Plan simulator
+│   ├── index.html                               # Responsive modern learning portal shell
+│   └── package.json
 ├── deploy.ps1                                   # Universal deployment orchestrator
 ├── CONTRIBUTING.md                              # T-SQL coding standards & contribution guide
 ├── CODE_OF_CONDUCT.md                           # Contributor Covenant Code of Conduct

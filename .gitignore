@@ -47,3 +47,8 @@ docker/data/
 *.log
 *.tmp
 TestResults/
+
+# Node.js & Web App
+web/node_modules/
+web/dist/
+web/.vite/

@@ -1,0 +1,126 @@
+import './style.css';
+import { initDatabase, PRESET_QUERIES } from './db/engine.js';
+import { setupQueryPlayground } from './components/query-playground.js';
+import { setupErdExplorer } from './components/erd-explorer.js';
+import { setupPlanSimulator } from './components/plan-simulator.js';
+import { setupQuizMaster } from './components/quiz-master.js';
+import { setupLearningResources } from './components/learning-resources.js';
+import { setupDocsViewer } from './components/docs-viewer.js';
+
+document.addEventListener('DOMContentLoaded', async () => {
+  const engineStatusText = document.getElementById('engineStatusText');
+  const sidebarToggle = document.getElementById('sidebarToggle');
+  const appSidebar = document.getElementById('appSidebar');
+  const navItems = document.querySelectorAll('.nav-item');
+  const searchInput = document.getElementById('globalSearchInput');
+
+  // Mobile sidebar toggle
+  if (sidebarToggle && appSidebar) {
+    sidebarToggle.addEventListener('click', () => {
+      appSidebar.classList.toggle('open');
+    });
+  }
+
+  // Global search shortcut '/'
+  window.addEventListener('keydown', (e) => {
+    if (e.key === '/' && document.activeElement !== searchInput && document.activeElement.tagName !== 'TEXTAREA') {
+      e.preventDefault();
+      if (searchInput) searchInput.focus();
+    }
+  });
+
+  // Search input handler
+  if (searchInput) {
+    searchInput.addEventListener('input', () => {
+      const term = searchInput.value.toLowerCase().trim();
+      if (!term) return;
+
+      // Quick keyword routing
+      if (term.includes('erd') || term.includes('chen') || term.includes('company') || term.includes('emp')) {
+        switchTab('erd');
+      } else if (term.includes('plan') || term.includes('index') || term.includes('lookup') || term.includes('tipping')) {
+        switchTab('plan-simulator');
+      } else if (term.includes('quiz') || term.includes('test') || term.includes('question')) {
+        switchTab('quiz');
+      } else if (term.includes('video') || term.includes('cheatsheet') || term.includes('dmv') || term.includes('resource')) {
+        switchTab('resources');
+      } else if (term.includes('perf') || term.includes('join')) {
+        switchTab('docs-perf');
+      } else if (term.includes('dr') || term.includes('backup') || term.includes('snapshot') || term.includes('stopat')) {
+        switchTab('docs-dr');
+      } else if (term.includes('query') || term.includes('sql') || term.includes('select')) {
+        switchTab('playground');
+      }
+    });
+  }
+
+  // Tab switching logic
+  function switchTab(tabId) {
+    navItems.forEach(btn => {
+      if (btn.getAttribute('data-tab') === tabId) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    });
+
+    // Close mobile sidebar if open
+    if (appSidebar) appSidebar.classList.remove('open');
+
+    // Handle docs tabs vs interactive lab tabs
+    if (tabId.startsWith('docs-')) {
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      const docsViewerSection = document.getElementById('tab-docs-viewer');
+      if (docsViewerSection) {
+        docsViewerSection.classList.add('active');
+        setupDocsViewer(tabId);
+      }
+    } else {
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      const targetSection = document.getElementById(`tab-${tabId}`);
+      if (targetSection) targetSection.classList.add('active');
+    }
+  }
+
+  navItems.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tabId = btn.getAttribute('data-tab');
+      switchTab(tabId);
+    });
+  });
+
+  // Switch to playground and set preset query from ERD Explorer
+  function switchTabAndSetQuery(presetKey) {
+    switchTab('playground');
+    const select = document.getElementById('queryPresetSelect');
+    const sqlInput = document.getElementById('sqlInput');
+    const runBtn = document.getElementById('runQueryBtn');
+
+    if (select && PRESET_QUERIES[presetKey]) {
+      select.value = presetKey;
+      sqlInput.value = PRESET_QUERIES[presetKey];
+      if (runBtn) runBtn.click();
+    }
+  }
+
+  // 1. Initialize Labs & Resources
+  setupErdExplorer(switchTabAndSetQuery);
+  setupPlanSimulator();
+  setupQuizMaster();
+  setupLearningResources();
+
+  // 2. Initialize in-browser WASM Database Engine
+  try {
+    await initDatabase((status) => {
+      if (engineStatusText) engineStatusText.textContent = status;
+    });
+
+    setupQueryPlayground();
+  } catch (err) {
+    if (engineStatusText) {
+      engineStatusText.textContent = 'Engine Offline (WASM fallback)';
+      engineStatusText.parentElement.style.color = '#f43f5e';
+    }
+    console.error('SQL Engine init error:', err);
+  }
+});
