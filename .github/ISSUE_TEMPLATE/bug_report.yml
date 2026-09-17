@@ -1,0 +1,62 @@
+name: "🐛 Bug Report"
+description: "Report a script failure, constraint violation, or deployment error."
+title: "[BUG]: "
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for reporting an issue! Please provide detailed diagnostic information below.
+
+  - type: dropdown
+    id: environment
+    attributes:
+      label: Target Environment
+      description: Where did the bug occur?
+      options:
+        - "Local SQL Server 2022 (Windows Instance)"
+        - "Docker Container (SQL Server 2022 Developer)"
+        - "GitHub Actions CI / Automated Workflow"
+        - "Other / Cloud SQL / Azure SQL"
+    validations:
+      required: true
+
+  - type: input
+    id: script_name
+    attributes:
+      label: Affected Script or Object
+      description: Specific script file (e.g., `src/01_storage_and_schema/04_partitioning_scheme.sql`) or database object.
+      placeholder: "src/03_programmability_and_elt/03_stored_procedures_etl.sql"
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected_behavior
+    attributes:
+      label: Expected Behavior
+      description: What should have happened according to DBRE standards?
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual_behavior
+    attributes:
+      label: Actual Behavior & Error Output
+      description: Paste the exact SQL Server error message, state code, and line numbers.
+      placeholder: |
+        Msg 3609, Level 16, State 2, Line 5
+        The transaction ended in the trigger. The batch has been aborted.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction_steps
+    attributes:
+      label: Steps to Reproduce
+      description: How can we reproduce this behavior?
+      value: |
+        1. Run .\deploy.ps1 -Environment Local
+        2. Execute query: ...
+        3. See error
+    validations:
+      required: true

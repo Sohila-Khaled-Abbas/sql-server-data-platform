@@ -1,0 +1,46 @@
+name-template: 'v$RESOLVED_VERSION'
+tag-template: 'v$RESOLVED_VERSION'
+categories:
+  - title: '🚀 Storage & Schema Architecture'
+    labels:
+      - 'storage'
+      - 'schema'
+  - title: '⚡ Performance & Query Optimization'
+    labels:
+      - 'performance'
+      - 'indexing'
+  - title: '🛠️ Programmability & ELT Pipelines'
+    labels:
+      - 'elt'
+      - 'programmability'
+  - title: '🛡️ Governance, Auditing & Security'
+    labels:
+      - 'governance'
+      - 'security'
+  - title: '📊 Analytics & Warehousing'
+    labels:
+      - 'analytics'
+      - 'reporting'
+  - title: '🐛 Bug Fixes'
+    labels:
+      - 'bug'
+      - 'fix'
+change-template: '- $TITLE by @$AUTHOR in $NUMBER'
+version-resolver:
+  major:
+    labels:
+      - 'major-release'
+  minor:
+    labels:
+      - 'enhancement'
+  patch:
+    labels:
+      - 'bug'
+      - 'documentation'
+  default: patch
+template: |
+  ## What's Changed
+
+  $CHANGES
+
+  **Full Changelog**: https://github.com/Sohila-Khaled-Abbas/sql-server-data-platform/commits/$NEXT_FACTORY_TAG

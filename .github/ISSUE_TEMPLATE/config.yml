@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: "MaharaTech Official Course Discussion"
+    url: "https://maharatech.gov.eg/course/view.php?id=2305"
+    about: "Official forum for MaharaTech Course 2305: Implementing and Developing SQL Server Objects"
+  - name: "Repository Architecture Documentation"
+    url: "https://github.com/Sohila-Khaled-Abbas/sql-server-data-platform/blob/master/docs/learning-guidance.md"
+    about: "Deep-dive DBRE handbook and technical architecture guides"

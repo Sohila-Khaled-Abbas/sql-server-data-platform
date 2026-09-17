@@ -1,0 +1,25 @@
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "ci"
+      include: "scope"
+
+  - package-ecosystem: "docker"
+    directory: "/docker"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "docker"
+      include: "scope"
+
+  - package-ecosystem: "pip"
+    directory: "/src/05_automation_and_smo/smo_scripts"
+    schedule:
+      interval: "monthly"
+    commit-message:
+      prefix: "deps"
+      include: "scope"

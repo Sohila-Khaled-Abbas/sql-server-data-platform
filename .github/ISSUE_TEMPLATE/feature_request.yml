@@ -1,0 +1,47 @@
+name: "🚀 Feature / Architectural Enhancement Request"
+description: "Suggest a new SQL Server feature, DBRE pattern, or course expansion."
+title: "[FEAT]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Suggesting an architectural improvement or new course module integration? We welcome your ideas!
+
+  - type: dropdown
+    id: module_area
+    attributes:
+      label: Architecture Module
+      description: Which area of the platform does this enhancement target?
+      options:
+        - "Storage & Physical Modeling (Filegroups / Partitioning)"
+        - "Indexing & Query Optimization (Columnstore / Covering / Inlining)"
+        - "Procedural Pipelines & ELT (TVPs / XQuery / Dynamic SQL)"
+        - "Governance & Auditing (CDC / DDL Triggers / Temporal)"
+        - "Automation & DevOps (SMO / CLR / Python / PowerShell)"
+        - "High Availability & Disaster Recovery (Always On / Log Shipping)"
+        - "Dimensional Warehousing & Reporting (Kimball / SSRS)"
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem_statement
+    attributes:
+      label: Problem or Educational Need
+      description: What challenge or course concept does this feature address?
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed_solution
+    attributes:
+      label: Proposed Solution & Technical Design
+      description: Describe the tables, stored procedures, or operational scripts to be implemented.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives_considered
+    attributes:
+      label: Alternatives Considered
+      description: Did you consider other approaches or T-SQL patterns?

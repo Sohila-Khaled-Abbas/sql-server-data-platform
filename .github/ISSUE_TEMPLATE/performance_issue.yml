@@ -1,0 +1,42 @@
+name: "⚡ Query Performance & Plan Regression"
+description: "Report slow queries, parameter sniffing regressions, table scans, or wait stats spikes."
+title: "[PERF]: "
+labels: ["performance", "investigation"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Report a performance regression, index seek failure, or execution plan bottleneck.
+
+  - type: input
+    id: query_or_proc
+    attributes:
+      label: Query or Stored Procedure Name
+      placeholder: "Sales.usp_BulkIngestOrders"
+    validations:
+      required: true
+
+  - type: textarea
+    id: execution_metrics
+    attributes:
+      label: Execution Metrics (STATISTICS IO & TIME)
+      description: Paste the output of `SET STATISTICS IO, TIME ON;`.
+      placeholder: |
+        Table 'Orders'. Scan count 1, logical reads 145020, physical reads 0.
+        SQL Server Execution Times: CPU time = 450 ms,  elapsed time = 1200 ms.
+    validations:
+      required: true
+
+  - type: textarea
+    id: plan_details
+    attributes:
+      label: Execution Plan Bottleneck
+      description: What operator caused the delay? (e.g., Key Lookup, Hash Match spill, Sort spill, Cardinality mismatch).
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed_indexing
+    attributes:
+      label: Proposed Indexing / Query Refactor
+      description: Suggest covering indexes, hints (`OPTIMIZE FOR`), or set-based transformations.

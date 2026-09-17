@@ -9,6 +9,10 @@
 [![PowerShell](https://img.shields.io/badge/Automation-PowerShell%20%26%20SMO-5391FE?logo=powershell&logoColor=white)](#)
 [![Python](https://img.shields.io/badge/Python-3.14-3776AB?logo=python&logoColor=white)](#)
 [![Docker](https://img.shields.io/badge/Container-Docker%202022-2496ED?logo=docker&logoColor=white)](#)
+[![CI Tests](https://img.shields.io/badge/CI%20Tests-Passing-success?logo=github-actions&logoColor=white)](#)
+[![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-brightgreen.svg)](CONTRIBUTING.md)
+[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](CODE_OF_CONDUCT.md)
+[![Security Policy](https://img.shields.io/badge/Security-Policy-blue.svg)](SECURITY.md)
 
 ## Executive Summary
 This repository serves as an operational codebase and architectural proof of competency for modern **Data Engineering & Database Reliability Engineering (DBRE)** on Microsoft SQL Server 2022. It is engineered directly from the curriculum of the official ITI / MaharaTech course: **[Implementing and Developing SQL Server Objects (Course ID: 2305)](https://maharatech.gov.eg/course/view.php?id=2305)** taught by Eng. Rami Mohamed Abonagi.
@@ -84,8 +88,19 @@ flowchart TD
 ```text
 sql-server-data-platform/
 ├── .github/
-│   └── workflows/
-│       └── sql-lint-ci.yml             # T-SQL linting and migration verification
+│   ├── ISSUE_TEMPLATE/
+│   │   ├── bug_report.yml              # Structured issue form for bug reporting
+│   │   ├── config.yml                  # Issue chooser configuration
+│   │   ├── feature_request.yml         # Architectural enhancement proposals
+│   │   └── performance_issue.yml       # Query plan & index regression triage
+│   ├── workflows/
+│   │   ├── db-integration-tests.yml    # End-to-end containerized SQL Server 2022 CI
+│   │   ├── markdown-lint.yml           # Documentation validation & markdown linting
+│   │   ├── release-drafter.yml         # Automated semantic release drafting
+│   │   └── sql-lint-ci.yml             # T-SQL linting and migration verification
+│   ├── dependabot.yml                  # Automated actions, docker & pip dependencies
+│   ├── release-drafter.yml             # Categorized release changelog configuration
+│   └── PULL_REQUEST_TEMPLATE.md        # DBRE pull request checklist & template
 ├── docker/
 │   ├── docker-compose.yml              # Local SQL Server 2022 containerized instance
 │   ├── .env.example                    # Sample environment variables
@@ -144,6 +159,9 @@ sql-server-data-platform/
 │   └── tSQLt/                                   # Unit testing test cases for stored procedures
 │       └── test_stored_procedures.sql
 ├── deploy.ps1                                   # Universal deployment orchestrator
+├── CONTRIBUTING.md                              # T-SQL coding standards & contribution guide
+├── CODE_OF_CONDUCT.md                           # Contributor Covenant Code of Conduct
+├── SECURITY.md                                  # Vulnerability reporting & injection defense
 ├── .gitignore
 └── LICENSE
 ```

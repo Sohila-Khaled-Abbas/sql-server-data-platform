@@ -1,0 +1,29 @@
+name: "Documentation & Markdown Quality"
+
+on:
+  push:
+    paths:
+      - 'docs/**'
+      - '*.md'
+  pull_request:
+    paths:
+      - 'docs/**'
+      - '*.md'
+
+jobs:
+  markdown-lint:
+    name: "Lint Documentation"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Run Markdownlint
+        uses: DavidAnson/markdownlint-cli2-action@v16
+        with:
+          globs: |
+            docs/**/*.md
+            README.md
+            CONTRIBUTING.md
+            SECURITY.md
+            CODE_OF_CONDUCT.md

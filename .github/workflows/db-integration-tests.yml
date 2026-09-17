@@ -1,0 +1,60 @@
+name: "Database Integration Tests"
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+  workflow_dispatch:
+
+jobs:
+  mssql-integration:
+    name: "Deploy & Test against SQL Server 2022"
+    runs-on: ubuntu-latest
+
+    services:
+      mssql:
+        image: mcr.microsoft.com/mssql/server:2022-latest
+        ports:
+          - 1433:1433
+        env:
+          ACCEPT_EULA: "Y"
+          MSSQL_SA_PASSWORD: "Password123!Secure"
+          MSSQL_PID: "Developer"
+        options: >-
+          --health-cmd "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P 'Password123!Secure' -C -Q 'SELECT 1' || exit 1"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install SQL Server Tools (sqlcmd)
+        run: |
+          curl https://packages.microsoft.com/keys/microsoft.asc | sudo tee /etc/apt/trusted.gpg.d/microsoft.asc
+          curl https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/prod.list | sudo tee /etc/apt/sources.list.d/msprod.list
+          sudo apt-get update
+          sudo ACCEPT_EULA=Y apt-get install -y mssql-tools18 unixodbc-dev
+          echo "/opt/mssql-tools18/bin" >> $GITHUB_PATH
+
+      - name: Wait for SQL Server Service Health
+        run: |
+          for i in {1..30}; do
+            if /opt/mssql-tools18/bin/sqlcmd -S localhost,1433 -U sa -P 'Password123!Secure' -C -Q "SELECT @@VERSION;" > /dev/null 2>&1; then
+              echo ">>> SQL Server 2022 is READY and ONLINE!"
+              break
+            fi
+            echo "Waiting for SQL Server to boot... ($i/30)"
+            sleep 2
+          done
+
+      - name: Execute Universal Platform Deployment (deploy.ps1)
+        shell: pwsh
+        run: |
+          ./deploy.ps1 -Environment Docker -Server "localhost,1433" -Password "Password123!Secure"
+
+      - name: Execute Automated Database Integration Tests
+        run: |
+          /opt/mssql-tools18/bin/sqlcmd -S localhost,1433 -U sa -P 'Password123!Secure' -C -I -i tests/tSQLt/test_stored_procedures.sql
