@@ -124,14 +124,11 @@ function MainLayout() {
         </main>
       </div>
 
-      {/* Lesson Inspector Modal */}
-      {selectedLesson && (
-        <LessonModal
-          lesson={selectedLesson}
-          onClose={handleCloseModal}
-          onRunSql={handleRunInStudio}
-        />
-      )}
+      {/* Lesson Inspector Modal (self-manages visibility via activeLessonId) */}
+      <LessonModal
+        onRunQueryInStudio={handleRunInStudio}
+        onSelectTab={setActiveTab}
+      />
 
       {/* Floating AI Chatbot Button */}
       <button

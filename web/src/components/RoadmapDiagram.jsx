@@ -165,7 +165,7 @@ export default function RoadmapDiagram({ onSelectTab }) {
       <div className="flowchart-section card">
         <div className="section-title-row">
           <div className="title-with-logo">
-            <img src={mssqlLogo} alt="MSSQL" className="title-mssql-icon" />
+            <img src={mssqlLogo} alt="MSSQL" className="title-mssql-icon" width="28" height="28" />
             <h2>Interactive 5-Stage Engineering Flowchart</h2>
           </div>
           <span className="badge badge-mssql-red">Interactive Pathway</span>

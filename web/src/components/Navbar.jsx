@@ -52,7 +52,7 @@ export default function Navbar({ onToggleSidebar, onSearch, activeTab, onSelectT
           <input
             ref={searchInputRef}
             type="text"
-            placeholder="Search T-SQL objects, MS Docs, topics... (Press '/' to focus)"
+            placeholder="Search T-SQL, MS Docs, topics... (/)"
             onChange={(e) => onSearch(e.target.value)}
           />
           <kbd className="search-kbd">/</kbd>
