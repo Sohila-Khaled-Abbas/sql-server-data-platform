@@ -19,12 +19,19 @@ GO
 -- 1. Determine Default Data and Log File Paths Dynamically
 DECLARE @DefaultDataPath NVARCHAR(512) = CAST(SERVERPROPERTY('InstanceDefaultDataPath') AS NVARCHAR(512));
 DECLARE @DefaultLogPath  NVARCHAR(512) = CAST(SERVERPROPERTY('InstanceDefaultLogPath')  AS NVARCHAR(512));
+DECLARE @PathSep NCHAR(1) = CASE WHEN CHARINDEX('/', (SELECT TOP 1 physical_name FROM sys.master_files WHERE database_id = 1)) > 0 THEN N'/' ELSE N'\' END;
 
 -- Fallback defaults if instance properties return NULL
 IF @DefaultDataPath IS NULL OR @DefaultDataPath = ''
 BEGIN
     SELECT TOP (1) 
-        @DefaultDataPath = LEFT(physical_name, LEN(physical_name) - CHARINDEX('\', REVERSE(physical_name)) + 1)
+        @DefaultDataPath = CASE 
+            WHEN CHARINDEX('/', physical_name) > 0 
+                THEN LEFT(physical_name, LEN(physical_name) - CHARINDEX('/', REVERSE(physical_name)) + 1)
+            WHEN CHARINDEX('\', physical_name) > 0 
+                THEN LEFT(physical_name, LEN(physical_name) - CHARINDEX('\', REVERSE(physical_name)) + 1)
+            ELSE physical_name
+        END
     FROM sys.master_files
     WHERE database_id = 1 AND type = 0; -- master data file path
 END;
@@ -32,16 +39,22 @@ END;
 IF @DefaultLogPath IS NULL OR @DefaultLogPath = ''
 BEGIN
     SELECT TOP (1) 
-        @DefaultLogPath = LEFT(physical_name, LEN(physical_name) - CHARINDEX('\', REVERSE(physical_name)) + 1)
+        @DefaultLogPath = CASE 
+            WHEN CHARINDEX('/', physical_name) > 0 
+                THEN LEFT(physical_name, LEN(physical_name) - CHARINDEX('/', REVERSE(physical_name)) + 1)
+            WHEN CHARINDEX('\', physical_name) > 0 
+                THEN LEFT(physical_name, LEN(physical_name) - CHARINDEX('\', REVERSE(physical_name)) + 1)
+            ELSE physical_name
+        END
     FROM sys.master_files
     WHERE database_id = 1 AND type = 1; -- master log file path
 END;
 
 -- Ensure trailing slash
 IF RIGHT(@DefaultDataPath, 1) NOT IN ('\', '/') 
-    SET @DefaultDataPath = @DefaultDataPath + '\';
+    SET @DefaultDataPath = @DefaultDataPath + @PathSep;
 IF RIGHT(@DefaultLogPath, 1) NOT IN ('\', '/') 
-    SET @DefaultLogPath = @DefaultLogPath + '\';
+    SET @DefaultLogPath = @DefaultLogPath + @PathSep;
 
 PRINT '>>> Detected Storage Paths:';
 PRINT '    Data Path: ' + @DefaultDataPath;

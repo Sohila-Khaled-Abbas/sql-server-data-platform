@@ -26,13 +26,22 @@ GO
 
 -- 2. Dynamically determine data directory
 DECLARE @DataPath NVARCHAR(512) = CAST(SERVERPROPERTY('InstanceDefaultDataPath') AS NVARCHAR(512));
+DECLARE @PathSep NCHAR(1) = CASE WHEN CHARINDEX('/', (SELECT TOP 1 physical_name FROM sys.master_files WHERE database_id = DB_ID('OmniFlowDB'))) > 0 THEN N'/' ELSE N'\' END;
+
 IF @DataPath IS NULL OR @DataPath = ''
 BEGIN
-    SELECT TOP 1 @DataPath = LEFT(physical_name, LEN(physical_name) - CHARINDEX('\', REVERSE(physical_name)) + 1)
+    SELECT TOP 1 
+        @DataPath = CASE 
+            WHEN CHARINDEX('/', physical_name) > 0 
+                THEN LEFT(physical_name, LEN(physical_name) - CHARINDEX('/', REVERSE(physical_name)) + 1)
+            WHEN CHARINDEX('\', physical_name) > 0 
+                THEN LEFT(physical_name, LEN(physical_name) - CHARINDEX('\', REVERSE(physical_name)) + 1)
+            ELSE physical_name
+        END
     FROM sys.master_files WHERE database_id = DB_ID('OmniFlowDB') AND type = 0;
 END;
 
-IF RIGHT(@DataPath, 1) NOT IN ('\', '/') SET @DataPath = @DataPath + '\';
+IF RIGHT(@DataPath, 1) NOT IN ('\', '/') SET @DataPath = @DataPath + @PathSep;
 
 -- 3. Create Database Snapshot
 -- Notice: Every data file in PRIMARY, DATA_FG, INDEX_FG, ARCHIVE_FG must be specified!

@@ -144,5 +144,6 @@ if ($failed -eq 0) {
     Write-Host ">>> Deployment COMPLETED SUCCESSFULLY with 0 errors!" -ForegroundColor Green
 } else {
     Write-Host ">>> Deployment completed with $failed failure(s)." -ForegroundColor Red
+    exit 1
 }
 Write-Host "================================================================="
