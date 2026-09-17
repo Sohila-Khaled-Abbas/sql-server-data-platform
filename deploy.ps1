@@ -56,6 +56,7 @@ $scripts = @(
     "src/01_storage_and_schema/02_custom_types_and_rules.sql",
     "src/01_storage_and_schema/03_integrity_constraints.sql",
     "src/01_storage_and_schema/04_partitioning_scheme.sql",
+    "src/01_storage_and_schema/05_company_case_study_schema.sql",
 
     # Phase 2: Indexing & Performance
     "src/02_indexing_and_performance/01_clustered_nonclustered.sql",

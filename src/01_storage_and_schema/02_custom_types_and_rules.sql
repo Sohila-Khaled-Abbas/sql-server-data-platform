@@ -60,7 +60,11 @@ IF NOT EXISTS (SELECT 1 FROM sys.types WHERE name = N'udt_DemoRate')
 GO
 
 IF OBJECT_ID(N'dbo.rule_PositiveRate', N'R') IS NOT NULL
+BEGIN
+    IF EXISTS (SELECT 1 FROM sys.types WHERE name = N'udt_DemoRate')
+        EXEC sp_unbindrule 'dbo.udt_DemoRate';
     DROP RULE [dbo].[rule_PositiveRate];
+END;
 GO
 
 CREATE RULE [dbo].[rule_PositiveRate]
@@ -77,7 +81,11 @@ GO
 
 -- 4. Create Defaults and Bind to UDTs
 IF OBJECT_ID(N'dbo.def_ZeroRate', N'D') IS NOT NULL
+BEGIN
+    IF EXISTS (SELECT 1 FROM sys.types WHERE name = N'udt_DemoRate')
+        EXEC sp_unbindefault 'dbo.udt_DemoRate';
     DROP DEFAULT [dbo].[def_ZeroRate];
+END;
 GO
 
 CREATE DEFAULT [dbo].[def_ZeroRate]

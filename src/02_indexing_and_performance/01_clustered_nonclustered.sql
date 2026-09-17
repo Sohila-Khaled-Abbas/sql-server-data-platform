@@ -53,17 +53,14 @@ GO
 -- 3. Clustered Columnstore Index for High-Volume Audit Logging
 -- Columnstore indexes provide 10x-15x data compression and vector batch-mode
 -- execution for analytical queries scanning millions of historical audit rows.
-IF EXISTS (SELECT 1 FROM sys.indexes WHERE name = N'CCI_OrderHistory' AND object_id = OBJECT_ID(N'Audit.OrderHistory'))
-    DROP INDEX [CCI_OrderHistory] ON [Audit].[OrderHistory];
-GO
-
--- Convert Audit.OrderHistory into a Clustered Columnstore
-CREATE CLUSTERED COLUMNSTORE INDEX [CCI_OrderHistory]
-ON [Audit].[OrderHistory]
-WITH (DATA_COMPRESSION = COLUMNSTORE_ARCHIVE)
-ON [DATA_FG];
-GO
-PRINT '>>> Created Clustered Columnstore Index: CCI_OrderHistory on Audit.OrderHistory.';
+IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = N'CCI_OrderHistory' AND object_id = OBJECT_ID(N'Audit.OrderHistory'))
+BEGIN
+    CREATE CLUSTERED COLUMNSTORE INDEX [CCI_OrderHistory]
+    ON [Audit].[OrderHistory]
+    WITH (MAXDOP = 1)
+    ON [DATA_FG];
+    PRINT '>>> Created Clustered Columnstore Index: CCI_OrderHistory on Audit.OrderHistory with MAXDOP = 1.';
+END;
 GO
 
 -- 4. DBRE Index Telemetry & Diagnostic Query

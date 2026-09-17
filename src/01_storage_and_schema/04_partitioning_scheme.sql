@@ -49,6 +49,8 @@ GO
 
 -- 3. Create Partitioned Table: Sales.Invoices
 -- The partitioning column (InvoiceDate) MUST be part of the clustered primary key
+EXEC sys.sp_set_session_context @key = N'AllowDropProductionTable', @value = N'YES';
+
 IF OBJECT_ID(N'Sales.Invoices', N'U') IS NOT NULL
     DROP TABLE [Sales].[Invoices];
 GO
@@ -74,6 +76,8 @@ GO
 
 -- 4. Create an Identical Staging Table for Partition Switching
 -- For partition switching, table schema, filegroup, indexes, and constraints MUST match exactly.
+EXEC sys.sp_set_session_context @key = N'AllowDropProductionTable', @value = N'YES';
+
 IF OBJECT_ID(N'Sales.Invoices_ArchiveStage', N'U') IS NOT NULL
     DROP TABLE [Sales].[Invoices_ArchiveStage];
 GO

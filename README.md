@@ -15,6 +15,7 @@ This repository serves as an operational codebase and architectural proof of com
 
 Rather than a loose collection of academic lecture scripts, it is designed as a unified enterprise database platform demonstrating physical storage design, ACID transaction management, high-throughput procedural ETL, database governance, automated administrative operations via SMO, disaster recovery strategies, and an analytical dimensional warehouse (Kimball Star Schema).
 
+* 🏢 **Case Study ERD**: [Company Database Peter Chen ERD & Relational Mapping](docs/ch01-case-study-erd-and-implementation.md)
 * 📖 **Deep-Dive Handbook**: [Learning Guidance & DBRE Deep-Dive](docs/learning-guidance.md)
 * ⚡ **Performance Tuning**: [Query Optimizer, Indexing & Wait Stats Handbook](docs/performance-tuning-handbook.md)
 * 🛡️ **Disaster Recovery**: [High Availability & Incident Response Runbook](docs/disaster-recovery-runbook.md)
@@ -92,14 +93,20 @@ sql-server-data-platform/
 │       └── 01_bootstrap.sql
 ├── docs/
 │   ├── architecture-diagram.md         # Visual Mermaid architecture & storage diagrams
+│   ├── ch01-case-study-erd-and-implementation.md # Chapter 1 Company ERD & relational breakdown
+│   ├── course-syllabus-mapping.md      # Syllabus to platform competency mapping
 │   ├── data-dictionary.md              # Data dictionary for OLTP & OLAP schemas
-│   └── dimensional-model.md            # Kimball star schema bus matrix & grain definitions
+│   ├── dimensional-model.md            # Kimball star schema bus matrix & grain definitions
+│   ├── disaster-recovery-runbook.md    # RPO/RTO targets, VLF layout & recovery runbook
+│   ├── learning-guidance.md            # In-depth DBRE handbook & interview questions
+│   └── performance-tuning-handbook.md  # Query optimizer, indexing & wait statistics handbook
 ├── src/
 │   ├── 01_storage_and_schema/
 │   │   ├── 01_filegroups_and_files.sql # Physical storage allocation & secondary filegroups
 │   │   ├── 02_custom_types_and_rules.sql # User-defined data types, rules & defaults
 │   │   ├── 03_integrity_constraints.sql # Foreign keys, check constraints & cascading rules
-│   │   └── 04_partitioning_scheme.sql  # Partition functions & sliding window partition switching
+│   │   ├── 04_partitioning_scheme.sql  # Partition functions & sliding window partition switching
+│   │   └── 05_company_case_study_schema.sql # Canonical ITI Company ERD implementation
 │   ├── 02_indexing_and_performance/
 │   │   ├── 01_clustered_nonclustered.sql # Clustered, covering non-clustered, filtered & columnstore
 │   │   ├── 02_indexed_views.sql        # Materialized aggregation views with SCHEMABINDING
