@@ -11,7 +11,14 @@ export default defineConfig({
   },
   server: {
     port: 5173,
-    open: false
+    open: false,
+    proxy: {
+      '/api/ollama': {
+        target: 'http://localhost:11434',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/ollama/, '')
+      }
+    }
   },
   optimizeDeps: {
     exclude: ['sql.js']

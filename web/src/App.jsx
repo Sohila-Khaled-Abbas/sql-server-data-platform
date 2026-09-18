@@ -140,21 +140,29 @@ function MainLayout() {
         onSelectTab={setActiveTab}
       />
 
-      {/* Floating AI Chatbot Button */}
-      <button
-        className="floating-chatbot-btn"
-        onClick={() => setIsChatbotOpen(prev => !prev)}
-        title="Open DBRE & MaharaTech AI Study Mentor"
-      >
-        <Bot className="w-5 h-5 text-white" />
-        <span className="btn-text">Ask AI Mentor</span>
-      </button>
+      {/* Floating AI Chatbot Button (Hidden when drawer is open) */}
+      {!isChatbotOpen && (
+        <button
+          className="floating-chatbot-btn"
+          onClick={() => setIsChatbotOpen(true)}
+          title="Open DBRE & MaharaTech AI Study Mentor"
+        >
+          <Bot className="w-5 h-5 text-white" />
+          <span className="btn-text">Ask AI Mentor</span>
+          <span className="pulse-ping" />
+        </button>
+      )}
 
       {/* Slide-out AI Chatbot Drawer */}
       <AIChatbot
         isOpen={isChatbotOpen}
         onClose={() => setIsChatbotOpen(false)}
         onRunInPlayground={handleRunInStudio}
+        pageContext={{
+          activeTab,
+          activeLesson: selectedLesson,
+          currentQuery: studioInitialQuery
+        }}
       />
     </div>
   );

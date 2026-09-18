@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import { useProgress } from '../context/ProgressContext.jsx';
 import { COURSE_VIDEOS, COURSE_METADATA } from '../data/videoCatalog.js';
+import { CONCEPT_CATEGORIES, COURSE_CONCEPTS } from '../data/courseConceptRoadmap.js';
 import { 
   CheckCircle2, 
   Circle, 
@@ -12,7 +13,21 @@ import {
   BookOpen, 
   Code, 
   ShieldCheck, 
-  Database 
+  Database,
+  Search,
+  Play,
+  Copy,
+  Check,
+  X,
+  Layers,
+  Zap,
+  HardDrive,
+  Server,
+  BarChart3,
+  GitFork,
+  ArrowRight,
+  Workflow,
+  Compass
 } from 'lucide-react';
 import mssqlLogo from '../assets/mssql-logo.svg';
 
@@ -116,7 +131,7 @@ const STAGES = [
   }
 ];
 
-export default function RoadmapDiagram({ onSelectTab }) {
+export default function RoadmapDiagram({ onSelectTab, onRunQueryInStudio }) {
   const { 
     watchedVideos, 
     toggleWatched, 
@@ -130,6 +145,31 @@ export default function RoadmapDiagram({ onSelectTab }) {
     addStudentAttachment 
   } = useProgress();
 
+  // View state: 'concepts' | 'stages'
+  const [activeView, setActiveView] = useState('concepts');
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [conceptSearch, setConceptSearch] = useState('');
+  const [activeConcept, setActiveConcept] = useState(null);
+  const [copiedConceptId, setCopiedConceptId] = useState(null);
+
+  const filteredConcepts = useMemo(() => {
+    return COURSE_CONCEPTS.filter(c => {
+      const matchCat = selectedCategory === 'all' || c.categoryId === selectedCategory;
+      const matchSearch = !conceptSearch || 
+        c.title.toLowerCase().includes(conceptSearch.toLowerCase()) ||
+        c.summary.toLowerCase().includes(conceptSearch.toLowerCase()) ||
+        c.dbreSignificance.toLowerCase().includes(conceptSearch.toLowerCase()) ||
+        c.videoCode.toLowerCase().includes(conceptSearch.toLowerCase());
+      return matchCat && matchSearch;
+    });
+  }, [selectedCategory, conceptSearch]);
+
+  const handleCopyTsql = (code, id) => {
+    navigator.clipboard.writeText(code);
+    setCopiedConceptId(id);
+    setTimeout(() => setCopiedConceptId(null), 2000);
+  };
+
   const handleAddAttachment = () => {
     const title = prompt("Enter Attachment Title (e.g. 'Chapter 2 Homework Solutions' or 'Lecture Slides PDF'):");
     if (!title) return;
@@ -141,18 +181,18 @@ export default function RoadmapDiagram({ onSelectTab }) {
 
   return (
     <div className="roadmap-diagram-container">
-      {/* 1. Header Banner */}
+      {/* 1. Header Hero */}
       <div className="roadmap-hero card">
         <div className="roadmap-hero-content">
           <div className="hero-tag-row">
             <span className="badge badge-mssql-red">Microsoft SQL Server 2022</span>
             <span className="badge badge-purple">MaharaTech Course 2305</span>
-            <span className="badge badge-cyan">Visual Flowchart Roadmap</span>
+            <span className="badge badge-cyan">Interactive Architecture Roadmap</span>
           </div>
 
           <h1 className="hero-title">SQL Server Data Platform & DBRE Learning Roadmap</h1>
           <p className="hero-desc">
-            A visual, diagrammatic curriculum traversing the 25 official video lectures of <strong>Implementing and Developing SQL Server Objects</strong> taught by Eng. Rami Mohamed Abonagi (ITI). Click any node to open the lesson inspector, run demonstration queries, and review official Microsoft Learn architecture documentation.
+            A visual, architectural curriculum traversing all 102 official modules of <strong>Implementing and Developing SQL Server Objects</strong> taught by Eng. Rami Mohamed Abonagi (ITI). Toggle between the <strong>Course Concepts Architecture Flowchart</strong> and the <strong>Curriculum Stages Progression</strong> to inspect relational patterns, storage internals, and live T-SQL scripts.
           </p>
 
           {/* Current Rank Banner */}
@@ -203,128 +243,395 @@ export default function RoadmapDiagram({ onSelectTab }) {
         </div>
       </div>
 
-      {/* 2. Visual Diagrammatic Flowchart (Stages with SVG Connectors) */}
-      <div className="flowchart-section card">
-        <div className="section-title-row">
-          <div className="title-with-logo">
-            <img 
-              src={mssqlLogo} 
-              alt="MSSQL" 
-              className="title-mssql-icon" 
-              width="28" 
-              height="28" 
-              style={{ width: '28px', height: '28px', maxWidth: '28px', maxHeight: '28px', objectFit: 'contain', flexShrink: 0, display: 'inline-block' }}
-            />
-            <h2>Interactive 5-Stage Engineering Flowchart</h2>
-          </div>
-          <span className="badge badge-mssql-red">Interactive Pathway</span>
-        </div>
+      {/* 2. Interactive View Switcher Tabs */}
+      <div className="roadmap-view-switcher card">
+        <div className="switcher-tabs">
+          <button 
+            className={`switcher-tab-btn ${activeView === 'concepts' ? 'active' : ''}`}
+            onClick={() => setActiveView('concepts')}
+          >
+            <Workflow size={18} />
+            <div className="tab-text">
+              <span className="tab-title">Concept Architecture Roadmap</span>
+              <span className="tab-sub">Interactive 7-tier core engineering flowchart</span>
+            </div>
+            <span className="badge badge-sm badge-cyan">Flowchart</span>
+          </button>
 
-        <div className="flowchart-stages-tree">
-          {STAGES.map((stageItem, index) => {
-            const stageVideos = COURSE_VIDEOS.filter(v => stageItem.videoIds.includes(v.id));
-            const stageWatched = stageVideos.filter(v => watchedVideos.includes(v.id)).length;
-            const stagePercent = Math.round((stageWatched / stageVideos.length) * 100);
-            const isCompleted = stagePercent === 100;
-            const isCurrent = !isCompleted && (index === 0 || stageVideos.some(v => watchedVideos.includes(v.id)));
-
-            return (
-              <div key={stageItem.stage} className="flowchart-stage-wrapper">
-                {/* Visual Connector Line between Stages */}
-                {index > 0 && (
-                  <div className="svg-connector-wrapper">
-                    <svg width="40" height="40" viewBox="0 0 40 40">
-                      <line x1="20" y1="0" x2="20" y2="40" stroke="#CC292B" strokeWidth="2.5" strokeDasharray="4 3" opacity="0.6" />
-                      <circle cx="20" cy="20" r="4" fill="#CC292B" />
-                    </svg>
-                  </div>
-                )}
-
-                {/* Stage Flow Card */}
-                <div className={`flowchart-stage-card ${isCompleted ? 'stage-done' : ''} ${isCurrent ? 'stage-active' : ''}`}>
-                  <div className="stage-top-bar">
-                    <div className="stage-number-pill">
-                      <span className="stage-num-text">STAGE 0{stageItem.stage}</span>
-                      <span className="stage-status-icon">
-                        {isCompleted ? '✅' : isCurrent ? '⚡' : '🔒'}
-                      </span>
-                    </div>
-
-                    <div className="stage-heading-info">
-                      <div className="stage-title-row">
-                        <span className={`badge ${stageItem.badgeClass}`}>{stageItem.badge}</span>
-                        <h3 className="stage-name">{stageItem.title}</h3>
-                      </div>
-                      <p className="stage-subtext">{stageItem.subtitle}</p>
-                    </div>
-
-                    <div className="stage-progress-indicator">
-                      <div className="stage-pct">{stageWatched} / {stageVideos.length} Done ({stagePercent}%)</div>
-                      <div className="stage-mini-track">
-                        <div className="stage-mini-fill" style={{ width: `${stagePercent}%` }}></div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Skills Grid */}
-                  <div className="stage-skills-strip">
-                    <span className="skills-label">Core Competencies:</span>
-                    {stageItem.skills.map(s => (
-                      <span key={s} className="skill-chip">{s}</span>
-                    ))}
-                  </div>
-
-                  {/* Milestone Banner */}
-                  <div className="stage-milestone-box">
-                    <Award size={16} className="milestone-icon" />
-                    <div className="milestone-content">
-                      <strong>Milestone Deliverable:</strong> {stageItem.milestone}
-                    </div>
-                  </div>
-
-                  {/* Diagrammatic Video Nodes Grid */}
-                  <div className="stage-nodes-grid">
-                    {stageVideos.map(v => {
-                      const isWatched = watchedVideos.includes(v.id);
-                      return (
-                        <div 
-                          key={v.id} 
-                          className={`diagram-node-item ${isWatched ? 'node-done' : ''}`}
-                          onClick={() => openLessonModal(v.id)}
-                        >
-                          <div className="node-top-meta">
-                            <button 
-                              className="node-check-btn"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                toggleWatched(v.id);
-                              }}
-                              title={isWatched ? "Mark as unwatched" : "Mark as mastered"}
-                            >
-                              {isWatched ? <CheckCircle2 size={16} className="text-emerald" /> : <Circle size={16} />}
-                            </button>
-                            <span className="node-code">{v.videoCode}</span>
-                            <span className="node-time">{v.duration}</span>
-                          </div>
-
-                          <div className="node-title">{v.title}</div>
-
-                          <div className="node-footer">
-                            <span className="badge badge-sm badge-dark">{v.level}</span>
-                            <span className="node-inspect-cta">Inspect 📖</span>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+          <button 
+            className={`switcher-tab-btn ${activeView === 'stages' ? 'active' : ''}`}
+            onClick={() => setActiveView('stages')}
+          >
+            <Compass size={18} />
+            <div className="tab-text">
+              <span className="tab-title">Curriculum Stages Progression</span>
+              <span className="tab-sub">Chapter-by-chapter 102 lesson tracking</span>
+            </div>
+            <span className="badge badge-sm badge-dark">102 Lessons</span>
+          </button>
         </div>
       </div>
 
-      {/* 3. Cross-Cutting Engineering Synergy Matrix */}
+      {/* VIEW A: CONCEPT ARCHITECTURE ROADMAP */}
+      {activeView === 'concepts' && (
+        <div className="concept-roadmap-section card">
+          <div className="section-title-row">
+            <div className="title-with-logo">
+              <img 
+                src={mssqlLogo} 
+                alt="MSSQL" 
+                className="title-mssql-icon" 
+                width="28" 
+                height="28" 
+                style={{ width: '28px', height: '28px', maxWidth: '28px', maxHeight: '28px', objectFit: 'contain', flexShrink: 0, display: 'inline-block' }}
+              />
+              <div>
+                <h2>SQL Server 2022 Core Concept Flowchart</h2>
+                <p className="section-subtitle">
+                  Architectural dependency graph tracking storage engine mechanics, relational integrity, indexing, concurrency, programmability, and data warehousing.
+                </p>
+              </div>
+            </div>
+            <span className="badge badge-mssql-red">7 Core Architecture Tiers</span>
+          </div>
+
+          {/* Controls: Search & Category Filter Pills */}
+          <div className="concept-controls-bar">
+            <div className="concept-search-input-wrapper">
+              <Search size={15} className="text-gray-400" />
+              <input 
+                type="text" 
+                placeholder="Filter concepts by keyword (e.g. 8 KB, B-Tree, RCSI, XML)..."
+                value={conceptSearch}
+                onChange={(e) => setConceptSearch(e.target.value)}
+              />
+              {conceptSearch && (
+                <button onClick={() => setConceptSearch('')} className="clear-search-btn">
+                  <X size={13} />
+                </button>
+              )}
+            </div>
+
+            <div className="concept-pill-filters">
+              <button 
+                className={`concept-filter-pill ${selectedCategory === 'all' ? 'active' : ''}`}
+                onClick={() => setSelectedCategory('all')}
+              >
+                All Concepts ({COURSE_CONCEPTS.length})
+              </button>
+              {CONCEPT_CATEGORIES.map(cat => (
+                <button
+                  key={cat.id}
+                  className={`concept-filter-pill ${selectedCategory === cat.id ? 'active' : ''}`}
+                  onClick={() => setSelectedCategory(cat.id)}
+                  style={{ '--pill-accent': cat.color }}
+                >
+                  {cat.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Concept Architecture Nodes Flow */}
+          <div className="concept-nodes-flow">
+            {filteredConcepts.map((concept, idx) => {
+              const catMeta = CONCEPT_CATEGORIES.find(c => c.id === concept.categoryId) || {};
+              const isCopied = copiedConceptId === concept.id;
+
+              return (
+                <React.Fragment key={concept.id}>
+                  {/* Visual SVG Flow Connector between concepts */}
+                  {idx > 0 && (
+                    <div className="concept-flow-arrow-row">
+                      <div className="flow-line-vertical" />
+                      <div className="flow-arrow-head">
+                        <ArrowRight size={14} className="rotate-90 text-cyan-400" />
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Concept Flow Card */}
+                  <div 
+                    className="concept-flow-card"
+                    style={{ '--card-accent': catMeta.color || '#38bdf8' }}
+                  >
+                    <div className="concept-card-top">
+                      <div className="concept-tier-badge">
+                        <span>TIER 0{concept.tier}</span>
+                        <span className="concept-dot" />
+                        <span>{catMeta.label}</span>
+                      </div>
+
+                      <div className="concept-level-badge">
+                        <span className={`badge badge-sm ${
+                          concept.level === 'Foundational' ? 'badge-cyan' :
+                          concept.level === 'Intermediate' ? 'badge-purple' : 'badge-mssql-red'
+                        }`}>
+                          {concept.level}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="concept-card-main">
+                      <h3 className="concept-title">{concept.title}</h3>
+                      <p className="concept-summary">{concept.summary}</p>
+                      
+                      <div className="concept-dbre-box">
+                        <strong className="dbre-tag">⚡ DBRE Significance:</strong>
+                        <span>{concept.dbreSignificance}</span>
+                      </div>
+
+                      {/* Code Snippet Box with Actions */}
+                      <div className="concept-sql-box">
+                        <div className="sql-box-header">
+                          <span className="sql-box-tag">
+                            <Code size={12} />
+                            T-SQL Architecture Implementation
+                          </span>
+                          <div className="sql-box-actions">
+                            <button 
+                              className="sql-action-btn"
+                              onClick={() => handleCopyTsql(concept.tSqlExample, concept.id)}
+                              title="Copy T-SQL snippet"
+                            >
+                              {isCopied ? <Check size={12} className="text-emerald" /> : <Copy size={12} />}
+                              <span>{isCopied ? 'Copied' : 'Copy'}</span>
+                            </button>
+                            {onRunQueryInStudio && (
+                              <button 
+                                className="sql-action-btn run-btn"
+                                onClick={() => onRunQueryInStudio(concept.tSqlExample)}
+                                title="Run in interactive Query Studio"
+                              >
+                                <Play size={12} className="fill-current" />
+                                <span>Run in Studio</span>
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                        <pre className="concept-sql-pre">
+                          <code>{concept.tSqlExample}</code>
+                        </pre>
+                      </div>
+                    </div>
+
+                    <div className="concept-card-footer">
+                      <div className="concept-link-item">
+                        <span className="link-lbl">Official Lecture:</span>
+                        <span className="badge badge-sm badge-dark">{concept.videoCode}</span>
+                        <span className="video-title-link">{concept.videoTitle}</span>
+                      </div>
+
+                      <div className="concept-actions-right">
+                        <a 
+                          href={concept.msDocUrl} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="btn btn-sm btn-ghost doc-link-btn"
+                        >
+                          <BookOpen size={13} />
+                          <span>Microsoft Learn ↗</span>
+                        </a>
+                        <button 
+                          className="btn btn-sm btn-secondary inspect-btn"
+                          onClick={() => setActiveConcept(concept)}
+                        >
+                          <span>Deep Dive</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </React.Fragment>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* VIEW B: CURRICULUM STAGES & MODULES */}
+      {activeView === 'stages' && (
+        <div className="flowchart-section card">
+          <div className="section-title-row">
+            <div className="title-with-logo">
+              <img 
+                src={mssqlLogo} 
+                alt="MSSQL" 
+                className="title-mssql-icon" 
+                width="28" 
+                height="28" 
+                style={{ width: '28px', height: '28px', maxWidth: '28px', maxHeight: '28px', objectFit: 'contain', flexShrink: 0, display: 'inline-block' }}
+              />
+              <div>
+                <h2>Interactive 6-Stage Curriculum Progression</h2>
+                <p className="section-subtitle">
+                  Traversing the complete 102 modules across Storage, T-SQL, Indexing, Triggers, CLR, and Reporting.
+                </p>
+              </div>
+            </div>
+            <span className="badge badge-mssql-red">102 Course Modules</span>
+          </div>
+
+          <div className="flowchart-stages-tree">
+            {STAGES.map((stageItem, index) => {
+              const stageVideos = COURSE_VIDEOS.filter(v => stageItem.videoIds.includes(v.id));
+              const stageWatched = stageVideos.filter(v => watchedVideos.includes(v.id)).length;
+              const stagePercent = stageVideos.length > 0 ? Math.round((stageWatched / stageVideos.length) * 100) : 0;
+              const isCompleted = stagePercent === 100 && stageVideos.length > 0;
+              const isCurrent = !isCompleted && (index === 0 || stageVideos.some(v => watchedVideos.includes(v.id)));
+
+              return (
+                <div key={stageItem.stage} className="flowchart-stage-wrapper">
+                  {index > 0 && (
+                    <div className="svg-connector-wrapper">
+                      <svg width="40" height="40" viewBox="0 0 40 40">
+                        <line x1="20" y1="0" x2="20" y2="40" stroke="#CC292B" strokeWidth="2.5" strokeDasharray="4 3" opacity="0.6" />
+                        <circle cx="20" cy="20" r="4" fill="#CC292B" />
+                      </svg>
+                    </div>
+                  )}
+
+                  <div className={`flowchart-stage-card ${isCompleted ? 'stage-done' : ''} ${isCurrent ? 'stage-active' : ''}`}>
+                    <div className="stage-top-bar">
+                      <div className="stage-number-pill">
+                        <span className="stage-num-text">STAGE 0{stageItem.stage}</span>
+                        <span className="stage-status-icon">
+                          {isCompleted ? '✅' : isCurrent ? '⚡' : '🔒'}
+                        </span>
+                      </div>
+
+                      <div className="stage-heading-info">
+                        <div className="stage-title-row">
+                          <span className={`badge ${stageItem.badgeClass}`}>{stageItem.badge}</span>
+                          <h3 className="stage-name">{stageItem.title}</h3>
+                        </div>
+                        <p className="stage-subtext">{stageItem.subtitle}</p>
+                      </div>
+
+                      <div className="stage-progress-indicator">
+                        <div className="stage-pct">{stageWatched} / {stageVideos.length} Done ({stagePercent}%)</div>
+                        <div className="stage-mini-track">
+                          <div className="stage-mini-fill" style={{ width: `${stagePercent}%` }}></div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="stage-skills-strip">
+                      <span className="skills-label">Core Competencies:</span>
+                      {stageItem.skills.map(s => (
+                        <span key={s} className="skill-chip">{s}</span>
+                      ))}
+                    </div>
+
+                    <div className="stage-milestone-box">
+                      <Award size={16} className="milestone-icon" />
+                      <div className="milestone-content">
+                        <strong>Milestone Deliverable:</strong> {stageItem.milestone}
+                      </div>
+                    </div>
+
+                    <div className="stage-nodes-grid">
+                      {stageVideos.map(v => {
+                        const isWatched = watchedVideos.includes(v.id);
+                        return (
+                          <div 
+                            key={v.id} 
+                            className={`diagram-node-item ${isWatched ? 'node-done' : ''}`}
+                            onClick={() => openLessonModal(v.id)}
+                          >
+                            <div className="node-top-meta">
+                              <button 
+                                className="node-check-btn"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  toggleWatched(v.id);
+                                }}
+                                title={isWatched ? "Mark as unwatched" : "Mark as mastered"}
+                              >
+                                {isWatched ? <CheckCircle2 size={16} className="text-emerald" /> : <Circle size={16} />}
+                              </button>
+                              <span className="node-code">{v.videoCode}</span>
+                              <span className="node-time">{v.duration}</span>
+                            </div>
+
+                            <div className="node-title">{v.title}</div>
+
+                            <div className="node-footer">
+                              <span className="badge badge-sm badge-dark">{v.level}</span>
+                              <span className="node-inspect-cta">Inspect 📖</span>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* 3. Concept Deep Dive Modal */}
+      {activeConcept && (
+        <div className="concept-modal-overlay" onClick={() => setActiveConcept(null)}>
+          <div className="concept-modal-content card" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <div className="flex items-center gap-2">
+                <span className="badge badge-cyan">Tier 0{activeConcept.tier}</span>
+                <h3 className="modal-title">{activeConcept.title}</h3>
+              </div>
+              <button onClick={() => setActiveConcept(null)} className="close-btn">
+                <X size={16} />
+              </button>
+            </div>
+
+            <div className="modal-body">
+              <div className="modal-section">
+                <h4>📐 Architecture Overview</h4>
+                <p>{activeConcept.summary}</p>
+              </div>
+
+              <div className="modal-section">
+                <h4>⚡ Production DBRE Impact</h4>
+                <p>{activeConcept.dbreSignificance}</p>
+              </div>
+
+              <div className="modal-section">
+                <h4>💻 Production T-SQL Implementation</h4>
+                <pre className="concept-modal-pre">
+                  <code>{activeConcept.tSqlExample}</code>
+                </pre>
+              </div>
+
+              <div className="modal-actions-bar">
+                {onRunQueryInStudio && (
+                  <button 
+                    className="btn btn-primary"
+                    onClick={() => {
+                      onRunQueryInStudio(activeConcept.tSqlExample);
+                      setActiveConcept(null);
+                    }}
+                  >
+                    <Play size={14} className="fill-current" />
+                    <span>Run Query in Query Studio</span>
+                  </button>
+                )}
+                <a 
+                  href={activeConcept.msDocUrl} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="btn btn-secondary"
+                >
+                  <ExternalLink size={14} />
+                  <span>Open Microsoft Documentation</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 4. Cross-Cutting Engineering Synergy Matrix */}
       <div className="skill-matrix-section card">
         <div className="section-title-row">
           <h2>🌐 Microsoft SQL Server Engineering Competency Matrix</h2>
@@ -392,7 +699,7 @@ export default function RoadmapDiagram({ onSelectTab }) {
         </div>
       </div>
 
-      {/* 4. Course Attachments Manager */}
+      {/* 5. Course Attachments Manager */}
       <div className="attachments-section card">
         <div className="section-title-row">
           <h2>📎 Course Attachments & Student Resources</h2>
