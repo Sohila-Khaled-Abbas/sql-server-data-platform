@@ -11,7 +11,7 @@ VIDEOS_SPEC = [
         "title": "Create Database and Filegroups",
         "dur": "19 mins", "level": "Foundational",
         "skills": ["Storage Engine Internals", "MDF/NDF/LDF Files", "Filegroup Isolation", "Disk I/O Separation"],
-        "repo": "src/01_storage_and_schema/01_filegroups_and_files.sql",
+        "repo": "src/01_storage_and_schema/ch01_vid01_ititest_filegroups.sql",
         "ms_title": "Database Files and Filegroups Architecture",
         "ms_url": "https://learn.microsoft.com/en-us/sql/relational-databases/databases/database-files-and-filegroups"
     },
@@ -20,7 +20,7 @@ VIDEOS_SPEC = [
         "title": "Create Database Using Wizard (ITItest Case Study)",
         "dur": "24 mins", "level": "Foundational",
         "skills": ["SSMS Wizard", "Table Designer", "Filegroup Allocation", "Foreign Keys", "Database Diagrams"],
-        "repo": "src/01_storage_and_schema/05_ititest_case_study_schema.sql",
+        "repo": "src/01_storage_and_schema/ch01_vid02_ititest_case_study_schema.sql",
         "ms_title": "CREATE TABLE (Transact-SQL) Guide",
         "ms_url": "https://learn.microsoft.com/en-us/sql/t-sql/statements/create-table-transact-sql"
     },
@@ -29,16 +29,16 @@ VIDEOS_SPEC = [
         "title": "Create Database Using Code (T-SQL)",
         "dur": "22 mins", "level": "Foundational",
         "skills": ["CREATE DATABASE DDL", "Physical Sizing Math", "FILEGROWTH Rules", "ALTER DATABASE ADD FILEGROUP"],
-        "repo": "src/01_storage_and_schema/01_create_database_code_ch01_vid03.sql",
+        "repo": "src/01_storage_and_schema/ch01_vid03_create_database_code.sql",
         "ms_title": "CREATE DATABASE (Transact-SQL) Syntax Reference",
         "ms_url": "https://learn.microsoft.com/en-us/sql/t-sql/statements/create-database-transact-sql"
     },
     {
         "id": "ch01-vid04", "chap": 1, "code": "CH01_VID04", "m_id": 17523,
-        "title": "Database Integrity & Normalization Rules",
+        "title": "Database Integrity (Domain, Entity & Referential)",
         "dur": "18 mins", "level": "Foundational",
-        "skills": ["Entity Integrity", "Referential Integrity", "Domain Integrity", "User-Defined Integrity"],
-        "repo": "src/01_storage_and_schema/03_integrity_constraints.sql",
+        "skills": ["Domain Integrity (Range of Values)", "Entity Integrity (Uniqueness)", "Referential Integrity (Relationships)", "DB Constraints vs DB Objects", "Custom Constraints"],
+        "repo": "src/01_storage_and_schema/ch01_vid04_database_integrity.sql",
         "ms_title": "Data Integrity in Relational Databases",
         "ms_url": "https://learn.microsoft.com/en-us/sql/relational-databases/tables/primary-and-foreign-key-constraints"
     },
@@ -74,7 +74,7 @@ VIDEOS_SPEC = [
         "title": "Clustered Index Architecture & B-Tree Structure",
         "dur": "25 mins", "level": "Intermediate",
         "skills": ["B-Tree Root & Intermediate Levels", "Leaf Page Order", "Clustering Key Selection", "Index Fragmentation"],
-        "repo": "src/02_indexing_and_performance/01_clustered_and_nonclustered_indexes.sql",
+        "repo": "src/02_indexing_and_performance/01_clustered_nonclustered.sql",
         "ms_title": "Clustered and Nonclustered Indexes Described",
         "ms_url": "https://learn.microsoft.com/en-us/sql/relational-databases/indexes/clustered-and-nonclustered-indexes-described"
     },
@@ -83,7 +83,7 @@ VIDEOS_SPEC = [
         "title": "Non-Clustered Index & Covering Index Strategy",
         "dur": "23 mins", "level": "Intermediate",
         "skills": ["Non-Clustered B-Trees", "Row Locators (RID vs Clustering Key)", "INCLUDE Columns", "Key Lookups Eliminating"],
-        "repo": "src/02_indexing_and_performance/01_clustered_and_nonclustered_indexes.sql",
+        "repo": "src/02_indexing_and_performance/01_clustered_nonclustered.sql",
         "ms_title": "Create Indexes with Included Columns",
         "ms_url": "https://learn.microsoft.com/en-us/sql/relational-databases/indexes/create-indexes-with-included-columns"
     },
@@ -101,7 +101,7 @@ VIDEOS_SPEC = [
         "title": "Types of Backup (Full, Differential, Log)",
         "dur": "21 mins", "level": "Intermediate",
         "skills": ["Full Database Backups", "Differential LSN Basing", "Transaction Log Backup Chains", "Recovery Models (Full/Simple/Bulk-Logged)"],
-        "repo": "src/06_reliability_and_dr/01_backup_and_restore_runbook.sql",
+        "repo": "src/06_reliability_and_dr/01_backup_and_maintenance_jobs.sql",
         "ms_title": "Backup Overview (SQL Server)",
         "ms_url": "https://learn.microsoft.com/en-us/sql/relational-databases/backup-restore/backup-overview-sql-server"
     },
@@ -110,7 +110,7 @@ VIDEOS_SPEC = [
         "title": "Backup Database Using Wizard & SSMS Tasks",
         "dur": "18 mins", "level": "Foundational",
         "skills": ["SSMS Backup Dialog", "Media Sets & Backup Families", "Verify Backup Integrity", "Compression Settings"],
-        "repo": "src/06_reliability_and_dr/01_backup_and_restore_runbook.sql",
+        "repo": "src/06_reliability_and_dr/01_backup_and_maintenance_jobs.sql",
         "ms_title": "Create a Full Database Backup (SSMS Wizard)",
         "ms_url": "https://learn.microsoft.com/en-us/sql/relational-databases/backup-restore/create-a-full-database-backup"
     },
@@ -1006,6 +1006,14 @@ def generate_js():
                           "ON PRIMARY (NAME = N'ITItest_Data', FILENAME = N'D:\\\\courses\\\\Data Science\\\\Data Engineering\\\\MaharaTech\\\\Implementing and Developing SQL server objects\\\\CH01\\\\Mydb\\\\ITItest_Data.mdf'),\\n"
                           "FILEGROUP fg1 (NAME = N'ITItest_fg1', FILENAME = N'D:\\\\courses\\\\Data Science\\\\Data Engineering\\\\MaharaTech\\\\Implementing and Developing SQL server objects\\\\CH01\\\\Mydb\\\\ITItest_fg1.ndf')\\n"
                           "LOG ON (NAME = N'ITItest_Log', FILENAME = N'D:\\\\courses\\\\Data Science\\\\Data Engineering\\\\MaharaTech\\\\Implementing and Developing SQL server objects\\\\CH01\\\\Mydb\\\\ITItest_Log.ldf');")
+            att_doc = "docs/ch01-case-study-erd-and-implementation.md"
+        elif v_id == "ch01-vid04":
+            desc = "Comprehensive implementation of the Database Integrity taxonomy: Domain Integrity (data types, defaults, check constraints, rules), Entity Integrity (primary keys, unique constraints, filtered unique indexes), and Referential Integrity (foreign keys, cascading actions) across DB constraints, DB objects, and custom stored procedures in ITItest."
+            sample_sql = ("-- Inspect verified Domain, Entity, and Referential Integrity on ITItest\\n"
+                          "SELECT e.eid, e.ename, e.salary, e.eadd, e.netsal, d.dname\\n"
+                          "FROM dbo.emp e INNER JOIN dbo.depts d ON e.dnum = d.did;\\n\\n"
+                          "-- Enforce custom business rules via transactional Stored Procedure\\n"
+                          "EXEC dbo.usp_HireEmployee @ename = N'Kareem Tarek', @salary = 4500.00, @dnum = 10, @hiredate = '2026-03-01';")
             att_doc = "docs/ch01-case-study-erd-and-implementation.md"
         else:
             sample_sql = f"-- T-SQL Demo: {v_title}\\n-- Video Code: {v_code}\\nSELECT '{v_code}' AS VideoCode, '{v_title}' AS ModuleTitle, GETDATE() AS ExecutedAt;"

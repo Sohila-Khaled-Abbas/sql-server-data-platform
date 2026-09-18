@@ -395,7 +395,7 @@ SELECT * FROM Dependent WHERE ESSN = '999887777'; -- Returns 0 rows!
 <!-- LIVE_ITITEST_SCHEMA_START -->
 
 > [!NOTE]
-> **Live SSMS Synchronization**: Auto-synchronized from local SQL Server instance (`-S .`) database **`ITItest`** at `2026-09-18 17:38:50 UTC`.
+> **Live SSMS Synchronization**: Auto-synchronized from local SQL Server instance (`-S .`) database **`ITItest`** at `2026-09-18 19:17:25 UTC`.
 > **Database File Storage Root**: `D:\courses\Data Science\Data Engineering\MaharaTech\Implementing and Developing SQL server objects\CH01\Mydb`
 
 ### 6.1 Physical Filegroup Allocations (`CH01\Mydb`)
@@ -412,8 +412,8 @@ Currently **2 tables** active in `ITItest`:
 
 | Schema | Table Name | Storage Filegroup | Row Count | Primary Key | Columns | Foreign Keys |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `dbo` | **`depts`** | `fg1` | `0` | `did` | `2 cols` | `0 FKs` |
-| `dbo` | **`emp`** | `fg2` | `0` | `eid` | `12 cols` | `1 FKs` |
+| `dbo` | **`depts`** | `fg1` | `1` | `did` | `2 cols` | `0 FKs` |
+| `dbo` | **`emp`** | `fg2` | `1` | `eid` | `15 cols` | `1 FKs` |
 
 ### 6.3 Live Reverse-Engineered ER Diagram
 
@@ -436,6 +436,9 @@ erDiagram
         int hour_rate
         varchar gender
         int dnum
+        tinyint age_optimized
+        char national_id
+        varchar email
     }
     emp }|--|| depts : "FK_emp_depts"
 ```
@@ -463,5 +466,8 @@ erDiagram
 | `hour_rate` | `INT` | `YES` | `NO` | `-` |  |
 | `gender` | `VARCHAR(1)` | `YES` | `NO` | `-` |  |
 | `dnum` | `INT` | `YES` | `NO` | `-` |  |
+| `age_optimized` | `TINYINT` | `YES` | `NO` | `-` |  |
+| `national_id` | `CHAR(14)` | `YES` | `NO` | `-` |  |
+| `email` | `VARCHAR(100)` | `YES` | `NO` | `-` |  |
 
 <!-- LIVE_ITITEST_SCHEMA_END -->

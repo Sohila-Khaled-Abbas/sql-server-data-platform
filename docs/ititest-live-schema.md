@@ -1,7 +1,7 @@
 # Database: ITItest — Live Architecture & Case Study Catalog
 
 > [!NOTE]
-> **Live Synchronization Status**: Automatically synchronized from local SQL Server instance (`-S .`) at `2026-09-18 17:38:50 UTC`.
+> **Live Synchronization Status**: Automatically synchronized from local SQL Server instance (`-S .`) at `2026-09-18 19:17:25 UTC`.
 > **Database File Storage Root**: `D:\courses\Data Science\Data Engineering\MaharaTech\Implementing and Developing SQL server objects\CH01\Mydb`
 
 ---
@@ -32,8 +32,8 @@ Currently **2 tables** are active in `ITItest`:
 
 | Schema | Table Name | Filegroup | Row Count | Primary Key | Column Count | Foreign Keys |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `dbo` | **`depts`** | `fg1` | `0` | `did` | `2 cols` | `0 FKs` |
-| `dbo` | **`emp`** | `fg2` | `0` | `eid` | `12 cols` | `1 FKs` |
+| `dbo` | **`depts`** | `fg1` | `1` | `did` | `2 cols` | `0 FKs` |
+| `dbo` | **`emp`** | `fg2` | `1` | `eid` | `15 cols` | `1 FKs` |
 
 ---
 
@@ -41,7 +41,7 @@ Currently **2 tables** are active in `ITItest`:
 
 ### Table: `dbo.depts`
 - **Storage Filegroup**: `fg1`
-- **Current Rows**: `0`
+- **Current Rows**: `1`
 
 | Column Name | Data Type | Nullable | Identity | Default Value | PK |
 | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -50,7 +50,7 @@ Currently **2 tables** are active in `ITItest`:
 
 ### Table: `dbo.emp`
 - **Storage Filegroup**: `fg2`
-- **Current Rows**: `0`
+- **Current Rows**: `1`
 
 | Column Name | Data Type | Nullable | Identity | Default Value | PK |
 | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -66,3 +66,6 @@ Currently **2 tables** are active in `ITItest`:
 | `hour_rate` | `INT` | `YES` | `NO` | `-` |  |
 | `gender` | `VARCHAR(1)` | `YES` | `NO` | `-` |  |
 | `dnum` | `INT` | `YES` | `NO` | `-` |  |
+| `age_optimized` | `TINYINT` | `YES` | `NO` | `-` |  |
+| `national_id` | `CHAR(14)` | `YES` | `NO` | `-` |  |
+| `email` | `VARCHAR(100)` | `YES` | `NO` | `-` |  |

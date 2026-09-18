@@ -38,12 +38,12 @@ export const COURSE_VIDEOS = [
     ],
     description: "Eng. Rami Mohamed Abonagi presents 'Create Database and Filegroups' as part of Chapter 1: Database Creation and Management. Master core concepts, practical implementation in SSMS, and production database patterns.",
     sampleSql: `-- T-SQL Demo: Create Database and Filegroups\n-- Video Code: CH01_VID01\nSELECT 'CH01_VID01' AS VideoCode, 'Create Database and Filegroups' AS ModuleTitle, GETDATE() AS ExecutedAt;`,
-    repoPath: "src/01_storage_and_schema/01_filegroups_and_files.sql",
+    repoPath: "src/01_storage_and_schema/ch01_vid01_ititest_filegroups.sql",
     challengeId: "ch-1",
     erdEntity: "Database",
     attachments: [
       { id: "att-ch01-vid01-1", name: "Create Database and Filegroups Technical Guide", type: "DOC", path: "docs/ch01-case-study-erd-and-implementation.md" },
-      { id: "att-ch01-vid01-2", name: "Solution DDL / Script", type: "SQL", path: "src/01_storage_and_schema/01_filegroups_and_files.sql" }
+      { id: "att-ch01-vid01-2", name: "Solution DDL / Script", type: "SQL", path: "src/01_storage_and_schema/ch01_vid01_ititest_filegroups.sql" }
     ],
     maharatechUrl: "https://maharatech.gov.eg/mod/hvp/view.php?id=17520",
     microsoftDocTitle: "Database Files and Filegroups Architecture",
@@ -66,12 +66,12 @@ export const COURSE_VIDEOS = [
     ],
     description: "Hands-on walkthrough of creating the ITItest database and multi-filegroup physical layout using the SSMS Database Creation Wizard in CH01\\Mydb. Students model the depts and emp tables, define identity fields, and establish foreign key relationships via SSMS Database Diagrams.",
     sampleSql: `-- Query the live ITItest depts and emp tables created via Wizard\nSELECT e.eid, e.ename, e.salary, e.eadd, d.dname\nFROM emp e INNER JOIN depts d ON e.dnum = d.did\nORDER BY d.dname, e.salary DESC;`,
-    repoPath: "src/01_storage_and_schema/05_ititest_case_study_schema.sql",
+    repoPath: "src/01_storage_and_schema/ch01_vid02_ititest_case_study_schema.sql",
     challengeId: "ch-1",
     erdEntity: "Database",
     attachments: [
       { id: "att-ch01-vid02-1", name: "Create Database Using Wizard (ITItest Case Study) Technical Guide", type: "DOC", path: "docs/ch01-case-study-erd-and-implementation.md" },
-      { id: "att-ch01-vid02-2", name: "Solution DDL / Script", type: "SQL", path: "src/01_storage_and_schema/05_ititest_case_study_schema.sql" }
+      { id: "att-ch01-vid02-2", name: "Solution DDL / Script", type: "SQL", path: "src/01_storage_and_schema/ch01_vid02_ititest_case_study_schema.sql" }
     ],
     maharatechUrl: "https://maharatech.gov.eg/mod/hvp/view.php?id=17521",
     microsoftDocTitle: "CREATE TABLE (Transact-SQL) Guide",
@@ -94,12 +94,12 @@ export const COURSE_VIDEOS = [
     ],
     description: "Mastering programmatic database creation using Transact-SQL DDL. Covers CREATE DATABASE with PRIMARY, secondary filegroups (fg1, fg2), filegrowth mathematics, and safe drop/recreate patterns.",
     sampleSql: `-- Create database with code & multiple filegroups\nCREATE DATABASE ITItest\nON PRIMARY (NAME = N'ITItest_Data', FILENAME = N'D:\\courses\\Data Science\\Data Engineering\\MaharaTech\\Implementing and Developing SQL server objects\\CH01\\Mydb\\ITItest_Data.mdf'),\nFILEGROUP fg1 (NAME = N'ITItest_fg1', FILENAME = N'D:\\courses\\Data Science\\Data Engineering\\MaharaTech\\Implementing and Developing SQL server objects\\CH01\\Mydb\\ITItest_fg1.ndf')\nLOG ON (NAME = N'ITItest_Log', FILENAME = N'D:\\courses\\Data Science\\Data Engineering\\MaharaTech\\Implementing and Developing SQL server objects\\CH01\\Mydb\\ITItest_Log.ldf');`,
-    repoPath: "src/01_storage_and_schema/01_create_database_code_ch01_vid03.sql",
+    repoPath: "src/01_storage_and_schema/ch01_vid03_create_database_code.sql",
     challengeId: "ch-1",
     erdEntity: "Database",
     attachments: [
       { id: "att-ch01-vid03-1", name: "Create Database Using Code (T-SQL) Technical Guide", type: "DOC", path: "docs/ch01-case-study-erd-and-implementation.md" },
-      { id: "att-ch01-vid03-2", name: "Solution DDL / Script", type: "SQL", path: "src/01_storage_and_schema/01_create_database_code_ch01_vid03.sql" }
+      { id: "att-ch01-vid03-2", name: "Solution DDL / Script", type: "SQL", path: "src/01_storage_and_schema/ch01_vid03_create_database_code.sql" }
     ],
     maharatechUrl: "https://maharatech.gov.eg/mod/hvp/view.php?id=17522",
     microsoftDocTitle: "CREATE DATABASE (Transact-SQL) Syntax Reference",
@@ -110,24 +110,24 @@ export const COURSE_VIDEOS = [
     chapter: 1,
     chapterTitle: "Chapter 1: Database Creation and Management",
     videoCode: "CH01_VID04",
-    title: "Database Integrity & Normalization Rules",
+    title: "Database Integrity (Domain, Entity & Referential)",
     duration: "18 mins",
     level: "Foundational",
-    skillsConnected: ["Entity Integrity", "Referential Integrity", "Domain Integrity", "User-Defined Integrity"],
+    skillsConnected: ["Domain Integrity (Range of Values)", "Entity Integrity (Uniqueness)", "Referential Integrity (Relationships)", "DB Constraints vs DB Objects", "Custom Constraints"],
     objectives: [
-      "Master entity integrity in SQL Server.",
-      "Master referential integrity in SQL Server.",
-      "Master domain integrity in SQL Server.",
-      "Complete the practical exercise for Database Integrity & Normalization Rules."
+      "Master domain integrity (range of values) in SQL Server.",
+      "Master entity integrity (uniqueness) in SQL Server.",
+      "Master referential integrity (relationships) in SQL Server.",
+      "Complete the practical exercise for Database Integrity (Domain, Entity & Referential)."
     ],
-    description: "Eng. Rami Mohamed Abonagi presents 'Database Integrity & Normalization Rules' as part of Chapter 1: Database Creation and Management. Master core concepts, practical implementation in SSMS, and production database patterns.",
-    sampleSql: `-- T-SQL Demo: Database Integrity & Normalization Rules\n-- Video Code: CH01_VID04\nSELECT 'CH01_VID04' AS VideoCode, 'Database Integrity & Normalization Rules' AS ModuleTitle, GETDATE() AS ExecutedAt;`,
-    repoPath: "src/01_storage_and_schema/03_integrity_constraints.sql",
+    description: "Comprehensive implementation of the Database Integrity taxonomy: Domain Integrity (data types, defaults, check constraints, rules), Entity Integrity (primary keys, unique constraints, filtered unique indexes), and Referential Integrity (foreign keys, cascading actions) across DB constraints, DB objects, and custom stored procedures in ITItest.",
+    sampleSql: `-- Inspect verified Domain, Entity, and Referential Integrity on ITItest\nSELECT e.eid, e.ename, e.salary, e.eadd, e.netsal, d.dname\nFROM dbo.emp e INNER JOIN dbo.depts d ON e.dnum = d.did;\n\n-- Enforce custom business rules via transactional Stored Procedure\nEXEC dbo.usp_HireEmployee @ename = N'Kareem Tarek', @salary = 4500.00, @dnum = 10, @hiredate = '2026-03-01';`,
+    repoPath: "src/01_storage_and_schema/ch01_vid04_database_integrity.sql",
     challengeId: "ch-1",
     erdEntity: "Database",
     attachments: [
-      { id: "att-ch01-vid04-1", name: "Database Integrity & Normalization Rules Technical Guide", type: "DOC", path: "docs/ch01-case-study-erd-and-implementation.md" },
-      { id: "att-ch01-vid04-2", name: "Solution DDL / Script", type: "SQL", path: "src/01_storage_and_schema/03_integrity_constraints.sql" }
+      { id: "att-ch01-vid04-1", name: "Database Integrity (Domain, Entity & Referential) Technical Guide", type: "DOC", path: "docs/ch01-case-study-erd-and-implementation.md" },
+      { id: "att-ch01-vid04-2", name: "Solution DDL / Script", type: "SQL", path: "src/01_storage_and_schema/ch01_vid04_database_integrity.sql" }
     ],
     maharatechUrl: "https://maharatech.gov.eg/mod/hvp/view.php?id=17523",
     microsoftDocTitle: "Data Integrity in Relational Databases",
@@ -234,12 +234,12 @@ export const COURSE_VIDEOS = [
     ],
     description: "Eng. Rami Mohamed Abonagi presents 'Clustered Index Architecture & B-Tree Structure' as part of Chapter 1: Database Creation and Management. Master core concepts, practical implementation in SSMS, and production database patterns.",
     sampleSql: `-- T-SQL Demo: Clustered Index Architecture & B-Tree Structure\n-- Video Code: CH01_VID08\nSELECT 'CH01_VID08' AS VideoCode, 'Clustered Index Architecture & B-Tree Structure' AS ModuleTitle, GETDATE() AS ExecutedAt;`,
-    repoPath: "src/02_indexing_and_performance/01_clustered_and_nonclustered_indexes.sql",
+    repoPath: "src/02_indexing_and_performance/01_clustered_nonclustered.sql",
     challengeId: "ch-1",
     erdEntity: "Database",
     attachments: [
       { id: "att-ch01-vid08-1", name: "Clustered Index Architecture & B-Tree Structure Technical Guide", type: "DOC", path: "docs/ch01-case-study-erd-and-implementation.md" },
-      { id: "att-ch01-vid08-2", name: "Solution DDL / Script", type: "SQL", path: "src/02_indexing_and_performance/01_clustered_and_nonclustered_indexes.sql" }
+      { id: "att-ch01-vid08-2", name: "Solution DDL / Script", type: "SQL", path: "src/02_indexing_and_performance/01_clustered_nonclustered.sql" }
     ],
     maharatechUrl: "https://maharatech.gov.eg/mod/hvp/view.php?id=17527",
     microsoftDocTitle: "Clustered and Nonclustered Indexes Described",
@@ -262,12 +262,12 @@ export const COURSE_VIDEOS = [
     ],
     description: "Eng. Rami Mohamed Abonagi presents 'Non-Clustered Index & Covering Index Strategy' as part of Chapter 1: Database Creation and Management. Master core concepts, practical implementation in SSMS, and production database patterns.",
     sampleSql: `-- T-SQL Demo: Non-Clustered Index & Covering Index Strategy\n-- Video Code: CH01_VID09\nSELECT 'CH01_VID09' AS VideoCode, 'Non-Clustered Index & Covering Index Strategy' AS ModuleTitle, GETDATE() AS ExecutedAt;`,
-    repoPath: "src/02_indexing_and_performance/01_clustered_and_nonclustered_indexes.sql",
+    repoPath: "src/02_indexing_and_performance/01_clustered_nonclustered.sql",
     challengeId: "ch-1",
     erdEntity: "Database",
     attachments: [
       { id: "att-ch01-vid09-1", name: "Non-Clustered Index & Covering Index Strategy Technical Guide", type: "DOC", path: "docs/ch01-case-study-erd-and-implementation.md" },
-      { id: "att-ch01-vid09-2", name: "Solution DDL / Script", type: "SQL", path: "src/02_indexing_and_performance/01_clustered_and_nonclustered_indexes.sql" }
+      { id: "att-ch01-vid09-2", name: "Solution DDL / Script", type: "SQL", path: "src/02_indexing_and_performance/01_clustered_nonclustered.sql" }
     ],
     maharatechUrl: "https://maharatech.gov.eg/mod/hvp/view.php?id=17528",
     microsoftDocTitle: "Create Indexes with Included Columns",
@@ -318,12 +318,12 @@ export const COURSE_VIDEOS = [
     ],
     description: "Eng. Rami Mohamed Abonagi presents 'Types of Backup (Full, Differential, Log)' as part of Chapter 1: Database Creation and Management. Master core concepts, practical implementation in SSMS, and production database patterns.",
     sampleSql: `-- T-SQL Demo: Types of Backup (Full, Differential, Log)\n-- Video Code: CH01_VID11\nSELECT 'CH01_VID11' AS VideoCode, 'Types of Backup (Full, Differential, Log)' AS ModuleTitle, GETDATE() AS ExecutedAt;`,
-    repoPath: "src/06_reliability_and_dr/01_backup_and_restore_runbook.sql",
+    repoPath: "src/06_reliability_and_dr/01_backup_and_maintenance_jobs.sql",
     challengeId: "ch-1",
     erdEntity: "Database",
     attachments: [
       { id: "att-ch01-vid11-1", name: "Types of Backup (Full, Differential, Log) Technical Guide", type: "DOC", path: "docs/ch01-case-study-erd-and-implementation.md" },
-      { id: "att-ch01-vid11-2", name: "Solution DDL / Script", type: "SQL", path: "src/06_reliability_and_dr/01_backup_and_restore_runbook.sql" }
+      { id: "att-ch01-vid11-2", name: "Solution DDL / Script", type: "SQL", path: "src/06_reliability_and_dr/01_backup_and_maintenance_jobs.sql" }
     ],
     maharatechUrl: "https://maharatech.gov.eg/mod/hvp/view.php?id=17530",
     microsoftDocTitle: "Backup Overview (SQL Server)",
@@ -346,12 +346,12 @@ export const COURSE_VIDEOS = [
     ],
     description: "Eng. Rami Mohamed Abonagi presents 'Backup Database Using Wizard & SSMS Tasks' as part of Chapter 1: Database Creation and Management. Master core concepts, practical implementation in SSMS, and production database patterns.",
     sampleSql: `-- T-SQL Demo: Backup Database Using Wizard & SSMS Tasks\n-- Video Code: CH01_VID12\nSELECT 'CH01_VID12' AS VideoCode, 'Backup Database Using Wizard & SSMS Tasks' AS ModuleTitle, GETDATE() AS ExecutedAt;`,
-    repoPath: "src/06_reliability_and_dr/01_backup_and_restore_runbook.sql",
+    repoPath: "src/06_reliability_and_dr/01_backup_and_maintenance_jobs.sql",
     challengeId: "ch-1",
     erdEntity: "Database",
     attachments: [
       { id: "att-ch01-vid12-1", name: "Backup Database Using Wizard & SSMS Tasks Technical Guide", type: "DOC", path: "docs/ch01-case-study-erd-and-implementation.md" },
-      { id: "att-ch01-vid12-2", name: "Solution DDL / Script", type: "SQL", path: "src/06_reliability_and_dr/01_backup_and_restore_runbook.sql" }
+      { id: "att-ch01-vid12-2", name: "Solution DDL / Script", type: "SQL", path: "src/06_reliability_and_dr/01_backup_and_maintenance_jobs.sql" }
     ],
     maharatechUrl: "https://maharatech.gov.eg/mod/hvp/view.php?id=17531",
     microsoftDocTitle: "Create a Full Database Backup (SSMS Wizard)",

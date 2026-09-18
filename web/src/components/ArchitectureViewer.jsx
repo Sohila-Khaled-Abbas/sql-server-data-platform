@@ -32,7 +32,7 @@ const ARCHITECTURE_LAYERS = [
       {
         name: 'Normalized Schema',
         detail: '3NF schema with Peter Chen ERD mapping. Strict referential integrity between Employee, Department, and Project.',
-        file: 'src/01_storage_and_schema/05_ititest_case_study_schema.sql'
+        file: 'src/01_storage_and_schema/ch01_vid02_ititest_case_study_schema.sql'
       },
       {
         name: 'Concurrency Control',

@@ -11,7 +11,7 @@ Features:
 - Live inspection of sys.database_files and sys.filegroups
 - Reverse-engineers DDL for newly added tables in real-time
 - Extracts Primary Keys, Foreign Keys, Unique & Check Constraints
-- Generates idempotent T-SQL: src/01_storage_and_schema/05_ititest_case_study_schema.sql
+- Generates idempotent T-SQL: src/01_storage_and_schema/ch01_vid02_ititest_case_study_schema.sql
 - Generates live documentation: docs/ititest-live-schema.md
 - Updates web app metadata: web/src/data/ititestLiveSchema.json
 - Watch mode (--watch): Continuously polls for changes as the user creates tables in SSMS
@@ -233,7 +233,7 @@ def generate_ddl_script(files: List[Dict], tables: List[Dict], output_path: Path
         "/*",
         "===============================================================================",
         "Database:      ITItest",
-        "Script:        05_ititest_case_study_schema.sql",
+        "Script:        ch01_vid02_ititest_case_study_schema.sql",
         "Description:   Dynamically synchronized schema for ITItest database",
         f"Generated At:  {datetime.now(timezone.utc).isoformat()}",
         "Storage Root:  D:\\courses\\Data Science\\Data Engineering\\MaharaTech\\Implementing and Developing SQL server objects\\CH01\\Mydb",
@@ -503,7 +503,7 @@ def perform_sync(server: str = ".", database: str = "ITItest") -> Dict[str, Any]
     conn.close()
 
     # Target paths
-    ddl_path = REPO_ROOT / "src/01_storage_and_schema/05_ititest_case_study_schema.sql"
+    ddl_path = REPO_ROOT / "src/01_storage_and_schema/ch01_vid02_ititest_case_study_schema.sql"
     doc_path = REPO_ROOT / "docs/ititest-live-schema.md"
     case_study_doc_path = REPO_ROOT / "docs/ch01-case-study-erd-and-implementation.md"
     web_json_path = REPO_ROOT / "web/src/data/ititestLiveSchema.json"

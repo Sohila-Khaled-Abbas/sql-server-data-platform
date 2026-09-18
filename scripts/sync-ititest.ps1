@@ -5,7 +5,7 @@
     Connects to the local SQL Server instance (ITItest database) and reverse-engineers
     all wizard-created database files in D:\courses\...\CH01\Mydb and all tables/columns/constraints
     directly into:
-    - src/01_storage_and_schema/05_ititest_case_study_schema.sql
+    - src/01_storage_and_schema/ch01_vid02_ititest_case_study_schema.sql
     - docs/ititest-live-schema.md
     - web/src/data/ititestLiveSchema.json
 .PARAMETER Watch

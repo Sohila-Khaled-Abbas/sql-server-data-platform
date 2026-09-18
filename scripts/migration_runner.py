@@ -26,13 +26,14 @@ from typing import Dict, List, Optional, Tuple
 ORDERED_MIGRATIONS: List[str] = [
     # Phase 1: Physical Storage, Filegroups & Schemas
     "src/01_storage_and_schema/01_filegroups_and_files.sql",
-    "src/01_storage_and_schema/01_ititest_filegroups_and_files.sql",
-    "src/01_storage_and_schema/01_create_database_code_ch01_vid03.sql",
     "src/01_storage_and_schema/02_custom_types_and_rules.sql",
     "src/01_storage_and_schema/03_integrity_constraints.sql",
     "src/01_storage_and_schema/04_partitioning_scheme.sql",
-    "src/01_storage_and_schema/05_ititest_case_study_schema.sql",
     "src/01_storage_and_schema/05_company_case_study_schema.sql",
+    "src/01_storage_and_schema/ch01_vid01_ititest_filegroups.sql",
+    "src/01_storage_and_schema/ch01_vid02_ititest_case_study_schema.sql",
+    "src/01_storage_and_schema/ch01_vid03_create_database_code.sql",
+    "src/01_storage_and_schema/ch01_vid04_database_integrity.sql",
 
     # Phase 2: Indexing & Performance
     "src/02_indexing_and_performance/01_clustered_nonclustered.sql",

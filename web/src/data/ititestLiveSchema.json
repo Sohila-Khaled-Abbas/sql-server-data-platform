@@ -53,7 +53,7 @@
       "name": "depts",
       "full_name": "dbo.depts",
       "filegroup": "fg1",
-      "row_count": 0,
+      "row_count": 1,
       "columns": [
         {
           "name": "did",
@@ -87,7 +87,7 @@
       "name": "emp",
       "full_name": "dbo.emp",
       "filegroup": "fg2",
-      "row_count": 0,
+      "row_count": 1,
       "columns": [
         {
           "name": "eid",
@@ -196,6 +196,33 @@
           "is_identity": false,
           "default": "",
           "is_pk": false
+        },
+        {
+          "name": "age_optimized",
+          "type": "TINYINT",
+          "raw_type": "tinyint",
+          "is_nullable": true,
+          "is_identity": false,
+          "default": "",
+          "is_pk": false
+        },
+        {
+          "name": "national_id",
+          "type": "CHAR(14)",
+          "raw_type": "char",
+          "is_nullable": true,
+          "is_identity": false,
+          "default": "",
+          "is_pk": false
+        },
+        {
+          "name": "email",
+          "type": "VARCHAR(100)",
+          "raw_type": "varchar",
+          "is_nullable": true,
+          "is_identity": false,
+          "default": "",
+          "is_pk": false
         }
       ],
       "primary_key": {
@@ -216,5 +243,5 @@
       ]
     }
   ],
-  "synced_at": "2026-09-18T17:38:50.673450+00:00"
+  "synced_at": "2026-09-18T19:17:25.504429+00:00"
 }

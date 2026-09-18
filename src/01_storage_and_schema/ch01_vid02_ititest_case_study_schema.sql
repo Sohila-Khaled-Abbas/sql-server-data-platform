@@ -1,9 +1,9 @@
 /*
 ===============================================================================
 Database:      ITItest
-Script:        05_ititest_case_study_schema.sql
+Script:        ch01_vid02_ititest_case_study_schema.sql
 Description:   Dynamically synchronized schema for ITItest database
-Generated At:  2026-09-18T17:38:50.668554+00:00
+Generated At:  2026-09-18T19:17:25.495025+00:00
 Storage Root:  D:\courses\Data Science\Data Engineering\MaharaTech\Implementing and Developing SQL server objects\CH01\Mydb
 ===============================================================================
 */
@@ -52,6 +52,9 @@ BEGIN
         [hour_rate] INT NULL,
         [gender] VARCHAR(1) NULL,
         [dnum] INT NULL,
+        [age_optimized] TINYINT NULL,
+        [national_id] CHAR(14) NULL,
+        [email] VARCHAR(100) NULL,
         CONSTRAINT [PK_emp] PRIMARY KEY CLUSTERED ([eid])
     ) ON [fg2];
     PRINT '>> Created Table dbo.emp on filegroup [fg2].';

@@ -1,5 +1,5 @@
 /* ============================================================================
-   Script:      01_create_database_code_ch01_vid03.sql
+   Script:      ch01_vid03_create_database_code.sql
    Module:      01_storage_and_schema
    Course:      MaharaTech Course 2305: Implementing and Developing SQL Server Objects
    Lecture:     CH01_VID03: Create Database Using Code

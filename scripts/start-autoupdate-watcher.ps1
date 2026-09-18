@@ -7,7 +7,7 @@
     will automatically update:
     - docs/ititest-live-schema.md
     - docs/ch01-case-study-erd-and-implementation.md
-    - src/01_storage_and_schema/05_ititest_case_study_schema.sql
+    - src/01_storage_and_schema/ch01_vid02_ititest_case_study_schema.sql
     - web/src/data/ititestLiveSchema.json
 .EXAMPLE
     .\scripts\start-autoupdate-watcher.ps1

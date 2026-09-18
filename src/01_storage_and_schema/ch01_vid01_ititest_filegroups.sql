@@ -1,5 +1,5 @@
 /* ============================================================================
-   Script: 01_ititest_filegroups_and_files.sql
+   Script: ch01_vid01_ititest_filegroups.sql
    Module: 01_storage_and_schema
    Database: ITItest
    Purpose: Provisions and configures the ITItest database with the exact
