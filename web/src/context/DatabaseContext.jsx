@@ -6,8 +6,8 @@ const DatabaseContext = createContext(null);
 export const SCHEMA_TREE = {
   databases: [
     {
-      id: 'company',
-      name: 'ITItest (Case Study 3NF)',
+      id: 'ititest',
+      name: 'ITItest (Live Lab DB - CH01 Wizard/Code)',
       type: 'OLTP',
       storagePath: 'D:\\courses\\Data Science\\Data Engineering\\MaharaTech\\Implementing and Developing SQL server objects\\CH01\\Mydb',
       tables: [
@@ -40,7 +40,14 @@ export const SCHEMA_TREE = {
             { name: 'did', type: 'INT', isPk: true, isFk: false },
             { name: 'dname', type: 'VARCHAR(50)', isPk: false, isFk: false }
           ]
-        },
+        }
+      ]
+    },
+    {
+      id: 'company_sd',
+      name: 'Company_SD (Enterprise 3NF OLTP)',
+      type: 'OLTP',
+      tables: [
         {
           name: 'Employee',
           rowCount: 8,

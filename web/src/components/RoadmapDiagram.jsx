@@ -19,58 +19,100 @@ import mssqlLogo from '../assets/mssql-logo.svg';
 const STAGES = [
   {
     stage: 1,
-    title: "Storage Engine & Relational Modeling",
-    subtitle: "Physical 8 KB Page Geometry, 3NF Normalization & Constraints",
-    badge: "Foundations",
+    title: "CH01: Database Creation and Management",
+    subtitle: "Storage Architecture, Filegroups, Relational Integrity, Indexes & Snapshots",
+    badge: "16 Lessons",
     badgeClass: "badge-cyan",
-    videoIds: ["ch01-vid01", "ch01-vid02", "ch01-vid03", "ch01-vid04", "ch01-vid05"],
-    milestone: "Company Case Study 3NF Database & Circular FK Resolution",
-    skills: ["Storage Internals", "8 KB Page Math", "Peter Chen ERD", "3NF Normalization", "Referential Integrity", "Database Snapshots"],
+    videoIds: [
+      "ch01-vid01", "ch01-vid02", "ch01-vid03", "ch01-vid04",
+      "ch01-vid05", "ch01-vid06", "ch01-vid07", "ch01-vid08",
+      "ch01-vid09", "ch01-vid10", "ch01-vid11", "ch01-vid12",
+      "ch01-vid13", "ch01-vid14", "ch01-vid15", "ch01-vid16"
+    ],
+    milestone: "ITItest Live Lab & Enterprise 3NF Relational Model",
+    skills: ["Storage Engine Internals", "8 KB Page Math", "Multi-Filegroups", "Integrity Constraints", "Clustered/Non-Clustered Indexes", "Database Snapshots"],
     msDocsTopic: "Database Files & Extents Architecture Guide"
   },
   {
     stage: 2,
-    title: "Transactional Concurrency & Procedural T-SQL",
-    subtitle: "ACID Boundaries, Locking Modes, RCSI & Scalar UDF Inlining",
-    badge: "Core T-SQL",
+    title: "CH02: SQL Programming Essentials",
+    subtitle: "Variables, Flow Control, UDFs, System Databases, Temp Tables & Transactions",
+    badge: "15 Lessons",
     badgeClass: "badge-green",
-    videoIds: ["ch02-vid01", "ch02-vid02", "ch02-vid03", "ch02-vid04", "ch02-vid05", "ch02-vid06"],
+    videoIds: [
+      "ch02-vid01", "ch02-vid02", "ch02-vid03", "ch02-vid04",
+      "ch02-vid05", "ch02-vid06", "ch02-vid07", "ch02-vid08",
+      "ch02-vid09", "ch02-vid10", "ch02-vid11", "ch02-vid12",
+      "ch02-vid13", "ch02-vid14", "ch02-vid15"
+    ],
     milestone: "High-Concurrency ACID Transaction Management & Zero-RBAR Inlining",
-    skills: ["ACID Properties", "WAL Logging", "Locking Modes (S/X/IS/IX)", "RCSI Snapshot", "Scalar Inlining", "Inline TVFs"],
+    skills: ["T-SQL Variables", "Control of Flow", "Scalar & Inline TVFs", "System Databases", "Temp Tables", "ACID Boundaries & Savepoints"],
     msDocsTopic: "Transaction Locking and Row Versioning Guide"
   },
   {
     stage: 3,
-    title: "Advanced Scalability & Ingestion Pipelines",
-    subtitle: "Horizontal Partitioning, Sliding Windows, TVPs & High Availability",
-    badge: "Data Engineering",
+    title: "CH03: Advanced Query Techniques & High Availability",
+    subtitle: "Views, Partitioning, XML Shredding, CTEs, TVPs, Mirroring & Log Shipping",
+    badge: "23 Lessons",
     badgeClass: "badge-purple",
-    videoIds: ["ch03-vid01", "ch03-vid02", "ch03-vid03", "ch03-vid04", "ch03-vid05"],
-    milestone: "Sub-Second Sliding Window Archival & Always On Disaster Recovery",
-    skills: ["Horizontal Partitioning", "Sliding Window SWITCH", "TVP Batch Ingest", "XML Shredding (.nodes)", "Log Shipping & AGs"],
+    videoIds: [
+      "ch03-vid01", "ch03-vid02", "ch03-vid03", "ch03-vid04",
+      "ch03-vid05", "ch03-vid06", "ch03-vid07", "ch03-vid08",
+      "ch03-vid09", "ch03-vid10", "ch03-vid11", "ch03-vid12",
+      "ch03-vid13", "ch03-vid14", "ch03-vid15", "ch03-vid16",
+      "ch03-vid17", "ch03-vid18", "ch03-vid19", "ch03-vid20",
+      "ch03-vid21", "ch03-vid22", "ch03-vid23"
+    ],
+    milestone: "Sub-Second Sliding Window Archival & Database Disaster Recovery",
+    skills: ["Indexed Views", "Horizontal Range Partitioning", "FOR XML & XQuery", "Recursive CTEs", "Table-Valued Parameters", "Database Mirroring & Log Shipping"],
     msDocsTopic: "Partitioned Tables and Indexes & Always On AGs"
   },
   {
     stage: 4,
-    title: "Automated Governance, Triggers & Security",
-    subtitle: "Defensive Procedures, Audit Change Capture, SQL CLR & SMO",
-    badge: "DBRE & DevOps",
+    title: "CH04: Procedures, Triggers & SQL Automation",
+    subtitle: "Stored Procedures, Audit Triggers, Cursors, Managed CLR & SMO SDK",
+    badge: "27 Lessons",
     badgeClass: "badge-amber",
-    videoIds: ["ch04-vid01", "ch04-vid02", "ch04-vid03", "ch04-vid04", "ch04-vid05"],
+    videoIds: [
+      "ch04-vid01", "ch04-vid02", "ch04-vid03", "ch04-vid04",
+      "ch04-vid05", "ch04-vid06", "ch04-vid07", "ch04-vid08",
+      "ch04-vid09", "ch04-vid10", "ch04-vid11", "ch04-vid12",
+      "ch04-vid13", "ch04-vid14", "ch04-vid15", "ch04-vid16",
+      "ch04-vid17", "ch04-vid18", "ch04-vid19", "ch04-vid20",
+      "ch04-vid21", "ch04-vid22", "ch04-vid23", "ch04-vid24",
+      "ch04-vid25", "ch04-vid26", "ch04-vid27"
+    ],
     milestone: "Automated Schema Guard System & PowerShell SMO CI/CD Automation",
-    skills: ["Production Procedures", "DML inserted/deleted", "DDL EVENTDATA()", "C# SQL CLR Assemblies", "PowerShell SMO"],
+    skills: ["Idempotent Stored Procedures", "DML Audit Triggers", "DDL Server Triggers", "OUTPUT Clause", "C# SQL CLR Assemblies", "PowerShell SMO Automation"],
     msDocsTopic: "DML & DDL Triggers and CLR Integration Architecture"
   },
   {
     stage: 5,
-    title: "Kimball Dimensional Warehousing & Enterprise BI",
-    subtitle: "OLAP Star Schemas, Slowly Changing Dimensions (SCD2) & SSRS",
-    badge: "Analytics & BI",
+    title: "CH05: Reporting and Data Warehousing",
+    subtitle: "Paginated SSRS, Matrix Reports, Parameters, OLAP vs OLTP & Kimball Star",
+    badge: "20 Lessons",
     badgeClass: "badge-mssql-red",
-    videoIds: ["ch05-vid01", "ch05-vid02", "ch05-vid03", "ch05-vid04"],
+    videoIds: [
+      "ch05-vid01", "ch05-vid02", "ch05-vid03", "ch05-vid04",
+      "ch05-vid05", "ch05-vid06", "ch05-vid07", "ch05-vid08",
+      "ch05-vid09", "ch05-vid10", "ch05-vid11", "ch05-vid12",
+      "ch05-vid13", "ch05-vid14", "ch05-vid15", "ch05-vid16",
+      "ch05-vid17", "ch05-vid18", "ch05-vid19", "ch05-vid20"
+    ],
     milestone: "OmniFlowDW Star Schema with Temporal Lineage & SSRS Reports",
-    skills: ["Kimball Methodology", "Conformed Dimensions", "Surrogate Keys", "SCD Type 2 History", "SSRS Matrix Reports"],
+    skills: ["SSRS Paginated Reports", "Tablix & Matrix Groupings", "Cascading Parameters", "RDLC Local Reports", "OLAP vs OLTP", "Kimball Star Schema & SCDs"],
     msDocsTopic: "Columnstore Indexes & Paginated Reporting Services"
+  },
+  {
+    stage: 6,
+    title: "Final Project: Enterprise Capstone Platform",
+    subtitle: "Unified Multi-Filegroup, Partitioned, Automated & Paginated Architecture",
+    badge: "Capstone",
+    badgeClass: "badge-blue",
+    videoIds: ["final-project"],
+    milestone: "Production Enterprise Data Platform Automated Deployment",
+    skills: ["Full Platform Architecture", "Automated DBRE Migration", "Continuous Integration", "End-to-End Verification"],
+    msDocsTopic: "SQL Server Enterprise Architecture Guide"
   }
 ];
 

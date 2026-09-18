@@ -20,12 +20,12 @@ This repository serves as an operational codebase and architectural proof of com
 
 Rather than a loose collection of academic lecture scripts, it is designed as a unified enterprise database platform demonstrating physical storage design, ACID transaction management, high-throughput procedural ETL, database governance, automated administrative operations via SMO, disaster recovery strategies, and an analytical dimensional warehouse (Kimball Star Schema).
 
-* 🌐 **Interactive Web App (GitHub Pages)**: [https://sohila-khaled-abbas.github.io/sql-server-data-platform/](https://sohila-khaled-abbas.github.io/sql-server-data-platform/) (Dynamic Learning Roadmap, Architecture Topology, Migration Engine, 25-Video Hub, WASM SQL Engine, LeetCode Challenges, and Plan Simulator)
+* 🌐 **Interactive Web App (GitHub Pages)**: [https://sohila-khaled-abbas.github.io/sql-server-data-platform/](https://sohila-khaled-abbas.github.io/sql-server-data-platform/) (Dynamic Learning Roadmap, Architecture Topology, Migration Engine, 101-Module Learning Hub, WASM SQL Engine, LeetCode Challenges, and Plan Simulator)
 * 🏛️ **Architecture Topology**: Interactive End-to-End System Design from OLTP to Ingestion, Partition Staging, Kimball Star Schema, and SSRS/BI
 * 🚀 **Enterprise Migration Engine**: Deterministic SHA-256 migration orchestrator (`scripts/migration_runner.py`) with idempotent execution and audit logging
 * 🧪 **Automated DBRE Test Suite**: `pytest` harness (`tests/python/test_data_platform.py`) verifying 3NF circular FKs, partition schemes, TVP types, and SCD Type 2
 * 🎲 **Synthetic Enterprise Data Generator**: High-throughput mock data generator (`scripts/generate_mock_data.py`) producing 50,000+ relational & dimensional rows
-* 🗺️ **Course Roadmap & 25-Video Curriculum**: Interactive 5-stage progression tracking with cross-cutting skills and persistent course attachments
+* 🗺️ **Course Roadmap & 101-Module Curriculum**: Interactive 5-stage progression tracking with cross-cutting skills and persistent course attachments
 * 🏢 **Case Study ERD**: [Company Database Peter Chen ERD & Relational Mapping](docs/ch01-case-study-erd-and-implementation.md)
 * 📖 **Deep-Dive Handbook**: [Learning Guidance & DBRE Deep-Dive](docs/learning-guidance.md)
 * ⚡ **Performance Tuning**: [Query Optimizer, Indexing & Wait Stats Handbook](docs/performance-tuning-handbook.md)

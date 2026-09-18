@@ -22,7 +22,7 @@ export default function VideoLearningHub({ onRunQueryInStudio, onSelectTab }) {
 
   const filteredVideos = useMemo(() => {
     return COURSE_VIDEOS.filter(v => {
-      const matchChapter = activeChapter === 'all' || v.chapter === Number(activeChapter);
+      const matchChapter = activeChapter === 'all' || String(v.chapter) === String(activeChapter);
       const matchSearch = !searchTerm || 
         v.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         v.videoCode.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -41,7 +41,7 @@ export default function VideoLearningHub({ onRunQueryInStudio, onSelectTab }) {
           <div className="hero-tag-row">
             <span className="badge badge-mssql-red">{COURSE_METADATA.institution}</span>
             <span className="badge badge-purple">Course {COURSE_METADATA.courseId}</span>
-            <span className="badge badge-cyan">25 Video Lectures</span>
+            <span className="badge badge-cyan">{COURSE_VIDEOS.length} Curriculum Modules</span>
           </div>
 
           <h1 className="hero-title">{COURSE_METADATA.courseTitle}</h1>
@@ -101,32 +101,40 @@ export default function VideoLearningHub({ onRunQueryInStudio, onSelectTab }) {
             className={`filter-pill ${activeChapter === '1' ? 'active' : ''}`}
             onClick={() => setActiveChapter('1')}
           >
-            Ch 1: Storage & Schemas (5)
+            Ch 1: Storage & Schemas ({COURSE_VIDEOS.filter(v => v.chapter === 1).length})
           </button>
           <button 
             className={`filter-pill ${activeChapter === '2' ? 'active' : ''}`}
             onClick={() => setActiveChapter('2')}
           >
-            Ch 2: T-SQL & Concurrency (6)
+            Ch 2: T-SQL Essentials ({COURSE_VIDEOS.filter(v => v.chapter === 2).length})
           </button>
           <button 
             className={`filter-pill ${activeChapter === '3' ? 'active' : ''}`}
             onClick={() => setActiveChapter('3')}
           >
-            Ch 3: Scalability & Partitioning (5)
+            Ch 3: Advanced & HA ({COURSE_VIDEOS.filter(v => v.chapter === 3).length})
           </button>
           <button 
             className={`filter-pill ${activeChapter === '4' ? 'active' : ''}`}
             onClick={() => setActiveChapter('4')}
           >
-            Ch 4: Automation & Triggers (5)
+            Ch 4: Automation & Triggers ({COURSE_VIDEOS.filter(v => v.chapter === 4).length})
           </button>
           <button 
             className={`filter-pill ${activeChapter === '5' ? 'active' : ''}`}
             onClick={() => setActiveChapter('5')}
           >
-            Ch 5: Warehousing & BI (4)
+            Ch 5: Warehousing & BI ({COURSE_VIDEOS.filter(v => v.chapter === 5).length})
           </button>
+          {COURSE_VIDEOS.some(v => v.chapter === 6 || v.chapter === 'final') && (
+            <button 
+              className={`filter-pill ${activeChapter === '6' || activeChapter === 'final' ? 'active' : ''}`}
+              onClick={() => setActiveChapter('6')}
+            >
+              Final Project ({COURSE_VIDEOS.filter(v => v.chapter === 6 || v.chapter === 'final').length})
+            </button>
+          )}
         </div>
 
         <div className="hub-search-wrapper">
