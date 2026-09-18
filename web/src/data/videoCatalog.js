@@ -148,14 +148,14 @@ export const COURSE_VIDEOS = [
       "Master unique constraints in SQL Server.",
       "Complete the practical exercise for Integrity Constraints (PK, FK, Unique, Check)."
     ],
-    description: "Eng. Rami Mohamed Abonagi presents 'Integrity Constraints (PK, FK, Unique, Check)' as part of Chapter 1: Database Creation and Management. Master core concepts, practical implementation in SSMS, and production database patterns.",
-    sampleSql: `-- T-SQL Demo: Integrity Constraints (PK, FK, Unique, Check)\n-- Video Code: CH01_VID05\nSELECT 'CH01_VID05' AS VideoCode, 'Integrity Constraints (PK, FK, Unique, Check)' AS ModuleTitle, GETDATE() AS ExecutedAt;`,
-    repoPath: "src/01_storage_and_schema/03_integrity_constraints.sql",
+    description: "Authentic implementation of relational integrity constraints in SQL Server database DB2: composite primary key c1 (eid, ename), unique constraints c2 (salary) & c3 (overtime), range & domain check constraints c4-c7, referential foreign key c8 with ON UPDATE CASCADE & ON DELETE SET NULL, and persisted computed columns.",
+    sampleSql: `-- CH01_VID05: Integrity Constraints & Referential Actions in DB2\nUSE DB2;\n\n-- Inspect live departments and employees\nSELECT \n    e.eid, e.ename, e.eadd, e.salary, e.overtime, \n    e.netsal AS [NetSalary (Persisted)], \n    e.age AS [Age (Computed)], \n    e.gender, d.did, d.dname\nFROM dbo.emps e\nLEFT JOIN dbo.depts d ON e.dnum = d.did;\n\n-- Test ON UPDATE CASCADE\nUPDATE dbo.depts SET did = 100 WHERE did = 10;\nSELECT eid, ename, dnum FROM dbo.emps WHERE ename = 'Ahmed';\nUPDATE dbo.depts SET did = 10 WHERE did = 100;`,
+    repoPath: "src/01_storage_and_schema/ch01_vid05_integrity_constraints.sql",
     challengeId: "ch-1",
     erdEntity: "Database",
     attachments: [
-      { id: "att-ch01-vid05-1", name: "Integrity Constraints (PK, FK, Unique, Check) Technical Guide", type: "DOC", path: "docs/ch01-case-study-erd-and-implementation.md" },
-      { id: "att-ch01-vid05-2", name: "Solution DDL / Script", type: "SQL", path: "src/01_storage_and_schema/03_integrity_constraints.sql" }
+      { id: "att-ch01-vid05-1", name: "DB2 Integrity Constraints Live Guide", type: "DOC", path: "docs/db2-integrity-constraints-live.md" },
+      { id: "att-ch01-vid05-2", name: "Solution DDL / Script (DB2)", type: "SQL", path: "src/01_storage_and_schema/ch01_vid05_integrity_constraints.sql" }
     ],
     maharatechUrl: "https://maharatech.gov.eg/mod/hvp/view.php?id=17524",
     microsoftDocTitle: "Create Unique Constraints & Check Constraints",

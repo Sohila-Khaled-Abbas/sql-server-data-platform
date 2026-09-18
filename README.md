@@ -27,6 +27,7 @@ Rather than a loose collection of academic lecture scripts, it is designed as a 
 * 🎲 **Synthetic Enterprise Data Generator**: High-throughput mock data generator (`scripts/generate_mock_data.py`) producing 50,000+ relational & dimensional rows
 * 🗺️ **Course Roadmap & 101-Module Curriculum**: Interactive 5-stage progression tracking with cross-cutting skills and persistent course attachments
 * 🏢 **Case Study ERD**: [Company Database Peter Chen ERD & Relational Mapping](docs/ch01-case-study-erd-and-implementation.md)
+* 🛡️ **Live Integrity Constraints (DB2 Case Study)**: [DB2 Schema, Constraints c1–c8 & Referential Cascades](docs/db2-integrity-constraints-live.md) (MaharaTech CH01_VID05 live verified)
 * 📖 **Deep-Dive Handbook**: [Learning Guidance & DBRE Deep-Dive](docs/learning-guidance.md)
 * ⚡ **Performance Tuning**: [Query Optimizer, Indexing & Wait Stats Handbook](docs/performance-tuning-handbook.md)
 * 🛡️ **Disaster Recovery**: [High Availability & Incident Response Runbook](docs/disaster-recovery-runbook.md)
@@ -119,6 +120,7 @@ sql-server-data-platform/
 │   ├── ch01-case-study-erd-and-implementation.md # Chapter 1 Company ERD & relational breakdown
 │   ├── course-syllabus-mapping.md      # Syllabus to platform competency mapping
 │   ├── data-dictionary.md              # Data dictionary for OLTP & OLAP schemas
+│   ├── db2-integrity-constraints-live.md # CH01_VID05 Live DB2 Integrity Constraints & Cascade telemetry
 │   ├── dimensional-model.md            # Kimball star schema bus matrix & grain definitions
 │   ├── disaster-recovery-runbook.md    # RPO/RTO targets, VLF layout & recovery runbook
 │   ├── learning-guidance.md            # In-depth DBRE handbook & interview questions
@@ -129,7 +131,8 @@ sql-server-data-platform/
 │   │   ├── 02_custom_types_and_rules.sql # User-defined data types, rules & defaults
 │   │   ├── 03_integrity_constraints.sql # Foreign keys, check constraints & cascading rules
 │   │   ├── 04_partitioning_scheme.sql  # Partition functions & sliding window partition switching
-│   │   └── 05_company_case_study_schema.sql # Canonical ITI Company ERD implementation
+│   │   ├── 05_company_case_study_schema.sql # Canonical ITI Company ERD implementation
+│   │   └── ch01_vid05_integrity_constraints.sql # DB2 DDL with 8 constraints (c1-c8) & cascade tests
 │   ├── 02_indexing_and_performance/
 │   │   ├── 01_clustered_nonclustered.sql # Clustered, covering non-clustered, filtered & columnstore
 │   │   ├── 02_indexed_views.sql        # Materialized aggregation views with SCHEMABINDING

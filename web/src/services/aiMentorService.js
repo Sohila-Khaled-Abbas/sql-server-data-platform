@@ -85,17 +85,13 @@ export function buildSystemPrompt(pageContext = {}) {
 === LOCAL WORKSTATION & SQL SERVER ENVIRONMENT ===
 - Operating System: Windows 11 (64-bit)
 - Database Engine: Microsoft SQL Server 2022 Developer Edition (Instance: '.')
-- Active Local Database: [ITItest]
-- Physical Storage Path: D:\\courses\\Data Science\\Data Engineering\\MaharaTech\\Implementing and Developing SQL server objects\\CH01\\Mydb
-- Multi-Filegroup Layout:
-  * PRIMARY: ITItest.mdf (System Catalogs & Schemas)
-  * fg1: file2.ndf (Core Relational Entities)
-  * fg2: file3.ndf (Associations & Projects)
-  * fg3: file4.ndf (Indexes, Reporting & Staging Data)
-  * LOG: ITItest_log.ldf (Write-Ahead Log)
-- Live Verified Tables:
-  * dbo.depts (did INT PRIMARY KEY, dname NVARCHAR(50))
-  * dbo.emp (eid INT PRIMARY KEY, ename NVARCHAR(50), salary MONEY, eadd NVARCHAR(50) DEFAULT 'cairo', dnum INT FOREIGN KEY REFERENCES depts(did), overtime MONEY, hiredate DATE, bd DATE, age AS (YEAR(GETDATE()) - YEAR(bd)), netsal AS (ISNULL(salary, 0) + ISNULL(overtime, 0)))
+- Active Local Databases on Instance:
+  * [ITItest]: D:\courses\Data Science\Data Engineering\MaharaTech\Implementing and Developing SQL server objects\CH01\Mydb
+    - Layout: PRIMARY (ITItest.mdf), fg1 (file2.ndf), fg2 (file3.ndf), fg3 (file4.ndf), LOG (ITItest_log.ldf)
+    - Tables: dbo.depts (did, dname), dbo.emp (eid, ename, salary, eadd, dnum, overtime, hiredate, bd, age, netsal)
+  * [DB2]: D:\SQL Server\MSSQL16.MSSQLSERVER\MSSQL\DATA\DB2.mdf (CH01_VID05 Integrity Constraints Case Study)
+    - Tables: dbo.depts (did, dname), dbo.emps (eid, ename, eadd, hiredate, salary, overtime, netsal persisted, bd, age, gender, hour_rate, dnum)
+    - 8 Explicit Constraints: c1 (PK eid, ename), c2 (UQ salary), c3 (UQ overtime), c4 (CHECK salary>1000), c5 (CHECK overtime 100-5600), c6 (CHECK eadd IN alex,mansoura,cairo), c7 (CHECK gender F/M), c8 (FK dnum REFERENCES depts(did) ON DELETE SET NULL ON UPDATE CASCADE)
 - Course Curriculum: 102 Lessons across 7 Chapters (Storage, T-SQL Essentials, Indexing & HA, Procedures/Triggers/CLR, Warehousing & SSRS).
 
 === CURRENT UI APPLICATION CONTEXT ===
@@ -458,7 +454,43 @@ WHERE database_id = DB_ID('ITItest');`
     };
   }
 
-  // 4. Database Integrity & Constraints
+  // 4a. DB2 & CH01_VID05 Integrity Constraints Case Study
+  if (q.includes('db2') || q.includes('vid05') || q.includes('persisted') || (q.includes('integrity') && q.includes('constraint')) || q.includes('c1') || q.includes('c8') || q.includes('netsal')) {
+    return {
+      text: `### 🛡️ CH01_VID05: Integrity Constraints in Live Database [DB2]
+The **DB2** case study from MaharaTech CH01_VID05 demonstrates production-grade entity, domain, and referential integrity constraints across \`dbo.depts\` and \`dbo.emps\`:
+
+1. **c1 (PK)**: \`PRIMARY KEY (eid, ename)\` — Composite primary key enforcing entity uniqueness across employee ID and name.
+2. **c2 (UQ)**: \`UNIQUE (salary)\` — Disallows duplicate salary values across employees.
+3. **c3 (UQ)**: \`UNIQUE (overtime)\` — Enforces unique overtime compensation values.
+4. **c4 (CHECK)**: \`CHECK (salary > 1000)\` — Domain constraint guaranteeing a baseline wage above 1000 EGP.
+5. **c5 (CHECK)**: \`CHECK (overtime BETWEEN 100 AND 5600)\` — Clamps overtime within a valid corporate boundary.
+6. **c6 (CHECK)**: \`CHECK (eadd IN ('alex', 'mansoura', 'cairo'))\` — Discrete domain whitelist for employee branches.
+7. **c7 (CHECK)**: \`CHECK (gender = 'F' OR gender = 'M')\` — Domain validation for gender classification.
+8. **c8 (FK)**: \`FOREIGN KEY (dnum) REFERENCES depts(did) ON DELETE SET NULL ON UPDATE CASCADE\` — Referential action ensuring cascade updates and nullification on department deletion.
+
+⚡ **Computed Column Architecture**:
+- \`netsal AS ISNULL(salary,0) + ISNULL(overtime,0) PERSISTED\`: Physically written to data pages, indexable!
+- \`age AS YEAR(GETDATE()) - YEAR(bd)\`: Non-deterministic, calculated dynamically on SELECT.`,
+      query: `-- Query live tables and verify constraints in DB2
+USE DB2;
+GO
+
+SELECT 
+    e.eid,
+    e.ename,
+    e.salary,
+    e.overtime,
+    e.netsal, -- PERSISTED
+    e.age,    -- Dynamic computed
+    e.eadd,
+    d.dname AS DeptName
+FROM dbo.emps e
+LEFT JOIN dbo.depts d ON e.dnum = d.did;`
+    };
+  }
+
+  // 4b. Database Integrity & Constraints
   if (q.includes('integrity') || q.includes('constraint') || q.includes('check') || q.includes('unique') || q.includes('default') || q.includes('cascade')) {
     return {
       text: `### 🛡️ Database Integrity Constraints (CH01_VID04 & VID05)
