@@ -46,6 +46,7 @@ docker/data/
 # Logs & Temporary Output
 *.log
 *.tmp
+*.pid
 TestResults/
 /data/
 

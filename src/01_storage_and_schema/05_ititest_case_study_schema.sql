@@ -3,7 +3,7 @@
 Database:      ITItest
 Script:        05_ititest_case_study_schema.sql
 Description:   Dynamically synchronized schema for ITItest database
-Generated At:  2026-09-18T16:47:06.108706+00:00
+Generated At:  2026-09-18T17:16:58.218652+00:00
 Storage Root:  D:\courses\Data Science\Data Engineering\MaharaTech\Implementing and Developing SQL server objects\CH01\Mydb
 ===============================================================================
 */
@@ -22,6 +22,18 @@ GO
 -- File: file4 (fg3) -> D:\courses\Data Science\Data Engineering\MaharaTech\Implementing and Developing SQL server objects\CH01\Mydb\file4.ndf [8 MB]
 -- File: ITItest_log (N/A (LOG)) -> D:\courses\Data Science\Data Engineering\MaharaTech\Implementing and Developing SQL server objects\CH01\Mydb\ITItest_log.ldf [8 MB]
 
--- [INFO] Database [ITItest] has been provisioned with 4 filegroups (PRIMARY, fg1, fg2, fg3).
--- [INFO] Tables are being created in SSMS Wizard. Once added, run 'python scripts/sync_ititest_db.py'
---        to automatically capture their DDL definitions here.
+-- 2. Schemas & User Tables
+
+-- Table: dbo.depts (Filegroup: fg1)
+IF OBJECT_ID('dbo.depts', 'U') IS NULL
+BEGIN
+    CREATE TABLE dbo.depts (
+        [did] INT NOT NULL,
+        [dname] VARCHAR(50) NULL,
+        CONSTRAINT [PK_depts] PRIMARY KEY CLUSTERED ([did])
+    ) ON [fg1];
+    PRINT '>> Created Table dbo.depts on filegroup [fg1].';
+END;
+GO
+
+-- 3. Foreign Key Constraints

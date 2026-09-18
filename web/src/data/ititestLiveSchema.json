@@ -45,8 +45,43 @@
         "growth": "64 MB"
       }
     ],
-    "table_count": 0
+    "table_count": 1
   },
-  "tables": [],
-  "synced_at": "2026-09-18T16:47:06.690957+00:00"
+  "tables": [
+    {
+      "schema": "dbo",
+      "name": "depts",
+      "full_name": "dbo.depts",
+      "filegroup": "fg1",
+      "row_count": 0,
+      "columns": [
+        {
+          "name": "did",
+          "type": "INT",
+          "raw_type": "int",
+          "is_nullable": false,
+          "is_identity": false,
+          "default": "",
+          "is_pk": true
+        },
+        {
+          "name": "dname",
+          "type": "VARCHAR(50)",
+          "raw_type": "varchar",
+          "is_nullable": true,
+          "is_identity": false,
+          "default": "",
+          "is_pk": false
+        }
+      ],
+      "primary_key": {
+        "name": "PK_depts",
+        "columns": [
+          "did"
+        ]
+      },
+      "foreign_keys": []
+    }
+  ],
+  "synced_at": "2026-09-18T17:16:58.227627+00:00"
 }

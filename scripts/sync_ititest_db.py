@@ -305,6 +305,35 @@ def generate_ddl_script(files: List[Dict], tables: List[Dict], output_path: Path
     print(f"[OK] Wrote synchronized DDL script to: {output_path}")
 
 
+def generate_mermaid_er(tables: List[Dict]) -> List[str]:
+    """Generate Mermaid ER diagram snippet for live tables and their foreign keys."""
+    if not tables:
+        return []
+    
+    er_lines = [
+        "```mermaid",
+        "erDiagram"
+    ]
+    for t in tables:
+        tname = t["name"].replace(" ", "_").replace("-", "_")
+        er_lines.append(f"    {tname} {{")
+        for c in t["columns"]:
+            cname = c["name"].replace(" ", "_").replace("-", "_")
+            ctype = c["type"].split("(")[0].strip().lower()
+            pk_badge = " PK" if c["is_pk"] else ""
+            er_lines.append(f"        {ctype} {cname}{pk_badge}")
+        er_lines.append("    }")
+
+    for t in tables:
+        for fk in t["foreign_keys"]:
+            parent = fk["ref_table"].split(".")[-1].replace(" ", "_").replace("-", "_")
+            child = t["name"].replace(" ", "_").replace("-", "_")
+            er_lines.append(f"    {parent} ||--o{{ {child} : \"{fk['fk_name']}\"")
+
+    er_lines.append("```")
+    return er_lines
+
+
 def generate_markdown_doc(files: List[Dict], tables: List[Dict], output_path: Path):
     """Generate high-fidelity live documentation of ITItest database."""
     lines = [
@@ -325,7 +354,7 @@ def generate_markdown_doc(files: List[Dict], tables: List[Dict], output_path: Pa
     ]
 
     for f in files:
-        lines.append(f"| **`{f['logical_name']}`** | `{f['filegroup']}` | `{f['filetype'] if 'filetype' in f else f['file_type']}` | `{f['size_mb']} MB` | `{f['growth']}` | `{f['physical_name']}` |")
+        lines.append(f"| **`{f['logical_name']}`** | `{f['filegroup']}` | `{f['file_type']}` | `{f['size_mb']} MB` | `{f['growth']}` | `{f['physical_name']}` |")
 
     lines.extend([
         "",
@@ -359,7 +388,18 @@ def generate_markdown_doc(files: List[Dict], tables: List[Dict], output_path: Pa
             pk_display = ", ".join(t["primary_key"]["columns"]) if t["primary_key"] else "None"
             lines.append(f"| `{t['schema']}` | **`{t['name']}`** | `{t['filegroup']}` | `{t['row_count']}` | `{pk_display}` | `{len(t['columns'])} cols` | `{len(t['foreign_keys'])} FKs` |")
 
-        lines.extend(["", "---", "", "## 3. Detailed Table Schema Definitions", ""])
+        # Mermaid ER Diagram
+        er_diagram = generate_mermaid_er(tables)
+        if er_diagram:
+            lines.extend([
+                "",
+                "---",
+                "",
+                "## 3. Live Entity-Relationship Diagram (ERD)",
+                ""
+            ] + er_diagram)
+
+        lines.extend(["", "---", "", "## 4. Detailed Table Schema Definitions", ""])
         for t in tables:
             lines.append(f"### Table: `{t['full_name']}`")
             lines.append(f"- **Storage Filegroup**: `{t['filegroup']}`")
@@ -375,6 +415,94 @@ def generate_markdown_doc(files: List[Dict], tables: List[Dict], output_path: Pa
     with open(output_path, "w", encoding="utf-8") as f:
         f.write("\n".join(lines))
     print(f"[OK] Wrote live markdown documentation to: {output_path}")
+
+
+def update_case_study_markdown(files: List[Dict], tables: List[Dict], case_study_path: Path):
+    """Synchronize live ITItest tables, columns, and ER diagrams into the main case study document."""
+    if not case_study_path.exists():
+        return
+
+    content = case_study_path.read_text(encoding="utf-8")
+    start_tag = "<!-- LIVE_ITITEST_SCHEMA_START -->"
+    end_tag = "<!-- LIVE_ITITEST_SCHEMA_END -->"
+
+    now_str = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
+    lines = [
+        start_tag,
+        "",
+        "> [!NOTE]",
+        f"> **Live SSMS Synchronization**: Auto-synchronized from local SQL Server instance (`-S .`) database **`ITItest`** at `{now_str}`.",
+        f"> **Database File Storage Root**: `D:\\courses\\Data Science\\Data Engineering\\MaharaTech\\Implementing and Developing SQL server objects\\CH01\\Mydb`",
+        "",
+        "### 6.1 Physical Filegroup Allocations (`CH01\\Mydb`)",
+        "| Logical File | Filegroup | Type | Size | Growth | Physical Disk Path |",
+        "| :--- | :--- | :--- | :--- | :--- | :--- |"
+    ]
+    for f in files:
+        lines.append(f"| **`{f['logical_name']}`** | `{f['filegroup']}` | `{f['file_type']}` | `{f['size_mb']} MB` | `{f['growth']}` | `{f['physical_name']}` |")
+
+    lines.extend([
+        "",
+        "### 6.2 Live Relational Tables Catalog",
+    ])
+
+    if not tables:
+        lines.extend([
+            "",
+            "> [!TIP]",
+            "> *No user tables detected yet in `ITItest`.* As you create tables via the SSMS Wizard / Table Designer, they will be captured and documented here in real-time!",
+            ""
+        ])
+    else:
+        lines.extend([
+            f"Currently **{len(tables)} tables** active in `ITItest`:",
+            "",
+            "| Schema | Table Name | Storage Filegroup | Row Count | Primary Key | Columns | Foreign Keys |",
+            "| :--- | :--- | :--- | :--- | :--- | :--- | :--- |"
+        ])
+        for t in tables:
+            pk_disp = ", ".join(t["primary_key"]["columns"]) if t["primary_key"] else "None"
+            lines.append(f"| `{t['schema']}` | **`{t['name']}`** | `{t['filegroup']}` | `{t['row_count']}` | `{pk_disp}` | `{len(t['columns'])} cols` | `{len(t['foreign_keys'])} FKs` |")
+
+        # Live Mermaid ER Diagram
+        er_diagram = generate_mermaid_er(tables)
+        if er_diagram:
+            lines.extend([
+                "",
+                "### 6.3 Live Reverse-Engineered ER Diagram",
+                ""
+            ] + er_diagram)
+
+        lines.extend([
+            "",
+            "### 6.4 Detailed Table Column Definitions",
+            ""
+        ])
+        for t in tables:
+            lines.append(f"#### Table: `{t['full_name']}` (Storage: `[{t['filegroup']}]`)")
+            lines.append("| Column Name | Data Type | Nullable | Identity | Default | PK |")
+            lines.append("| :--- | :--- | :--- | :--- | :--- | :--- |")
+            for c in t["columns"]:
+                pk_badge = "🔑 PK" if c["is_pk"] else ""
+                lines.append(f"| `{c['name']}` | `{c['type']}` | `{'YES' if c['is_nullable'] else 'NO'}` | `{'YES' if c['is_identity'] else 'NO'}` | `{c['default'] or '-'}` | {pk_badge} |")
+            lines.append("")
+
+    lines.append(end_tag)
+    snippet = "\n".join(lines)
+
+    if start_tag in content and end_tag in content:
+        prefix = content.split(start_tag)[0]
+        suffix = content.split(end_tag)[1]
+        updated = prefix + snippet + suffix
+    else:
+        section_header = (
+            "\n---\n\n"
+            "## 6. Live Synchronized Schema from `ITItest` (`CH01\\Mydb`)\n\n"
+        )
+        updated = content.rstrip() + section_header + snippet + "\n"
+
+    case_study_path.write_text(updated, encoding="utf-8")
+    print(f"[OK] Auto-updated main case study doc: {case_study_path}")
 
 
 def generate_web_schema_json(files: List[Dict], tables: List[Dict], output_path: Path):
@@ -395,6 +523,13 @@ def generate_web_schema_json(files: List[Dict], tables: List[Dict], output_path:
     print(f"[OK] Wrote web application schema JSON to: {output_path}")
 
 
+def compute_schema_signature(files: List[Dict], tables: List[Dict]) -> str:
+    """Compute a deterministic SHA-256 hash of the schema state."""
+    import hashlib
+    raw = json.dumps({"files": files, "tables": tables}, sort_keys=True)
+    return hashlib.sha256(raw.encode("utf-8")).hexdigest()
+
+
 def perform_sync(server: str = ".", database: str = "ITItest") -> Dict[str, Any]:
     """Execute a single schema synchronization pass."""
     conn = get_connection(server, database)
@@ -407,49 +542,65 @@ def perform_sync(server: str = ".", database: str = "ITItest") -> Dict[str, Any]
     # Target paths
     ddl_path = REPO_ROOT / "src/01_storage_and_schema/05_ititest_case_study_schema.sql"
     doc_path = REPO_ROOT / "docs/ititest-live-schema.md"
+    case_study_path = REPO_ROOT / "docs/ch01-case-study-erd-and-implementation.md"
     web_json_path = REPO_ROOT / "web/src/data/ititestLiveSchema.json"
     web_json_path.parent.mkdir(parents=True, exist_ok=True)
 
     generate_ddl_script(files, tables, ddl_path)
     generate_markdown_doc(files, tables, doc_path)
+    update_case_study_markdown(files, tables, case_study_path)
     generate_web_schema_json(files, tables, web_json_path)
 
     return {"files": files, "tables": tables}
 
 
-def watch_database(server: str = ".", database: str = "ITItest", interval_sec: int = 5):
+def watch_database(server: str = ".", database: str = "ITItest", interval_sec: int = 3):
     """Continuously poll ITItest for changes as user creates tables in SSMS."""
     print("=" * 70)
     print(f"  Watching Microsoft SQL Server database: [{database}]")
+    print(f"  Storage Root: D:\\courses\\...\\CH01\\Mydb")
     print(f"  Server:       {server}")
     print(f"  Poll Rate:    Every {interval_sec} seconds")
+    print("  Auto-Sync:    Docs & DDL will update automatically on any schema change")
     print("  Press Ctrl+C to stop watcher.")
     print("=" * 70)
 
-    last_table_names = set()
-    last_col_counts = {}
+    last_sig = ""
+    is_initial = True
 
     while True:
         try:
-            res = perform_sync(server, database)
-            current_tables = {t["full_name"]: len(t["columns"]) for t in res["tables"]}
-            current_names = set(current_tables.keys())
+            conn = get_connection(server, database)
+            cursor = conn.cursor()
+            files = inspect_database_files(cursor)
+            tables = inspect_tables_and_columns(cursor)
+            conn.close()
 
-            # Detect additions / removals
-            added = current_names - last_table_names
-            removed = last_table_names - current_names
+            current_sig = compute_schema_signature(files, tables)
 
-            if added:
-                print(f"\n[⚡ CHANGE DETECTED] New Table(s) added: {', '.join(added)}")
-            if removed:
-                print(f"\n[⚡ CHANGE DETECTED] Table(s) removed: {', '.join(removed)}")
+            if current_sig != last_sig:
+                if not is_initial:
+                    table_names = [t["full_name"] for t in tables]
+                    print(f"\n[⚡ SCHEMA UPDATE DETECTED - {datetime.now().strftime('%H:%M:%S')}]")
+                    print(f"   Active Tables ({len(tables)}): {', '.join(table_names) if table_names else 'None'}")
+                else:
+                    print(f"[*] Initial baseline established ({len(tables)} tables, {len(files)} files).")
 
-            for tbl, col_cnt in current_tables.items():
-                if tbl in last_col_counts and last_col_counts[tbl] != col_cnt:
-                    print(f"\n[⚡ CHANGE DETECTED] Table {tbl} schema modified: {last_col_counts[tbl]} -> {col_cnt} columns.")
+                # Target paths
+                ddl_path = REPO_ROOT / "src/01_storage_and_schema/05_ititest_case_study_schema.sql"
+                doc_path = REPO_ROOT / "docs/ititest-live-schema.md"
+                case_study_path = REPO_ROOT / "docs/ch01-case-study-erd-and-implementation.md"
+                web_json_path = REPO_ROOT / "web/src/data/ititestLiveSchema.json"
+                web_json_path.parent.mkdir(parents=True, exist_ok=True)
 
-            last_table_names = current_names
-            last_col_counts = current_tables
+                generate_ddl_script(files, tables, ddl_path)
+                generate_markdown_doc(files, tables, doc_path)
+                update_case_study_markdown(files, tables, case_study_path)
+                generate_web_schema_json(files, tables, web_json_path)
+
+                last_sig = current_sig
+                is_initial = False
+                print("   [SUCCESS] Documentation & DDL auto-updated.")
 
             time.sleep(interval_sec)
         except KeyboardInterrupt:
@@ -465,7 +616,7 @@ def main():
     parser.add_argument("--server", default=".", help="SQL Server instance network name")
     parser.add_argument("--database", default="ITItest", help="Database name")
     parser.add_argument("--watch", action="store_true", help="Continuously watch database for changes")
-    parser.add_argument("--interval", type=int, default=5, help="Poll interval in seconds for watch mode")
+    parser.add_argument("--interval", type=int, default=3, help="Poll interval in seconds for watch mode")
 
     args = parser.parse_args()
 

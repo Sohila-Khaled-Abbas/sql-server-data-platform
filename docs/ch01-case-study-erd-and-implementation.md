@@ -247,3 +247,48 @@ GO
 DELETE FROM Employee WHERE SSN = '999887777';
 SELECT * FROM Dependent WHERE ESSN = '999887777'; -- Returns 0 rows!
 ```
+---
+
+## 6. Live Synchronized Schema from `ITItest` (`CH01\Mydb`)
+
+<!-- LIVE_ITITEST_SCHEMA_START -->
+
+> [!NOTE]
+> **Live SSMS Synchronization**: Auto-synchronized from local SQL Server instance (`-S .`) database **`ITItest`** at `2026-09-18 17:16:58 UTC`.
+> **Database File Storage Root**: `D:\courses\Data Science\Data Engineering\MaharaTech\Implementing and Developing SQL server objects\CH01\Mydb`
+
+### 6.1 Physical Filegroup Allocations (`CH01\Mydb`)
+| Logical File | Filegroup | Type | Size | Growth | Physical Disk Path |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **`ITItest`** | `PRIMARY` | `ROWS` | `8 MB` | `64 MB` | `D:\courses\Data Science\Data Engineering\MaharaTech\Implementing and Developing SQL server objects\CH01\Mydb\ITItest.mdf` |
+| **`file2`** | `fg1` | `ROWS` | `8 MB` | `64 MB` | `D:\courses\Data Science\Data Engineering\MaharaTech\Implementing and Developing SQL server objects\CH01\Mydb\file2.ndf` |
+| **`file3`** | `fg2` | `ROWS` | `8 MB` | `64 MB` | `D:\courses\Data Science\Data Engineering\MaharaTech\Implementing and Developing SQL server objects\CH01\Mydb\file3.ndf` |
+| **`file4`** | `fg3` | `ROWS` | `8 MB` | `64 MB` | `D:\courses\Data Science\Data Engineering\MaharaTech\Implementing and Developing SQL server objects\CH01\Mydb\file4.ndf` |
+| **`ITItest_log`** | `N/A (LOG)` | `LOG` | `8 MB` | `64 MB` | `D:\courses\Data Science\Data Engineering\MaharaTech\Implementing and Developing SQL server objects\CH01\Mydb\ITItest_log.ldf` |
+
+### 6.2 Live Relational Tables Catalog
+Currently **1 tables** active in `ITItest`:
+
+| Schema | Table Name | Storage Filegroup | Row Count | Primary Key | Columns | Foreign Keys |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| `dbo` | **`depts`** | `fg1` | `0` | `did` | `2 cols` | `0 FKs` |
+
+### 6.3 Live Reverse-Engineered ER Diagram
+
+```mermaid
+erDiagram
+    depts {
+        int did PK
+        varchar dname
+    }
+```
+
+### 6.4 Detailed Table Column Definitions
+
+#### Table: `dbo.depts` (Storage: `[fg1]`)
+| Column Name | Data Type | Nullable | Identity | Default | PK |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| `did` | `INT` | `NO` | `NO` | `-` | 🔑 PK |
+| `dname` | `VARCHAR(50)` | `YES` | `NO` | `-` |  |
+
+<!-- LIVE_ITITEST_SCHEMA_END -->

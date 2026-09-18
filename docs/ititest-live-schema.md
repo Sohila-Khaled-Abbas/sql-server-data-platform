@@ -1,7 +1,7 @@
 # Database: ITItest — Live Architecture & Case Study Catalog
 
 > [!NOTE]
-> **Live Synchronization Status**: Automatically synchronized from local SQL Server instance (`-S .`) at `2026-09-18 16:47:06 UTC`.
+> **Live Synchronization Status**: Automatically synchronized from local SQL Server instance (`-S .`) at `2026-09-18 17:16:58 UTC`.
 > **Database File Storage Root**: `D:\courses\Data Science\Data Engineering\MaharaTech\Implementing and Developing SQL server objects\CH01\Mydb`
 
 ---
@@ -28,6 +28,33 @@ The `ITItest` database was created via the **SSMS Database Wizard** conforming t
 ---
 
 ## 2. Live Relational Table Inventory
+Currently **1 tables** are active in `ITItest`:
 
-> [!TIP]
-> **Database Provisioned**: The database files and filegroups exist in `CH01\Mydb`. As you create tables via the SSMS Wizard / Table Designer, run `python scripts/sync_ititest_db.py` to immediately document and sync them here!
+| Schema | Table Name | Filegroup | Row Count | Primary Key | Column Count | Foreign Keys |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| `dbo` | **`depts`** | `fg1` | `0` | `did` | `2 cols` | `0 FKs` |
+
+---
+
+## 3. Live Entity-Relationship Diagram (ERD)
+
+```mermaid
+erDiagram
+    depts {
+        int did PK
+        varchar dname
+    }
+```
+
+---
+
+## 4. Detailed Table Schema Definitions
+
+### Table: `dbo.depts`
+- **Storage Filegroup**: `fg1`
+- **Current Rows**: `0`
+
+| Column Name | Data Type | Nullable | Identity | Default Value | PK |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| `did` | `INT` | `NO` | `NO` | `-` | 🔑 PK |
+| `dname` | `VARCHAR(50)` | `YES` | `NO` | `-` |  |
