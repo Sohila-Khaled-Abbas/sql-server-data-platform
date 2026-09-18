@@ -1,154 +1,63 @@
-import React, { useEffect, useRef } from 'react';
-import { useDatabase } from '../context/DatabaseContext.jsx';
+import React from 'react';
 import { useProgress } from '../context/ProgressContext.jsx';
-import { 
-  Search, 
-  Terminal, 
-  Menu, 
-  Bot, 
-  BookOpen, 
-  Compass, 
-  Code2, 
-  Trophy, 
-  Database, 
-  FileText,
-  ListTree,
-  Sparkles
-} from 'lucide-react';
+import { COURSE_VIDEOS } from '../data/videoCatalog.js';
+import { BookOpen, Code2, MessageCircle } from 'lucide-react';
 import mssqlLogo from '../assets/mssql-logo.svg';
 
-export default function Navbar({ 
-  onToggleSidebar, 
-  onSearch, 
-  activeTab, 
-  onSelectTab, 
-  onOpenChatbot,
-  onOpenSyllabus 
-}) {
-  const { engineStatus, engineStatusText } = useDatabase();
-  const { totalXp, progressPercent, rankInfo } = useProgress();
-  const searchInputRef = useRef(null);
-
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === '/' && document.activeElement !== searchInputRef.current && document.activeElement.tagName !== 'TEXTAREA') {
-        e.preventDefault();
-        searchInputRef.current?.focus();
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+export default function Navbar({ activeTab, onSelectTab, onOpenChatbot }) {
+  const { progressPercent } = useProgress();
 
   const navItems = [
-    { id: 'learn', label: 'Learn & Practice', icon: BookOpen },
-    { id: 'roadmap', label: 'Roadmap', icon: Compass },
-    { id: 'playground', label: 'Query Studio', icon: Code2 },
-    { id: 'challenges', label: 'Challenges', icon: Trophy },
-    { id: 'architecture', label: 'Schema & ERD', icon: Database },
-    { id: 'msdocs', label: 'MS Docs', icon: FileText }
+    { id: 'learn', label: 'Lessons', icon: BookOpen },
+    { id: 'playground', label: 'Practice', icon: Code2 },
   ];
 
   return (
-    <header className="app-header modern-header">
-      {/* Left: Brand */}
-      <div className="header-left">
-        <button 
-          className="btn-icon mobile-only" 
-          onClick={onToggleSidebar}
-          aria-label="Toggle Navigation"
-        >
-          <Menu size={20} />
-        </button>
-
-        <div className="logo-group" onClick={() => onSelectTab('learn')} style={{ cursor: 'pointer' }}>
-          <div className="mssql-logo-container">
-            <img 
-              src={mssqlLogo} 
-              alt="Microsoft SQL Server Logo" 
-              className="mssql-logo-img" 
-              width="26" 
-              height="26" 
-              style={{ width: '26px', height: '26px', objectFit: 'contain', flexShrink: 0 }}
-            />
-          </div>
-          <div>
-            <div className="brand-title">
-              SQL Server <span className="brand-badge-modern">2022</span>
-            </div>
-            <div className="brand-subtitle">
-              MaharaTech Course 2305 • ITI DBRE Sandbox
-            </div>
-          </div>
-        </div>
+    <header className="site-header">
+      {/* Brand */}
+      <div className="header-brand" onClick={() => onSelectTab('learn')}>
+        <img src={mssqlLogo} alt="" className="header-brand-icon" />
+        <span className="header-brand-text">
+          SQL Platform
+          <span className="header-brand-sub">MaharaTech 2305</span>
+        </span>
       </div>
 
-      {/* Center: Primary Navigation Tabs */}
-      <nav className="header-center-nav">
-        {navItems.map((item) => {
+      {/* Navigation */}
+      <nav className="header-nav">
+        {navItems.map(item => {
           const Icon = item.icon;
-          const isActive = activeTab === item.id;
           return (
             <button
               key={item.id}
-              className={`modern-nav-tab ${isActive ? 'active' : ''}`}
+              className={`header-nav-link ${activeTab === item.id ? 'active' : ''}`}
               onClick={() => onSelectTab(item.id)}
             >
-              <Icon size={14} className="nav-icon" />
-              <span>{item.label}</span>
-              {isActive && <div className="active-tab-glow" />}
+              {item.label}
             </button>
           );
         })}
       </nav>
 
-      {/* Right: Actions, Search, XP, AI Mentor */}
-      <div className="header-right">
-        {/* Global Search Bar */}
-        <div className="header-search-bar">
-          <Search size={13} className="text-gray-400" />
-          <input
-            ref={searchInputRef}
-            type="text"
-            placeholder="Search topics, T-SQL... (/)"
-            onChange={(e) => onSearch(e.target.value)}
-          />
-          <kbd className="header-search-kbd">/</kbd>
+      {/* Right: progress + AI */}
+      <div className="header-actions">
+        <div className="header-progress-pill">
+          <div className="header-progress-bar">
+            <div 
+              className="header-progress-fill" 
+              style={{ width: `${progressPercent}%` }} 
+            />
+          </div>
+          <span>{Math.round(progressPercent)}%</span>
         </div>
 
-        {/* Curriculum Syllabus Button */}
-        {onOpenSyllabus && (
-          <button 
-            onClick={onOpenSyllabus}
-            className="navbar-syllabus-btn"
-            title="Browse all 102 Course Lessons"
-          >
-            <ListTree size={14} className="text-cyan-400" />
-            <span className="hidden sm:inline">Syllabus</span>
-          </button>
-        )}
-
-        {/* AI Mentor Header Button */}
-        {onOpenChatbot && (
-          <button 
-            onClick={onOpenChatbot}
-            className="navbar-ai-mentor-btn"
-            title="Open DBRE AI Study Mentor"
-          >
-            <Bot size={14} className="text-cyan-400" />
-            <span className="hidden sm:inline">AI Mentor</span>
-            <span className="nav-pulse-dot" />
-          </button>
-        )}
-
-        {/* Student Mastery XP & Rank */}
-        <div 
-          className="modern-rank-badge" 
-          title={`Rank: ${rankInfo.rank} (${progressPercent}% Mastered)`}
+        <button
+          className="header-icon-btn"
+          onClick={onOpenChatbot}
+          title="AI Mentor"
         >
-          <span className="rank-emoji">{rankInfo.icon}</span>
-          <span className="xp-count">{totalXp} XP</span>
-        </div>
+          <MessageCircle size={16} />
+        </button>
       </div>
     </header>
   );

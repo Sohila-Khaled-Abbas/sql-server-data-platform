@@ -20,12 +20,11 @@ This repository serves as an operational codebase and architectural proof of com
 
 Rather than a loose collection of academic lecture scripts, it is designed as a unified enterprise database platform demonstrating physical storage design, ACID transaction management, high-throughput procedural ETL, database governance, automated administrative operations via SMO, disaster recovery strategies, and an analytical dimensional warehouse (Kimball Star Schema).
 
-* 🌐 **Interactive Web App (GitHub Pages)**: [https://sohila-khaled-abbas.github.io/sql-server-data-platform/](https://sohila-khaled-abbas.github.io/sql-server-data-platform/) (Dynamic Learning Roadmap, Architecture Topology, Migration Engine, 101-Module Learning Hub, WASM SQL Engine, LeetCode Challenges, and Plan Simulator)
-* 🏛️ **Architecture Topology**: Interactive End-to-End System Design from OLTP to Ingestion, Partition Staging, Kimball Star Schema, and SSRS/BI
+* 🌐 **Interactive Web App (GitHub Pages)**: [https://sohila-khaled-abbas.github.io/sql-server-data-platform/](https://sohila-khaled-abbas.github.io/sql-server-data-platform/) — Minimal dark-mode learning platform with 102 lessons, embedded T-SQL editor with in-browser WASM execution, and AI Mentor
 * 🚀 **Enterprise Migration Engine**: Deterministic SHA-256 migration orchestrator (`scripts/migration_runner.py`) with idempotent execution and audit logging
 * 🧪 **Automated DBRE Test Suite**: `pytest` harness (`tests/python/test_data_platform.py`) verifying 3NF circular FKs, partition schemes, TVP types, and SCD Type 2
 * 🎲 **Synthetic Enterprise Data Generator**: High-throughput mock data generator (`scripts/generate_mock_data.py`) producing 50,000+ relational & dimensional rows
-* 🗺️ **Course Roadmap & 101-Module Curriculum**: Interactive 5-stage progression tracking with cross-cutting skills and persistent course attachments
+* 🗺️ **102-Lesson Curriculum**: Clean chapter-grouped lesson navigator with progress tracking
 * 🏢 **Case Study ERD**: [Company Database Peter Chen ERD & Relational Mapping](docs/ch01-case-study-erd-and-implementation.md)
 * 🛡️ **Live Integrity Constraints (DB2 Case Study)**: [DB2 Schema, Constraints c1–c8 & Referential Cascades](docs/db2-integrity-constraints-live.md) (MaharaTech CH01_VID05 live verified)
 * 📖 **Deep-Dive Handbook**: [Learning Guidance & DBRE Deep-Dive](docs/learning-guidance.md)
@@ -169,9 +168,9 @@ sql-server-data-platform/
 ├── tests/
 │   └── tSQLt/                                   # Unit testing test cases for stored procedures
 │       └── test_stored_procedures.sql
-├── web/                                         # Interactive GitHub Pages Web Application (Vite + WASM)
-│   ├── src/                                     # In-browser SQL engine, ERD & Plan simulator
-│   ├── index.html                               # Responsive modern learning portal shell
+├── web/                                         # Minimal dark-mode learning platform (Vite + React + WASM)
+│   ├── src/                                     # LessonView, PracticeStudio, AI Mentor, WASM SQL engine
+│   ├── index.html                               # Clean single-page app shell
 │   └── package.json
 ├── deploy.ps1                                   # Universal deployment orchestrator
 ├── CONTRIBUTING.md                              # T-SQL coding standards & contribution guide
