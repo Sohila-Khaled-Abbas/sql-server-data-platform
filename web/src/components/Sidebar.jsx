@@ -108,6 +108,24 @@ LIMIT 25;`);
         </button>
 
         <button 
+          className={`nav-item ${activeTab === 'architecture' ? 'active' : ''}`}
+          onClick={() => onSelectTab('architecture')}
+        >
+          <Building size={18} className="nav-icon" />
+          <span className="nav-label">Architecture Topology</span>
+          <span className="nav-pill badge-purple">System Design</span>
+        </button>
+
+        <button 
+          className={`nav-item ${activeTab === 'migrations' ? 'active' : ''}`}
+          onClick={() => onSelectTab('migrations')}
+        >
+          <Terminal size={18} className="nav-icon" />
+          <span className="nav-label">Migration Runner</span>
+          <span className="nav-pill badge-green">CI/CD Engine</span>
+        </button>
+
+        <button 
           className={`nav-item ${activeTab === 'erd' ? 'active' : ''}`}
           onClick={() => onSelectTab('erd')}
         >
@@ -145,45 +163,52 @@ LIMIT 25;`);
           const isDbOpen = !!expandedDb[db.id];
           return (
             <div key={db.id} className="oe-db-node">
-              <div className="oe-item-header db-header" onClick={() => toggleDb(db.id)}>
-                {isDbOpen ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
-                <Database size={14} className="oe-icon db-icon" />
-                <span className="oe-name db-name">{db.name}</span>
-                <span className="oe-tag">{db.type}</span>
+              <div className="oe-item-header db-header" onClick={() => toggleDb(db.id)} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                {isDbOpen ? <ChevronDown size={14} style={{ flexShrink: 0 }} /> : <ChevronRight size={14} style={{ flexShrink: 0 }} />}
+                <Database size={14} className="oe-icon db-icon" style={{ flexShrink: 0 }} />
+                <span className="oe-name db-name" style={{ fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{db.name}</span>
+                <span className="oe-tag" style={{ marginLeft: 'auto', flexShrink: 0 }}>{db.type}</span>
               </div>
 
               {isDbOpen && (
-                <div className="oe-children-tables">
+                <div className="oe-children-tables" style={{ paddingLeft: '14px', borderLeft: '1px solid rgba(255, 255, 255, 0.1)', marginLeft: '8px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
                   {db.tables.map((table) => {
                     const isTableOpen = !!expandedTables[table.name];
                     return (
                       <div key={table.name} className="oe-table-node">
-                        <div className="oe-item-header table-header">
-                          <span onClick={() => toggleTable(table.name)} className="oe-toggle">
+                        <div className="oe-item-header table-header" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <span onClick={() => toggleTable(table.name)} className="oe-toggle" style={{ cursor: 'pointer', padding: '2px', display: 'flex', alignItems: 'center' }}>
                             {isTableOpen ? <ChevronDown size={12} /> : <ChevronRight size={12} />}
                           </span>
                           <span 
                             className="oe-table-clickable" 
                             onClick={() => handleTableClick(table.name)}
                             title={`Click to query ${table.name}`}
+                            style={{ display: 'flex', alignItems: 'center', gap: '6px', flexGrow: 1, overflow: 'hidden', cursor: 'pointer' }}
                           >
-                            <Table size={13} className="oe-icon table-icon" />
-                            <span className="oe-name table-name">{table.name}</span>
+                            <Table size={13} className="oe-icon table-icon" style={{ flexShrink: 0, color: '#38bdf8' }} />
+                            <span className="oe-name table-name" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{table.name}</span>
                           </span>
-                          <span className="oe-count-badge">{table.rowCount}r</span>
+                          <span className="oe-count-badge" style={{ marginLeft: 'auto', flexShrink: 0, fontSize: '0.68rem', padding: '1px 5px', borderRadius: '4px', background: 'rgba(255, 255, 255, 0.08)', color: '#94a3b8' }}>
+                            {table.rowCount}r
+                          </span>
                         </div>
 
                         {isTableOpen && (
-                          <div className="oe-columns-list">
+                          <div className="oe-columns-list" style={{ paddingLeft: '18px', display: 'flex', flexDirection: 'column', gap: '2px', margin: '4px 0' }}>
                             {table.columns.map((col) => (
-                              <div key={col.name} className="oe-col-item">
+                              <div key={col.name} className="oe-col-item" style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.74rem', color: '#cbd5e1' }}>
                                 {col.isPk ? (
-                                  <Key size={11} className="col-pk-icon" title="Primary Key" />
+                                  <Key size={11} className="col-pk-icon" title="Primary Key" style={{ color: '#f59e0b', flexShrink: 0 }} />
                                 ) : (
-                                  <span className="col-bullet">•</span>
+                                  <span className="col-bullet" style={{ color: '#64748b', fontSize: '0.8rem', width: '11px', textAlign: 'center' }}>•</span>
                                 )}
-                                <span className={`col-name ${col.isPk ? 'is-pk' : ''}`}>{col.name}</span>
-                                <span className="col-type">{col.type}</span>
+                                <span className={`col-name ${col.isPk ? 'is-pk' : ''}`} style={{ fontWeight: col.isPk ? 600 : 400, color: col.isPk ? '#f59e0b' : '#cbd5e1', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                  {col.name}
+                                </span>
+                                <span className="col-type" style={{ marginLeft: 'auto', fontSize: '0.65rem', color: '#64748b', fontFamily: 'monospace' }}>
+                                  {col.type}
+                                </span>
                               </div>
                             ))}
                           </div>

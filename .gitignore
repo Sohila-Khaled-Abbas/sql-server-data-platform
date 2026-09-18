@@ -47,6 +47,7 @@ docker/data/
 *.log
 *.tmp
 TestResults/
+data/
 
 # Node.js & Web App
 web/node_modules/

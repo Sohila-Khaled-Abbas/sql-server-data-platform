@@ -271,7 +271,14 @@ export default function LessonModal({ onRunQueryInStudio, onSelectTab }) {
               {video.microsoftDocsUrl && (
                 <div className="ms-docs-feature-box card">
                   <div className="ms-docs-icon-col">
-                    <img src={mssqlLogo} alt="MSSQL" className="ms-box-logo" width="24" height="24" />
+                    <img 
+                      src={mssqlLogo} 
+                      alt="MSSQL" 
+                      className="ms-box-logo" 
+                      width="24" 
+                      height="24" 
+                      style={{ width: '24px', height: '24px', maxWidth: '24px', maxHeight: '24px', objectFit: 'contain', flexShrink: 0, display: 'inline-block' }}
+                    />
                   </div>
                   <div className="ms-docs-content">
                     <div className="ms-badge">Official Microsoft Learn Guide</div>

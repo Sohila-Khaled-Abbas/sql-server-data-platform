@@ -15,6 +15,8 @@ import QuizMaster from './components/QuizMaster.jsx';
 import DocsViewer from './components/DocsViewer.jsx';
 import LessonModal from './components/LessonModal.jsx';
 import AIChatbot from './components/AIChatbot.jsx';
+import ArchitectureViewer from './components/ArchitectureViewer.jsx';
+import MigrationSimulator from './components/MigrationSimulator.jsx';
 import { MessageSquare, Bot } from 'lucide-react';
 
 function MainLayout() {
@@ -104,6 +106,14 @@ function MainLayout() {
 
           {activeTab === 'projects' && (
             <ProjectBlueprints onRunInPlayground={handleRunInStudio} />
+          )}
+
+          {activeTab === 'architecture' && (
+            <ArchitectureViewer onSelectTab={setActiveTab} onRunQueryInStudio={handleRunInStudio} />
+          )}
+
+          {activeTab === 'migrations' && (
+            <MigrationSimulator />
           )}
 
           {activeTab === 'erd' && (

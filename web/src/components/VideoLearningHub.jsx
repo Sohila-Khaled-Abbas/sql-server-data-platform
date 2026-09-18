@@ -233,7 +233,14 @@ export default function VideoLearningHub({ onRunQueryInStudio, onSelectTab }) {
       <div className="cheatsheets-section">
         <div className="section-title-row">
           <div className="title-with-logo">
-            <img src={mssqlLogo} alt="MSSQL" className="title-mssql-icon" width="28" height="28" />
+            <img 
+              src={mssqlLogo} 
+              alt="MSSQL" 
+              className="title-mssql-icon" 
+              width="28" 
+              height="28" 
+              style={{ width: '28px', height: '28px', maxWidth: '28px', maxHeight: '28px', objectFit: 'contain', flexShrink: 0, display: 'inline-block' }}
+            />
             <h2>High-Value DBRE Reference Cheatsheets</h2>
           </div>
           <span className="badge badge-mssql-red">Production Ready</span>

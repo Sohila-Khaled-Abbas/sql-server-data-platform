@@ -33,7 +33,14 @@ export default function Navbar({ onToggleSidebar, onSearch, activeTab, onSelectT
 
         <div className="logo-group" onClick={() => onSelectTab('roadmap')} style={{ cursor: 'pointer' }}>
           <div className="mssql-logo-container">
-            <img src={mssqlLogo} alt="Microsoft SQL Server Logo" className="mssql-logo-img" />
+            <img 
+              src={mssqlLogo} 
+              alt="Microsoft SQL Server Logo" 
+              className="mssql-logo-img" 
+              width="32" 
+              height="32" 
+              style={{ width: '32px', height: '32px', maxWidth: '32px', maxHeight: '32px', objectFit: 'contain', flexShrink: 0 }}
+            />
           </div>
           <div>
             <div className="brand-title">
@@ -67,11 +74,20 @@ export default function Navbar({ onToggleSidebar, onSearch, activeTab, onSelectT
         </div>
 
         {/* Student Mastery XP & Rank */}
-        <div className="user-rank-pill" title={`Rank: ${rankInfo.rank}`}>
+        <div 
+          className="user-rank-pill" 
+          title={`Rank: ${rankInfo.rank}`}
+          style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}
+        >
           <span className="rank-emoji">{rankInfo.icon}</span>
-          <div className="rank-meta">
-            <span className="xp-val">{totalXp} XP</span>
-            <span className="prog-val">{progressPercent}% Mastered</span>
+          <div className="rank-meta" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span className="xp-val" style={{ fontWeight: 700, color: '#f59e0b' }}>{totalXp} XP</span>
+            <span 
+              className="prog-val" 
+              style={{ color: '#94a3b8', fontSize: '0.75rem', paddingLeft: '8px', borderLeft: '1px solid rgba(255, 255, 255, 0.15)' }}
+            >
+              {progressPercent}% Mastered
+            </span>
           </div>
         </div>
 
