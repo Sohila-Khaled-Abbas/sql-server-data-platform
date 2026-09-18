@@ -17,11 +17,7 @@ SET ANSI_NULLS ON;
 SET QUOTED_IDENTIFIER ON;
 GO
 
--- Target ITItest if present, otherwise OmniFlowDB
-IF DB_ID(N'ITItest') IS NOT NULL
-    USE [ITItest];
-ELSE IF DB_ID(N'OmniFlowDB') IS NOT NULL
-    USE [OmniFlowDB];
+USE [OmniFlowDB];
 GO
 
 -- 1. Create Dedicated Schema

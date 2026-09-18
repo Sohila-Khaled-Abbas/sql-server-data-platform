@@ -22,45 +22,115 @@ GO
 -- 1. Check if ITItest already exists
 IF DB_ID(N'ITItest') IS NULL
 BEGIN
-    PRINT '>>> Creating database [ITItest] with 4 filegroups in target storage path...';
+    PRINT '>>> Determining target storage path for database [ITItest]...';
 
+    -- Target preferred path requested on local Windows workstation
+    DECLARE @PreferredDir NVARCHAR(512) = N'D:\courses\Data Science\Data Engineering\MaharaTech\Implementing and Developing SQL server objects\CH01\Mydb\';
+    DECLARE @TargetDir NVARCHAR(512) = @PreferredDir;
+    DECLARE @PathSep NCHAR(1) = N'\';
+
+    -- Detect instance default storage paths (Windows local & Linux Docker)
+    DECLARE @DefaultDataPath NVARCHAR(512) = CAST(SERVERPROPERTY('InstanceDefaultDataPath') AS NVARCHAR(512));
+    DECLARE @DefaultLogPath  NVARCHAR(512) = CAST(SERVERPROPERTY('InstanceDefaultLogPath')  AS NVARCHAR(512));
+
+    IF CHARINDEX('/', (SELECT TOP 1 physical_name FROM sys.master_files WHERE database_id = 1)) > 0
+        SET @PathSep = N'/';
+
+    -- Fallback defaults if instance properties return NULL
+    IF @DefaultDataPath IS NULL OR @DefaultDataPath = ''
+    BEGIN
+        SELECT TOP (1) 
+            @DefaultDataPath = CASE 
+                WHEN CHARINDEX('/', physical_name) > 0 
+                    THEN LEFT(physical_name, LEN(physical_name) - CHARINDEX('/', REVERSE(physical_name)) + 1)
+                WHEN CHARINDEX('\', physical_name) > 0 
+                    THEN LEFT(physical_name, LEN(physical_name) - CHARINDEX('\', REVERSE(physical_name)) + 1)
+                ELSE physical_name
+            END
+        FROM sys.master_files
+        WHERE database_id = 1 AND type = 0;
+    END;
+
+    IF @DefaultLogPath IS NULL OR @DefaultLogPath = ''
+    BEGIN
+        SELECT TOP (1) 
+            @DefaultLogPath = CASE 
+                WHEN CHARINDEX('/', physical_name) > 0 
+                    THEN LEFT(physical_name, LEN(physical_name) - CHARINDEX('/', REVERSE(physical_name)) + 1)
+                WHEN CHARINDEX('\', physical_name) > 0 
+                    THEN LEFT(physical_name, LEN(physical_name) - CHARINDEX('\', REVERSE(physical_name)) + 1)
+                ELSE physical_name
+            END
+        FROM sys.master_files
+        WHERE database_id = 1 AND type = 1;
+    END;
+
+    -- Ensure trailing separator
+    IF RIGHT(@DefaultDataPath, 1) NOT IN ('\', '/') 
+        SET @DefaultDataPath = @DefaultDataPath + @PathSep;
+    IF RIGHT(@DefaultLogPath, 1) NOT IN ('\', '/') 
+        SET @DefaultLogPath = @DefaultLogPath + @PathSep;
+
+    -- Verify if preferred directory exists on host OS
+    DECLARE @DirExists INT = 0;
+    BEGIN TRY
+        EXEC master.dbo.xp_fileexist @PreferredDir, @DirExists OUTPUT;
+    END TRY
+    BEGIN CATCH
+        SET @DirExists = 0;
+    END CATCH;
+
+    IF @DirExists = 0
+    BEGIN
+        PRINT '    Preferred directory not found or non-Windows environment. Using instance default: ' + @DefaultDataPath;
+        SET @TargetDir = @DefaultDataPath;
+    END
+    ELSE
+    BEGIN
+        PRINT '    Target directory verified: ' + @TargetDir;
+    END;
+
+    DECLARE @Sql NVARCHAR(MAX);
+    SET @Sql = N'
     CREATE DATABASE [ITItest]
     ON PRIMARY
     (
-        NAME = N'ITItest',
-        FILENAME = N'D:\courses\Data Science\Data Engineering\MaharaTech\Implementing and Developing SQL server objects\CH01\Mydb\ITItest.mdf',
+        NAME = N''ITItest'',
+        FILENAME = N''' + @TargetDir + N'ITItest.mdf'',
         SIZE = 8MB,
         FILEGROWTH = 64MB
     ),
     FILEGROUP [fg1]
     (
-        NAME = N'file2',
-        FILENAME = N'D:\courses\Data Science\Data Engineering\MaharaTech\Implementing and Developing SQL server objects\CH01\Mydb\file2.ndf',
+        NAME = N''file2'',
+        FILENAME = N''' + @TargetDir + N'file2.ndf'',
         SIZE = 8MB,
         FILEGROWTH = 64MB
     ),
     FILEGROUP [fg2]
     (
-        NAME = N'file3',
-        FILENAME = N'D:\courses\Data Science\Data Engineering\MaharaTech\Implementing and Developing SQL server objects\CH01\Mydb\file3.ndf',
+        NAME = N''file3'',
+        FILENAME = N''' + @TargetDir + N'file3.ndf'',
         SIZE = 8MB,
         FILEGROWTH = 64MB
     ),
     FILEGROUP [fg3]
     (
-        NAME = N'file4',
-        FILENAME = N'D:\courses\Data Science\Data Engineering\MaharaTech\Implementing and Developing SQL server objects\CH01\Mydb\file4.ndf',
+        NAME = N''file4'',
+        FILENAME = N''' + @TargetDir + N'file4.ndf'',
         SIZE = 8MB,
         FILEGROWTH = 64MB
     )
     LOG ON
     (
-        NAME = N'ITItest_log',
-        FILENAME = N'D:\courses\Data Science\Data Engineering\MaharaTech\Implementing and Developing SQL server objects\CH01\Mydb\ITItest_log.ldf',
+        NAME = N''ITItest_log'',
+        FILENAME = N''' + CASE WHEN @DirExists = 1 THEN @TargetDir ELSE @DefaultLogPath END + N'ITItest_log.ldf'',
         SIZE = 8MB,
         FILEGROWTH = 64MB
-    );
+    );';
 
+    PRINT '>>> Creating database [ITItest] with 4 filegroups...';
+    EXEC (@Sql);
     PRINT '>>> Database [ITItest] created successfully.';
 END
 ELSE
