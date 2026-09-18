@@ -1,12 +1,24 @@
-# Chapter 1 Case Study: Company ERD & Relational Implementation
+# Chapter 1 Case Study: ITItest Database & Company Relational Implementation
 
-A comprehensive architectural and engineering breakdown of the **Company Enterprise Case Study** introduced in **[MaharaTech Course 2305: Implementing and Developing SQL Server Objects](https://maharatech.gov.eg/course/view.php?id=2305)** (specifically *CH01_VID02: Create Database Using Wizard* through *CH01_VID05* by Eng. Rami Mohamed Abonagi).
+A comprehensive architectural and engineering breakdown of the **Company Enterprise Case Study** implemented in database **`ITItest`** from **[MaharaTech Course 2305: Implementing and Developing SQL Server Objects](https://maharatech.gov.eg/course/view.php?id=2305)** (*CH01_VID02: Create Database Using Wizard* through *CH01_VID05* by Eng. Rami Mohamed Abonagi).
+
+> [!IMPORTANT]
+> **Live Physical Database Configuration (`ITItest`)**:
+> - **Database Name**: `ITItest`
+> - **Physical File Storage Root**: `D:\courses\Data Science\Data Engineering\MaharaTech\Implementing and Developing SQL server objects\CH01\Mydb`
+> - **Multi-Filegroup Architecture**:
+>   - Primary Data File: `ITItest.mdf` on filegroup `[PRIMARY]` (8 MB, Autogrowth: 64 MB)
+>   - Secondary Data File 1: `file2.ndf` on filegroup `[fg1]` (8 MB, Autogrowth: 64 MB)
+>   - Secondary Data File 2: `file3.ndf` on filegroup `[fg2]` (8 MB, Autogrowth: 64 MB)
+>   - Secondary Data File 3: `file4.ndf` on filegroup `[fg3]` (8 MB, Autogrowth: 64 MB)
+>   - Transaction Log File: `ITItest_log.ldf` (8 MB, Autogrowth: 64 MB)
+> - **Live Synchronizer**: Run `python scripts/sync_ititest_db.py --watch` to dynamically fetch tables and columns as you build them in the SSMS Wizard! (See [Live Schema Documentation](ititest-live-schema.md)).
 
 ---
 
 ## 1. Conceptual Chen-Notation ERD Breakdown
 
-The provided diagram is the canonical **Company Database ERD** formulated using Peter Chen's notation. Below is the full anatomical breakdown of all semantic constructs:
+The provided diagram is the canonical **Company Database ERD** formulated using Peter Chen's notation and implemented within **`ITItest`**. Below is the full anatomical breakdown of all semantic constructs:
 
 ```mermaid
 flowchart TD
@@ -183,21 +195,24 @@ flowchart LR
 
 ## 5. Case Study T-SQL Verification & Query Patterns
 
-Once deployed via `src/01_storage_and_schema/05_company_case_study_schema.sql`, the following canonical queries validate the model:
+Once deployed or synchronized via `src/01_storage_and_schema/05_ititest_case_study_schema.sql` into **`ITItest`**, the following canonical queries validate the model:
 
 ### 1. Hierarchical Organization Chart (Recursive CTE)
 ```sql
+USE [ITItest];
+GO
+
 WITH OrgChart AS (
     -- Anchor: CEO / Top-level Manager (SuperSSN is NULL)
     SELECT SSN, FName + ' ' + LName AS EmployeeName, SuperSSN, 1 AS OrgLevel
-    FROM Company.Employee
+    FROM Employee
     WHERE SuperSSN IS NULL
 
     UNION ALL
 
     -- Recursive Member: Direct Reports
     SELECT e.SSN, e.FName + ' ' + e.LName, e.SuperSSN, o.OrgLevel + 1
-    FROM Company.Employee e
+    FROM Employee e
     INNER JOIN OrgChart o ON e.SuperSSN = o.SSN
 )
 SELECT OrgLevel, REPLICATE('  |--', OrgLevel - 1) + EmployeeName AS Hierarchy
@@ -207,22 +222,28 @@ ORDER BY OrgLevel;
 
 ### 2. Multi-Department Project Effort Matrix (M:N Workload Aggregation)
 ```sql
+USE [ITItest];
+GO
+
 SELECT 
     d.DName AS DepartmentName,
     p.PName AS ProjectName,
     COUNT(w.ESSN) AS TotalAssignedEmployees,
     ISNULL(SUM(w.Hours), 0) AS TotalWeeklyHours
-FROM Company.Project p
-INNER JOIN Company.Department d ON p.DNum = d.DNum
-LEFT JOIN Company.WorksOn w ON p.PNum = w.PNo
+FROM Project p
+INNER JOIN Department d ON p.DNum = d.DNum
+LEFT JOIN WorksOn w ON p.PNum = w.PNo
 GROUP BY d.DName, p.PName
 ORDER BY d.DName, TotalWeeklyHours DESC;
 ```
 
 ### 3. Cascade Delete Proof (Weak Entity Lifecycle)
 ```sql
--- When an Employee is deleted, all their Dependents in Company.Dependent 
+USE [ITItest];
+GO
+
+-- When an Employee is deleted, all their Dependents in Dependent 
 -- are automatically purged via ON DELETE CASCADE without orphan remnants.
-DELETE FROM Company.Employee WHERE SSN = '999887777';
-SELECT * FROM Company.Dependent WHERE ESSN = '999887777'; -- Returns 0 rows!
+DELETE FROM Employee WHERE SSN = '999887777';
+SELECT * FROM Dependent WHERE ESSN = '999887777'; -- Returns 0 rows!
 ```

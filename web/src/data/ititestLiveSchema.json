@@ -1,0 +1,52 @@
+{
+  "database": {
+    "name": "ITItest",
+    "type": "OLTP",
+    "storage_path": "D:\\courses\\Data Science\\Data Engineering\\MaharaTech\\Implementing and Developing SQL server objects\\CH01\\Mydb",
+    "files": [
+      {
+        "logical_name": "ITItest",
+        "physical_name": "D:\\courses\\Data Science\\Data Engineering\\MaharaTech\\Implementing and Developing SQL server objects\\CH01\\Mydb\\ITItest.mdf",
+        "file_type": "ROWS",
+        "filegroup": "PRIMARY",
+        "size_mb": 8,
+        "growth": "64 MB"
+      },
+      {
+        "logical_name": "file2",
+        "physical_name": "D:\\courses\\Data Science\\Data Engineering\\MaharaTech\\Implementing and Developing SQL server objects\\CH01\\Mydb\\file2.ndf",
+        "file_type": "ROWS",
+        "filegroup": "fg1",
+        "size_mb": 8,
+        "growth": "64 MB"
+      },
+      {
+        "logical_name": "file3",
+        "physical_name": "D:\\courses\\Data Science\\Data Engineering\\MaharaTech\\Implementing and Developing SQL server objects\\CH01\\Mydb\\file3.ndf",
+        "file_type": "ROWS",
+        "filegroup": "fg2",
+        "size_mb": 8,
+        "growth": "64 MB"
+      },
+      {
+        "logical_name": "file4",
+        "physical_name": "D:\\courses\\Data Science\\Data Engineering\\MaharaTech\\Implementing and Developing SQL server objects\\CH01\\Mydb\\file4.ndf",
+        "file_type": "ROWS",
+        "filegroup": "fg3",
+        "size_mb": 8,
+        "growth": "64 MB"
+      },
+      {
+        "logical_name": "ITItest_log",
+        "physical_name": "D:\\courses\\Data Science\\Data Engineering\\MaharaTech\\Implementing and Developing SQL server objects\\CH01\\Mydb\\ITItest_log.ldf",
+        "file_type": "LOG",
+        "filegroup": "N/A (LOG)",
+        "size_mb": 8,
+        "growth": "64 MB"
+      }
+    ],
+    "table_count": 0
+  },
+  "tables": [],
+  "synced_at": "2026-09-18T16:47:06.690957+00:00"
+}

@@ -21,7 +21,7 @@ const ARCHITECTURE_LAYERS = [
     number: '01',
     name: 'OLTP Relational Layer',
     subtitle: 'High-Concurrency Normalized Transaction Engine',
-    database: 'Company Database',
+    database: 'ITItest Database',
     icon: Building,
     color: '#38bdf8',
     borderColor: 'rgba(56, 189, 248, 0.3)',
@@ -32,7 +32,7 @@ const ARCHITECTURE_LAYERS = [
       {
         name: 'Normalized Schema',
         detail: '3NF schema with Peter Chen ERD mapping. Strict referential integrity between Employee, Department, and Project.',
-        file: 'src/01_storage_and_schema/05_company_case_study_schema.sql'
+        file: 'src/01_storage_and_schema/05_ititest_case_study_schema.sql'
       },
       {
         name: 'Concurrency Control',
@@ -45,7 +45,7 @@ const ARCHITECTURE_LAYERS = [
         file: 'src/04_governance_and_audit/01_audit_change_capture_triggers.sql'
       }
     ],
-    sampleQuery: `-- Inspect Company OLTP Schema & Employee Hierarchy
+    sampleQuery: `-- Inspect ITItest OLTP Schema & Employee Hierarchy
 SELECT 
     e.EmpId,
     e.FirstName + ' ' + e.LastName AS FullName,

@@ -32,7 +32,7 @@ A comprehensive architectural breakdown of the **Company Enterprise Case Study**
 ---
 
 ## 3. Production T-SQL Implementation
-All tables, constraints, and benchmark seed data are implemented in \`src/01_storage_and_schema/05_company_case_study_schema.sql\`.
+All tables, constraints, and benchmark seed data are implemented in \`src/01_storage_and_schema/05_ititest_case_study_schema.sql\` within database \`ITItest\` (stored in \`D:\\courses\\Data Science\\Data Engineering\\MaharaTech\\Implementing and Developing SQL server objects\\CH01\\Mydb\`).
 `
   },
 

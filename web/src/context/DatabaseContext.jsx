@@ -7,8 +7,9 @@ export const SCHEMA_TREE = {
   databases: [
     {
       id: 'company',
-      name: 'Company (Case Study 3NF)',
+      name: 'ITItest (Case Study 3NF)',
       type: 'OLTP',
+      storagePath: 'D:\\courses\\Data Science\\Data Engineering\\MaharaTech\\Implementing and Developing SQL server objects\\CH01\\Mydb',
       tables: [
         {
           name: 'Employee',

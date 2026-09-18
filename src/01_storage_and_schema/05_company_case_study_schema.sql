@@ -17,7 +17,11 @@ SET ANSI_NULLS ON;
 SET QUOTED_IDENTIFIER ON;
 GO
 
-USE OmniFlowDB;
+-- Target ITItest if present, otherwise OmniFlowDB
+IF DB_ID(N'ITItest') IS NOT NULL
+    USE [ITItest];
+ELSE IF DB_ID(N'OmniFlowDB') IS NOT NULL
+    USE [OmniFlowDB];
 GO
 
 -- 1. Create Dedicated Schema
@@ -28,9 +32,11 @@ BEGIN
 END
 GO
 
--- Determine target filegroup (fallback to PRIMARY if DATA_FG missing)
+-- Determine target filegroup (supports fg1 from ITItest, DATA_FG from OmniFlowDB, or PRIMARY)
 DECLARE @TargetFG NVARCHAR(128) = 'PRIMARY';
-IF EXISTS (SELECT 1 FROM sys.filegroups WHERE name = 'DATA_FG')
+IF EXISTS (SELECT 1 FROM sys.filegroups WHERE name = 'fg1')
+    SET @TargetFG = 'fg1';
+ELSE IF EXISTS (SELECT 1 FROM sys.filegroups WHERE name = 'DATA_FG')
     SET @TargetFG = 'DATA_FG';
 
 -- 2. Drop Foreign Keys for Idempotent Scripting

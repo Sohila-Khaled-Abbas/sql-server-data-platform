@@ -18,7 +18,7 @@ const MIGRATION_SCRIPTS = [
   { id: 'M002', phase: '01_storage', file: '02_custom_types_and_rules.sql', title: 'User-Defined Data Types & SSN Rules', durationMs: 28, checksum: 'ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb' },
   { id: 'M003', phase: '01_storage', file: '03_integrity_constraints.sql', title: 'Referential Integrity & Circular FKs', durationMs: 35, checksum: '4e07408562bedb8b60ce05c1decfe3ad16b72230967de01f640b7e4729b49fce' },
   { id: 'M004', phase: '01_storage', file: '04_partitioning_scheme.sql', title: 'Horizontal Partition Function & Scheme', durationMs: 65, checksum: '4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a' },
-  { id: 'M005', phase: '01_storage', file: '05_company_case_study_schema.sql', title: 'Company Case Study 3NF Relational Tables', durationMs: 51, checksum: 'ef2d127de37b942baad06145e54b0c619a1f22327b2ebbcfbec78f5564afe39d' },
+  { id: 'M005', phase: '01_storage', file: '05_ititest_case_study_schema.sql', title: 'ITItest Case Study 3NF Relational Tables', durationMs: 51, checksum: 'ef2d127de37b942baad06145e54b0c619a1f22327b2ebbcfbec78f5564afe39d' },
   { id: 'M006', phase: '02_indexing', file: '01_clustered_nonclustered.sql', title: 'B-Tree Clustered & Covering Indexes', durationMs: 78, checksum: '1c1e0a2908f4277ec8eebeea3c9a6a83ae2ae2c64db318c4e43b17c9fb336780' },
   { id: 'M007', phase: '02_indexing', file: '02_indexed_views.sql', title: 'Materialized Indexed Views with SCHEMABINDING', durationMs: 84, checksum: 'c8646b9a896ff6b149b56f8fbf03f6f96df060eead13fec13d80d22d26f25492' },
   { id: 'M008', phase: '03_elt', file: '01_tvps_and_bulk_ingestion.sql', title: 'Table-Valued Parameters & Streaming Types', durationMs: 39, checksum: 'c7c2b3f1a0d8a562ef2a988d4078e3c15da2a983b65287e076fb8f9f7dcbe0be' },
@@ -36,7 +36,7 @@ export default function MigrationSimulator() {
   const [appliedMigrations, setAppliedMigrations] = useState(MIGRATION_SCRIPTS);
   const [isRunning, setIsRunning] = useState(false);
   const [logs, setLogs] = useState([
-    'INFO  [2026-09-18 17:00:01] Connected to Microsoft SQL Server 2022 (RTM) - 16.0.1000.6',
+    'INFO  [2026-09-18 17:00:01] Connected to Microsoft SQL Server 2022 (RTM) - 16.0.1000.6 (Database: ITItest)',
     'INFO  [2026-09-18 17:00:01] Verified __SchemaMigrations table presence in dbo schema.',
     'INFO  [2026-09-18 17:00:02] All 16 registered migration scripts verified against SHA256 checksum registry. Status: Clean.'
   ]);

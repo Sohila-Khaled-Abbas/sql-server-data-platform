@@ -59,9 +59,11 @@ if (-not $sqlcmdPath) {
 $scripts = @(
     # Phase 1: Physical Storage, Filegroups & Schemas
     "src/01_storage_and_schema/01_filegroups_and_files.sql",
+    "src/01_storage_and_schema/01_ititest_filegroups_and_files.sql",
     "src/01_storage_and_schema/02_custom_types_and_rules.sql",
     "src/01_storage_and_schema/03_integrity_constraints.sql",
     "src/01_storage_and_schema/04_partitioning_scheme.sql",
+    "src/01_storage_and_schema/05_ititest_case_study_schema.sql",
     "src/01_storage_and_schema/05_company_case_study_schema.sql",
 
     # Phase 2: Indexing & Performance

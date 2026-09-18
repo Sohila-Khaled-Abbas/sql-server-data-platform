@@ -1,0 +1,94 @@
+/* ============================================================================
+   Script: 01_ititest_filegroups_and_files.sql
+   Module: 01_storage_and_schema
+   Database: ITItest
+   Purpose: Provisions and configures the ITItest database with the exact
+            multi-filegroup physical layout created via the SSMS Wizard in:
+            D:\courses\Data Science\Data Engineering\MaharaTech\Implementing and Developing SQL server objects\CH01\Mydb
+   Filegroups:
+     - PRIMARY : ITItest.mdf  (System Catalogs & Schemas)
+     - fg1     : file2.ndf    (Core Relational Entities: Employee, Department)
+     - fg2     : file3.ndf    (Operational Associations & Projects: Project, WorksOn)
+     - fg3     : file4.ndf    (Indexes, Reporting & Staging Data)
+     - LOG     : ITItest_log.ldf (Sequential Transaction Write-Ahead Log)
+   ============================================================================ */
+
+USE [master];
+GO
+
+SET NOCOUNT ON;
+GO
+
+-- 1. Check if ITItest already exists
+IF DB_ID(N'ITItest') IS NULL
+BEGIN
+    PRINT '>>> Creating database [ITItest] with 4 filegroups in target storage path...';
+
+    CREATE DATABASE [ITItest]
+    ON PRIMARY
+    (
+        NAME = N'ITItest',
+        FILENAME = N'D:\courses\Data Science\Data Engineering\MaharaTech\Implementing and Developing SQL server objects\CH01\Mydb\ITItest.mdf',
+        SIZE = 8MB,
+        FILEGROWTH = 64MB
+    ),
+    FILEGROUP [fg1]
+    (
+        NAME = N'file2',
+        FILENAME = N'D:\courses\Data Science\Data Engineering\MaharaTech\Implementing and Developing SQL server objects\CH01\Mydb\file2.ndf',
+        SIZE = 8MB,
+        FILEGROWTH = 64MB
+    ),
+    FILEGROUP [fg2]
+    (
+        NAME = N'file3',
+        FILENAME = N'D:\courses\Data Science\Data Engineering\MaharaTech\Implementing and Developing SQL server objects\CH01\Mydb\file3.ndf',
+        SIZE = 8MB,
+        FILEGROWTH = 64MB
+    ),
+    FILEGROUP [fg3]
+    (
+        NAME = N'file4',
+        FILENAME = N'D:\courses\Data Science\Data Engineering\MaharaTech\Implementing and Developing SQL server objects\CH01\Mydb\file4.ndf',
+        SIZE = 8MB,
+        FILEGROWTH = 64MB
+    )
+    LOG ON
+    (
+        NAME = N'ITItest_log',
+        FILENAME = N'D:\courses\Data Science\Data Engineering\MaharaTech\Implementing and Developing SQL server objects\CH01\Mydb\ITItest_log.ldf',
+        SIZE = 8MB,
+        FILEGROWTH = 64MB
+    );
+
+    PRINT '>>> Database [ITItest] created successfully.';
+END
+ELSE
+BEGIN
+    PRINT '>>> Database [ITItest] already exists. Verifying filegroups...';
+END;
+GO
+
+USE [ITItest];
+GO
+
+-- 2. Verify all filegroups exist
+IF NOT EXISTS (SELECT 1 FROM sys.filegroups WHERE name = N'fg1')
+    ALTER DATABASE [ITItest] ADD FILEGROUP [fg1];
+IF NOT EXISTS (SELECT 1 FROM sys.filegroups WHERE name = N'fg2')
+    ALTER DATABASE [ITItest] ADD FILEGROUP [fg2];
+IF NOT EXISTS (SELECT 1 FROM sys.filegroups WHERE name = N'fg3')
+    ALTER DATABASE [ITItest] ADD FILEGROUP [fg3];
+GO
+
+-- 3. Diagnostic Output
+SELECT 
+    df.name AS [LogicalFileName],
+    df.physical_name AS [PhysicalDiskPath],
+    df.type_desc AS [FileType],
+    ISNULL(fg.name, 'N/A (LOG)') AS [Filegroup],
+    (df.size * 8) / 1024 AS [SizeMB]
+FROM sys.database_files df
+LEFT JOIN sys.filegroups fg ON df.data_space_id = fg.data_space_id
+ORDER BY df.type, df.file_id;
+GO
