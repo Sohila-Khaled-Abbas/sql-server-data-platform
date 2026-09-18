@@ -10,6 +10,7 @@ export default function Navbar({ activeTab, onSelectTab, onOpenChatbot }) {
   const navItems = [
     { id: 'learn', label: 'Lessons', icon: BookOpen },
     { id: 'playground', label: 'Practice', icon: Code2 },
+    { id: 'docs', label: 'Docs', icon: BookOpen },
   ];
 
   return (

@@ -153,3 +153,12 @@ LEFT JOIN INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS rc ON tc.CONSTRAINT_NAME = 
 WHERE tc.TABLE_NAME IN ('depts', 'emps')
 ORDER BY tc.TABLE_NAME, tc.CONSTRAINT_NAME;
 GO
+
+-- ----------------------------------------------------------------------------
+-- Step 7: Modify Constraints
+-- ----------------------------------------------------------------------------
+PRINT '>>> Dropping constraint c3 and adding c9 with NOCHECK...';
+ALTER TABLE dbo.emps DROP CONSTRAINT c3;
+ALTER TABLE dbo.emps WITH NOCHECK ADD CONSTRAINT c9 CHECK(hour_rate > 1000);
+GO
+

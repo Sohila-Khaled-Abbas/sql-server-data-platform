@@ -5,6 +5,7 @@ import Navbar from './components/Navbar.jsx';
 import LessonView from './components/LessonView.jsx';
 import LessonList from './components/LessonList.jsx';
 import PracticeStudio from './components/PracticeStudio.jsx';
+import DocsView from './components/DocsView.jsx';
 import AIChatbot from './components/AIChatbot.jsx';
 import { COURSE_VIDEOS } from './data/videoCatalog.js';
 
@@ -57,6 +58,11 @@ function MainLayout() {
       {/* Practice Tab */}
       {activeTab === 'playground' && (
         <PracticeStudio initialQuery={studioInitialQuery} />
+      )}
+
+      {/* Docs Tab */}
+      {activeTab === 'docs' && (
+        <DocsView />
       )}
 
       {/* AI Chatbot Drawer */}
