@@ -1,10 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 import { useDatabase } from '../context/DatabaseContext.jsx';
 import { useProgress } from '../context/ProgressContext.jsx';
-import { Search, Terminal, Menu } from 'lucide-react';
+import { Search, Terminal, Menu, Bot } from 'lucide-react';
 import mssqlLogo from '../assets/mssql-logo.svg';
 
-export default function Navbar({ onToggleSidebar, onSearch, activeTab, onSelectTab }) {
+export default function Navbar({ onToggleSidebar, onSearch, activeTab, onSelectTab, onOpenChatbot }) {
   const { engineStatus, engineStatusText } = useDatabase();
   const { totalXp, progressPercent, rankInfo } = useProgress();
   const searchInputRef = useRef(null);
@@ -72,6 +72,33 @@ export default function Navbar({ onToggleSidebar, onSearch, activeTab, onSelectT
           <span className="pulse-dot"></span>
           <span>{engineStatus === 'online' ? 'SQL Engine Ready' : engineStatusText}</span>
         </div>
+
+        {/* AI Mentor Quick Nav Button */}
+        {onOpenChatbot && (
+          <button 
+            onClick={onOpenChatbot}
+            className="navbar-ai-mentor-btn"
+            title="Open DBRE AI Study Mentor"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              background: 'linear-gradient(135deg, rgba(14, 165, 233, 0.2), rgba(99, 102, 241, 0.25))',
+              border: '1px solid rgba(56, 189, 248, 0.4)',
+              color: '#38bdf8',
+              fontWeight: 600,
+              fontSize: '0.8rem',
+              borderRadius: '8px',
+              padding: '6px 12px',
+              cursor: 'pointer',
+              transition: 'all 0.2s ease',
+              boxShadow: '0 2px 8px rgba(6, 182, 212, 0.15)'
+            }}
+          >
+            <Bot size={15} className="text-cyan-400" />
+            <span>AI Mentor</span>
+          </button>
+        )}
 
         {/* Student Mastery XP & Rank */}
         <div 

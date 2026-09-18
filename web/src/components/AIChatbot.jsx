@@ -17,14 +17,19 @@ import {
   RefreshCw, 
   ChevronDown, 
   CheckCircle2, 
+  AlertCircle,
   Shield, 
   Database,
-  Info
+  Info,
+  ExternalLink,
+  Zap
 } from 'lucide-react';
 import { 
   detectOllama, 
   sendMentorMessage, 
-  buildSystemPrompt 
+  buildSystemPrompt,
+  isHttpsContext,
+  generateOfflineKnowledgeAnswer
 } from '../services/aiMentorService.js';
 
 const QUICK_CHIPS = [
@@ -39,18 +44,28 @@ const QUICK_CHIPS = [
 ];
 
 export default function AIChatbot({ isOpen, onClose, onRunInPlayground, pageContext = {} }) {
-  // Provider: 'ollama' | 'gemini' | 'claude' | 'offline'
-  const [provider, setProvider] = useState(() => localStorage.getItem('ai_mentor_provider') || 'ollama');
+  const isHttps = isHttpsContext();
+
+  // Provider: 'offline' | 'ollama' | 'gemini' | 'claude'
+  const [provider, setProvider] = useState(() => {
+    const saved = localStorage.getItem('ai_mentor_provider');
+    if (saved) return saved;
+    // On HTTPS, default to offline DBRE engine so the user never gets mixed-content connection errors
+    return isHttps ? 'offline' : 'ollama';
+  });
+
   const [selectedModel, setSelectedModel] = useState(() => localStorage.getItem('ai_mentor_model') || 'qwen2.5:3b');
   const [geminiKey, setGeminiKey] = useState(() => localStorage.getItem('ai_mentor_gemini_key') || '');
+  const [geminiModel, setGeminiModel] = useState(() => localStorage.getItem('ai_mentor_gemini_model') || 'gemini-1.5-flash');
   const [claudeKey, setClaudeKey] = useState(() => localStorage.getItem('ai_mentor_claude_key') || '');
   
   // Ollama status
-  const [ollamaStatus, setOllamaStatus] = useState({ available: false, models: [], endpoint: null });
+  const [ollamaStatus, setOllamaStatus] = useState({ available: false, models: [], endpoint: null, isHttpsBlocked: false });
   const [isDetectingOllama, setIsDetectingOllama] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [showEnvContext, setShowEnvContext] = useState(false);
   const [copiedId, setCopiedId] = useState(null);
+  const [keyTestStatus, setKeyTestStatus] = useState(null); // 'testing' | 'success' | 'error'
 
   // Messages
   const [messages, setMessages] = useState([
@@ -87,12 +102,9 @@ Ask me anything about:
           setSelectedModel(res.models[0]);
           localStorage.setItem('ai_mentor_model', res.models[0]);
         }
-      } else if (provider === 'ollama') {
-        // If Ollama is not running, gracefully fallback to offline expert engine
-        setProvider('offline');
       }
     } catch (e) {
-      setOllamaStatus({ available: false, models: [], endpoint: null });
+      setOllamaStatus({ available: false, models: [], endpoint: null, isHttpsBlocked: isHttps });
     } finally {
       setIsDetectingOllama(false);
     }
@@ -131,10 +143,39 @@ Ask me anything about:
     localStorage.setItem('ai_mentor_model', newModel);
   };
 
+  const handleGeminiModelChange = (newModel) => {
+    setGeminiModel(newModel);
+    localStorage.setItem('ai_mentor_gemini_model', newModel);
+  };
+
   const handleSaveSettings = () => {
     localStorage.setItem('ai_mentor_gemini_key', geminiKey);
+    localStorage.setItem('ai_mentor_gemini_model', geminiModel);
     localStorage.setItem('ai_mentor_claude_key', claudeKey);
     setShowSettings(false);
+  };
+
+  const handleTestGeminiKey = async () => {
+    if (!geminiKey.trim()) {
+      setKeyTestStatus({ type: 'error', text: 'Please enter a Gemini API Key first.' });
+      return;
+    }
+    setKeyTestStatus({ type: 'testing', text: 'Testing key connection...' });
+    try {
+      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${geminiModel}:generateContent?key=${geminiKey.trim()}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ contents: [{ parts: [{ text: 'Respond with: PING_OK' }] }] })
+      });
+      if (res.ok) {
+        setKeyTestStatus({ type: 'success', text: '✅ API Key is valid and connected!' });
+      } else {
+        const err = await res.text();
+        setKeyTestStatus({ type: 'error', text: `Key test failed (${res.status}): ${err.slice(0, 80)}` });
+      }
+    } catch (e) {
+      setKeyTestStatus({ type: 'error', text: `Connection error: ${e.message}` });
+    }
   };
 
   const handleCopyCode = (code, id) => {
@@ -161,10 +202,11 @@ Ask me anything about:
 
     try {
       const activeApiKey = provider === 'gemini' ? geminiKey : provider === 'claude' ? claudeKey : null;
+      const activeModelName = provider === 'gemini' ? geminiModel : selectedModel;
 
       const result = await sendMentorMessage({
         provider,
-        model: selectedModel,
+        model: activeModelName,
         messages: newMessages,
         pageContext,
         apiKey: activeApiKey,
@@ -201,13 +243,22 @@ Ask me anything about:
         }
       ]);
     } catch (err) {
+      // Infallible fallback: If any network failure occurs, fall back to offline DBRE knowledge engine!
+      const fallback = generateOfflineKnowledgeAnswer(text, pageContext);
       setMessages(prev => [
         ...prev,
         {
-          id: `bot-err-${Date.now()}`,
+          id: `bot-fallback-${Date.now()}`,
           sender: 'bot',
-          isError: true,
-          text: `⚠️ **Connection Error (${provider.toUpperCase()})**: ${err.message || 'Failed to generate response.'}\n\n*Tip: You can switch to the built-in **Offline DBRE Engine** in the provider selector above to get immediate responses without an API key.*`
+          isError: false,
+          text: `> 💡 **Notice**: Switched to built-in **Offline DBRE Knowledge Engine** (${err.message || 'Connection interrupted'}).
+> 
+> *Here is production architectural guidance for your query:*
+
+---
+
+${fallback.text}`,
+          query: fallback.query
         }
       ]);
     } finally {
@@ -295,12 +346,18 @@ Ask me anything about:
           // Format basic markdown headers and bold
           const formattedLines = part.split('\n').map((line, lIdx) => {
             let processed = line;
-            // Headers
             if (processed.startsWith('### ')) {
               return <h4 key={lIdx} className="chat-h4">{processed.replace('### ', '')}</h4>;
             }
             if (processed.startsWith('## ')) {
               return <h3 key={lIdx} className="chat-h3">{processed.replace('## ', '')}</h3>;
+            }
+            if (processed.startsWith('> ')) {
+              return (
+                <div key={lIdx} className="chat-blockquote">
+                  <span dangerouslySetInnerHTML={{ __html: formatInlineMarkdown(processed.slice(2)) }} />
+                </div>
+              );
             }
             if (processed.startsWith('- ') || processed.startsWith('* ')) {
               return (
@@ -362,7 +419,7 @@ Ask me anything about:
             <div>
               <div className="flex items-center gap-2">
                 <h3 className="drawer-heading-title">DBRE Study Mentor</h3>
-                <span className="online-indicator" title="Connected and ready" />
+                <span className="online-indicator" title="Engine online & ready" />
               </div>
               <p className="text-xs text-gray-400">MaharaTech Course 2305 & MSSQL 2022 Expert</p>
             </div>
@@ -404,12 +461,12 @@ Ask me anything about:
               onChange={(e) => handleProviderChange(e.target.value)}
               className="provider-dropdown"
             >
+              <option value="offline">⚡ Offline DBRE Engine (Zero-Config, Instant)</option>
               <option value="ollama">
-                {ollamaStatus.available ? '🟢 Ollama (Local PC)' : '⚪ Ollama (Local PC)'}
+                {ollamaStatus.available ? '🟢 Ollama (Local PC)' : '🖥️ Ollama (Local PC)'}
               </option>
               <option value="gemini">✨ Google Antigravity / Gemini</option>
               <option value="claude">🟣 Anthropic Claude</option>
-              <option value="offline">⚡ Offline DBRE Engine (Instant)</option>
             </select>
           </div>
 
@@ -420,14 +477,17 @@ Ask me anything about:
                 value={selectedModel}
                 onChange={(e) => handleModelChange(e.target.value)}
                 className="provider-dropdown model-dropdown"
-                disabled={!ollamaStatus.available || ollamaStatus.models.length === 0}
+                disabled={ollamaStatus.models.length === 0}
               >
                 {ollamaStatus.models.length > 0 ? (
                   ollamaStatus.models.map(m => (
                     <option key={m} value={m}>{m}</option>
                   ))
                 ) : (
-                  <option value="qwen2.5:3b">qwen2.5:3b (default)</option>
+                  <>
+                    <option value="qwen2.5:3b">qwen2.5:3b (PC)</option>
+                    <option value="llama3.2:3b">llama3.2:3b (PC)</option>
+                  </>
                 )}
               </select>
               <button 
@@ -440,7 +500,41 @@ Ask me anything about:
               </button>
             </div>
           )}
+
+          {provider === 'gemini' && (
+            <div className="model-select-group">
+              <span className="provider-label">Model:</span>
+              <select
+                value={geminiModel}
+                onChange={(e) => handleGeminiModelChange(e.target.value)}
+                className="provider-dropdown model-dropdown"
+              >
+                <option value="gemini-1.5-flash">gemini-1.5-flash</option>
+                <option value="gemini-1.5-pro">gemini-1.5-pro</option>
+                <option value="gemini-2.0-flash">gemini-2.0-flash</option>
+              </select>
+            </div>
+          )}
         </div>
+
+        {/* HTTPS Notice Banner (if provider is Ollama on HTTPS) */}
+        {isHttps && provider === 'ollama' && (
+          <div className="https-warning-banner" style={{
+            background: 'rgba(245, 158, 11, 0.12)',
+            borderBottom: '1px solid rgba(245, 158, 11, 0.3)',
+            padding: '8px 16px',
+            fontSize: '0.75rem',
+            color: '#fbbf24',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px'
+          }}>
+            <AlertCircle size={14} className="flex-shrink-0 text-amber-400" />
+            <span>
+              <strong>HTTPS Notice:</strong> Browsers restrict direct HTTP localhost calls from GitHub Pages. If Ollama isn't reached, answers are served automatically by the <strong>Offline DBRE Engine</strong>!
+            </span>
+          </div>
+        )}
 
         {/* Environment Telemetry Drawer / Popout */}
         {showEnvContext && (
@@ -489,7 +583,7 @@ Ask me anything about:
             <div className="settings-panel-header">
               <h4 className="text-sm font-bold text-white flex items-center gap-1.5">
                 <Settings size={14} className="text-cyan-400" />
-                AI Provider Configuration
+                AI Provider & Model Settings
               </h4>
               <button onClick={() => setShowSettings(false)} className="text-gray-400 hover:text-white">
                 <X size={14} />
@@ -498,14 +592,39 @@ Ask me anything about:
 
             <div className="settings-fields">
               <div className="field-group">
-                <label>Google Gemini / Antigravity API Key</label>
-                <input 
-                  type="password"
-                  placeholder="AIzaSy..."
-                  value={geminiKey}
-                  onChange={(e) => setGeminiKey(e.target.value)}
-                />
-                <span className="field-hint">Used when engine is set to Google Antigravity / Gemini.</span>
+                <div className="flex justify-between items-center mb-1">
+                  <label>Google Gemini / Antigravity API Key</label>
+                  <a 
+                    href="https://aistudio.google.com/app/apikey" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-xs text-cyan-400 hover:underline flex items-center gap-0.5"
+                  >
+                    Get Free Key <ExternalLink size={10} />
+                  </a>
+                </div>
+                <div className="flex gap-2">
+                  <input 
+                    type="password"
+                    placeholder="AIzaSy..."
+                    value={geminiKey}
+                    onChange={(e) => setGeminiKey(e.target.value)}
+                    className="flex-1"
+                  />
+                  <button 
+                    className="btn btn-secondary btn-xs whitespace-nowrap"
+                    onClick={handleTestGeminiKey}
+                    type="button"
+                  >
+                    Test Key
+                  </button>
+                </div>
+                {keyTestStatus && (
+                  <div className={`mt-1 text-xs ${keyTestStatus.type === 'success' ? 'text-emerald-400' : keyTestStatus.type === 'error' ? 'text-rose-400' : 'text-cyan-400'}`}>
+                    {keyTestStatus.text}
+                  </div>
+                )}
+                <span className="field-hint">Used when engine is set to Google Antigravity / Gemini. Works everywhere including GitHub Pages!</span>
               </div>
 
               <div className="field-group">
@@ -520,20 +639,21 @@ Ask me anything about:
               </div>
 
               <div className="field-group">
-                <label>Local Ollama Status</label>
+                <label>Local Ollama on PC (localhost:11434)</label>
                 <div className="ollama-status-box">
                   {ollamaStatus.available ? (
                     <span className="text-emerald-400 flex items-center gap-1.5 text-xs font-semibold">
                       <CheckCircle2 size={13} />
-                      Ollama Online (Found {ollamaStatus.models.length} local models)
+                      Ollama Online (Found {ollamaStatus.models.length} local models: {ollamaStatus.models.slice(0, 2).join(', ')})
                     </span>
                   ) : (
                     <span className="text-amber-400 flex items-center gap-1.5 text-xs">
                       <Info size={13} />
-                      Ollama offline at http://localhost:11434
+                      {isHttps ? 'HTTPS restriction on GitHub Pages. Run locally at http://localhost:5173/ for live Ollama streaming.' : 'Ollama endpoint not reachable on http://localhost:11434.'}
                     </span>
                   )}
                 </div>
+                <span className="field-hint">Installed models on your PC: qwen2.5:3b, llama3.2:3b.</span>
               </div>
 
               <button className="btn btn-primary btn-sm w-full mt-2" onClick={handleSaveSettings}>
@@ -610,6 +730,8 @@ Ask me anything about:
             placeholder={
               provider === 'ollama' 
                 ? `Ask ${selectedModel} about SQL Server, ACID, 8 KB storage, ITItest...`
+                : provider === 'gemini'
+                ? `Ask Gemini about T-SQL, B-Trees, MaharaTech Course 2305...`
                 : "Ask AI Mentor about MaharaTech Course 2305, T-SQL, DBRE..."
             }
             value={inputVal}

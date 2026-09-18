@@ -56,6 +56,7 @@ function MainLayout() {
         onSearch={handleSearch}
         activeTab={activeTab}
         onSelectTab={setActiveTab}
+        onOpenChatbot={() => setIsChatbotOpen(true)}
       />
 
       {/* Main Container */}
