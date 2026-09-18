@@ -50,6 +50,19 @@ FROM Employee e
 JOIN Dependent dp ON e.SSN = dp.ESSN
 ORDER BY e.LName, dp.BDate;`,
 
+  ititest_live: `-- 3b. ITItest Case Study: Querying live emp and depts tables (CH01_VID02)
+SELECT 
+    e.eid AS EmpID,
+    e.ename AS EmployeeName,
+    e.salary AS BaseSalary,
+    e.overtime AS OvertimePay,
+    e.netsal AS NetSalary,
+    e.eadd AS Address,
+    d.dname AS Department
+FROM emp e
+INNER JOIN depts d ON e.dnum = d.did
+ORDER BY d.dname, e.salary DESC;`,
+
   dw_sales_summary: `-- 4. Kimball Star Schema: Monthly Revenue by Product Category
 SELECT 
     d.CalendarYear,
@@ -205,10 +218,43 @@ function seedCompanyDatabase(database) {
         PRIMARY KEY (ESSN, DependentName)
     );
 
+    -- 7. Live SSMS Wizard Tables: depts & emp (CH01_VID02)
+    CREATE TABLE depts (
+        did INTEGER PRIMARY KEY,
+        dname TEXT
+    );
+
+    CREATE TABLE emp (
+        eid INTEGER PRIMARY KEY AUTOINCREMENT,
+        ename TEXT NOT NULL,
+        eadd TEXT DEFAULT 'cairo',
+        hiredate TEXT DEFAULT (DATE('now')),
+        salary INTEGER,
+        overtime INTEGER,
+        netsal INTEGER,
+        bd TEXT,
+        age INTEGER,
+        hour_rate INTEGER,
+        gender TEXT,
+        dnum INTEGER REFERENCES depts(did)
+    );
+
     -- Seed Departments
     INSERT INTO Department VALUES (1, 'Headquarters', '888665555', '2020-06-19');
     INSERT INTO Department VALUES (4, 'Administration', '987654321', '2021-01-01');
     INSERT INTO Department VALUES (5, 'Research', '333445555', '2018-05-22');
+
+    -- Seed Live depts & emp (CH01_VID02)
+    INSERT INTO depts VALUES (10, 'IT & Engineering');
+    INSERT INTO depts VALUES (20, 'Data Platforms');
+    INSERT INTO depts VALUES (30, 'Operations');
+
+    INSERT INTO emp (ename, eadd, salary, overtime, netsal, bd, age, hour_rate, gender, dnum)
+    VALUES ('Ahmed', 'Cairo', 12000, 1500, 13500, '1996-05-12', 28, 75, 'M', 10);
+    INSERT INTO emp (ename, eadd, salary, overtime, netsal, bd, age, hour_rate, gender, dnum)
+    VALUES ('Sara', 'Alexandria', 14000, 2000, 16000, '1994-08-20', 30, 85, 'F', 20);
+    INSERT INTO emp (ename, eadd, salary, overtime, netsal, bd, age, hour_rate, gender, dnum)
+    VALUES ('Mahmoud', 'Giza', 11000, 1000, 12000, '1998-02-14', 26, 70, 'M', 10);
 
     -- Seed Employees
     INSERT INTO Employee VALUES ('888665555', 'James', 'E', 'Borg', '1967-11-10', 'M', 55000, NULL, 1);

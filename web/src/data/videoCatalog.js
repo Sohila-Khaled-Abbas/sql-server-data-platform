@@ -59,35 +59,33 @@ SELECT
     chapter: 1,
     chapterTitle: "Chapter 1: Storage Architecture & Schemas",
     videoCode: "CH01_VID02",
-    title: "Create Database Using Wizard & Peter Chen Case Study ERD",
+    title: "Create Database Using Wizard & Table Designer (ITItest Case Study)",
     duration: "24 mins",
     level: "Foundational",
-    skillsConnected: ["Relational Modeling", "Peter Chen ERD", "3NF Normalization", "Schema Architecture"],
+    skillsConnected: ["SSMS Wizard", "Table Designer", "Filegroup Allocation", "Database Diagrams", "Referential Integrity"],
     objectives: [
-      "Deconstruct the canonical Company Peter Chen ERD into 3NF normalized relations.",
-      "Model entities (Employee, Department, Project, Dependent) and resolve multi-valued attributes (Dept_Locations).",
-      "Map 1:1, 1:N, and M:N relationships into foreign keys and associative composite junction tables (Works_On).",
-      "Compare SSMS Database Designer Wizard generation against idempotent T-SQL scripts."
+      "Create the ITItest database using the SSMS Wizard across 4 custom filegroups in CH01\\Mydb.",
+      "Design normalized relational tables (dbo.depts on fg1 and dbo.emp on fg2) via the Table Designer.",
+      "Configure clustered primary keys, identity increment columns, and default constraints (('cairo'), (getdate())).",
+      "Build visual database diagrams (Diagram_0) and enforce referential foreign keys (FK_emp_depts)."
     ],
-    description: "Walkthrough of the Company Case Study Peter Chen ERD. Students learn to map conceptual entities, weak entities, and multi-valued attributes into robust third-normal-form relational tables with precise datatype choices.",
-    sampleSql: `-- Query the normalized 3NF Company schema
+    description: "Hands-on walkthrough of creating the ITItest database and multi-filegroup physical layout using the SSMS Database Creation Wizard. Students model the depts and emp tables, define identity fields, and establish foreign key relationships via SSMS Database Diagrams.",
+    sampleSql: `-- Query the live ITItest depts and emp tables created via Wizard
 SELECT 
-    e.Fname || ' ' || e.Lname AS EmployeeName,
-    e.Salary,
-    d.DName AS Department,
-    p.Pname AS ProjectName,
-    w.Hours AS ProjectHours
-FROM Employee e
-JOIN Department d ON e.Dno = d.DNum
-JOIN Works_On w ON e.SSN = w.Essn
-JOIN Project p ON w.Pno = p.Pnumber
-ORDER BY d.DName, e.Salary DESC;`,
-    repoPath: "sql/schemas/02_create_tables.sql",
+    e.eid AS EmployeeId,
+    e.ename AS EmployeeName,
+    e.salary,
+    e.eadd AS Address,
+    d.dname AS Department
+FROM emp e
+INNER JOIN depts d ON e.dnum = d.did
+ORDER BY d.dname, e.salary DESC;`,
+    repoPath: "src/01_storage_and_schema/05_ititest_case_study_schema.sql",
     challengeId: "ch-1",
     erdEntity: "Employee",
     attachments: [
-      { id: "att-ch1-3", name: "Company Case Study Peter Chen ERD Guide", type: "DOC", path: "docs/CH01_CASE_STUDY_IMPLEMENTATION.md" },
-      { id: "att-ch1-4", name: "3NF Relational Tables DDL", type: "SQL", path: "sql/schemas/02_create_tables.sql" }
+      { id: "att-ch1-3", name: "ITItest Live Schema & Architecture Guide", type: "DOC", path: "docs/ch01-case-study-erd-and-implementation.md" },
+      { id: "att-ch1-4", name: "ITItest Synchronized Schema DDL", type: "SQL", path: "src/01_storage_and_schema/05_ititest_case_study_schema.sql" }
     ],
     maharatechUrl: "https://maharatech.gov.eg/course/view.php?id=2305",
     microsoftDocTitle: "CREATE TABLE (Transact-SQL) Guide",
@@ -98,36 +96,45 @@ ORDER BY d.DName, e.Salary DESC;`,
     chapter: 1,
     chapterTitle: "Chapter 1: Storage Architecture & Schemas",
     videoCode: "CH01_VID03",
-    title: "Primary Keys, Foreign Keys & Circular Reference Resolution",
+    title: "Create Database Using Code: T-SQL, Storage Paths, Backup & Restore",
     duration: "22 mins",
     level: "Intermediate",
-    skillsConnected: ["Referential Integrity", "Circular Foreign Keys", "Cascading Actions", "Constraint Governance"],
+    skillsConnected: ["Database-as-Code", "Physical Storage DDL", "Backup & Restore", "Session Termination", "DBRE Ops"],
     objectives: [
-      "Implement clustered primary keys and enforce entity identity.",
-      "Resolve the circular dependency between Employee.Dno -> Department.DNum and Department.MgrSSN -> Employee.SSN.",
-      "Configure ON DELETE CASCADE vs ON DELETE NO ACTION without causing multiple cascade path errors.",
-      "Utilize ALTER TABLE deferred constraint addition during automated deployment pipelines."
+      "Master programmatic database creation via CREATE DATABASE DDL commands.",
+      "Query SQL Server instance default storage paths using SERVERPROPERTY('InstanceDefaultDataPath').",
+      "Declare explicit physical files (PRIMARY, secondary filegroups, LOG ON) with SIZE, MAXSIZE, and FILEGROWTH.",
+      "Execute full database backups to disk (.bak) and restore with MOVE / REPLACE options.",
+      "Safely drop active databases using ALTER DATABASE ... SET SINGLE_USER WITH ROLLBACK IMMEDIATE."
     ],
-    description: "Explains how to maintain rock-solid referential integrity while avoiding circular creation deadlocks. Eng. Rami demonstrates creating the Department table with a nullable MgrSSN, adding Employee, and then binding the manager foreign key constraint via ALTER TABLE.",
-    sampleSql: `-- Circular reference resolution demonstration:
--- Department manager must exist in Employee, and Employee belongs to Department
-SELECT 
-    d.DName AS Department,
-    e.Fname || ' ' || e.Lname AS ManagerName,
-    d.MgrStartDate AS ManagedSince,
-    (SELECT COUNT(*) FROM Employee sub WHERE sub.Dno = d.DNum) AS TotalEmployees
-FROM Department d
-LEFT JOIN Employee e ON d.MgrSSN = e.SSN;`,
-    repoPath: "sql/schemas/02_create_tables.sql",
+    description: "Transitions students from the graphical SSMS wizard to programmatic Database-as-Code. Eng. Rami teaches how to write robust T-SQL scripts to create databases with explicit storage parameters, back them up to disk (.bak), safely drop databases by closing active connections, and restore them.",
+    sampleSql: `-- Create Database Using Code with explicit files and growth parameters (CH01_VID03)
+CREATE DATABASE [MyDB]
+ON PRIMARY (
+    NAME = 'MyDB_data',
+    FILENAME = 'D:\\courses\\...\\CH01\\Mydb\\MyDB_data.mdf',
+    SIZE = 10MB, MAXSIZE = 100MB, FILEGROWTH = 5MB
+),
+FILEGROUP [MyDB_FG1] (
+    NAME = 'MyDB_fg1_data',
+    FILENAME = 'D:\\courses\\...\\CH01\\Mydb\\MyDB_fg1_data.ndf',
+    SIZE = 8MB, MAXSIZE = 100MB, FILEGROWTH = 5MB
+)
+LOG ON (
+    NAME = 'MyDB_log',
+    FILENAME = 'D:\\courses\\...\\CH01\\Mydb\\MyDB_log.ldf',
+    SIZE = 5MB, MAXSIZE = 50MB, FILEGROWTH = 5MB
+);`,
+    repoPath: "src/01_storage_and_schema/01_create_database_code_ch01_vid03.sql",
     challengeId: "ch-3",
     erdEntity: "Department",
     attachments: [
-      { id: "att-ch1-5", name: "Circular FK Architecture Guide", type: "DOC", path: "docs/CH01_CASE_STUDY_IMPLEMENTATION.md" },
-      { id: "att-ch1-6", name: "Foreign Key Constraints Script", type: "SQL", path: "sql/schemas/02_create_tables.sql" }
+      { id: "att-ch1-5", name: "Create Database Using Code T-SQL Guide", type: "DOC", path: "docs/ch01-case-study-erd-and-implementation.md" },
+      { id: "att-ch1-6", name: "CH01_VID03 DDL, Backup & Restore Script", type: "SQL", path: "src/01_storage_and_schema/01_create_database_code_ch01_vid03.sql" }
     ],
     maharatechUrl: "https://maharatech.gov.eg/course/view.php?id=2305",
-    microsoftDocTitle: "Primary and Foreign Key Constraints",
-    microsoftDocsUrl: "https://learn.microsoft.com/en-us/sql/relational-databases/tables/primary-and-foreign-key-constraints"
+    microsoftDocTitle: "CREATE DATABASE (SQL Server Transact-SQL)",
+    microsoftDocsUrl: "https://learn.microsoft.com/en-us/sql/t-sql/statements/create-database-transact-sql"
   },
   {
     id: "ch01-vid04",

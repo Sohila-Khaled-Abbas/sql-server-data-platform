@@ -1,7 +1,7 @@
 # Database: ITItest — Live Architecture & Case Study Catalog
 
 > [!NOTE]
-> **Live Synchronization Status**: Automatically synchronized from local SQL Server instance (`-S .`) at `2026-09-18 17:16:58 UTC`.
+> **Live Synchronization Status**: Automatically synchronized from local SQL Server instance (`-S .`) at `2026-09-18 17:38:50 UTC`.
 > **Database File Storage Root**: `D:\courses\Data Science\Data Engineering\MaharaTech\Implementing and Developing SQL server objects\CH01\Mydb`
 
 ---
@@ -28,27 +28,16 @@ The `ITItest` database was created via the **SSMS Database Wizard** conforming t
 ---
 
 ## 2. Live Relational Table Inventory
-Currently **1 tables** are active in `ITItest`:
+Currently **2 tables** are active in `ITItest`:
 
 | Schema | Table Name | Filegroup | Row Count | Primary Key | Column Count | Foreign Keys |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | `dbo` | **`depts`** | `fg1` | `0` | `did` | `2 cols` | `0 FKs` |
+| `dbo` | **`emp`** | `fg2` | `0` | `eid` | `12 cols` | `1 FKs` |
 
 ---
 
-## 3. Live Entity-Relationship Diagram (ERD)
-
-```mermaid
-erDiagram
-    depts {
-        int did PK
-        varchar dname
-    }
-```
-
----
-
-## 4. Detailed Table Schema Definitions
+## 3. Detailed Table Schema Definitions
 
 ### Table: `dbo.depts`
 - **Storage Filegroup**: `fg1`
@@ -58,3 +47,22 @@ erDiagram
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | `did` | `INT` | `NO` | `NO` | `-` | 🔑 PK |
 | `dname` | `VARCHAR(50)` | `YES` | `NO` | `-` |  |
+
+### Table: `dbo.emp`
+- **Storage Filegroup**: `fg2`
+- **Current Rows**: `0`
+
+| Column Name | Data Type | Nullable | Identity | Default Value | PK |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| `eid` | `INT` | `NO` | `YES` | `-` | 🔑 PK |
+| `ename` | `VARCHAR(50)` | `NO` | `NO` | `-` |  |
+| `eadd` | `VARCHAR(50)` | `YES` | `NO` | `('cairo')` |  |
+| `hiredate` | `DATE` | `YES` | `NO` | `(getdate())` |  |
+| `salary` | `INT` | `YES` | `NO` | `-` |  |
+| `overtime` | `INT` | `YES` | `NO` | `-` |  |
+| `netsal` | `INT` | `YES` | `NO` | `-` |  |
+| `bd` | `DATE` | `YES` | `NO` | `-` |  |
+| `age` | `INT` | `YES` | `NO` | `-` |  |
+| `hour_rate` | `INT` | `YES` | `NO` | `-` |  |
+| `gender` | `VARCHAR(1)` | `YES` | `NO` | `-` |  |
+| `dnum` | `INT` | `YES` | `NO` | `-` |  |

@@ -60,6 +60,7 @@ $scripts = @(
     # Phase 1: Physical Storage, Filegroups & Schemas
     "src/01_storage_and_schema/01_filegroups_and_files.sql",
     "src/01_storage_and_schema/01_ititest_filegroups_and_files.sql",
+    "src/01_storage_and_schema/01_create_database_code_ch01_vid03.sql",
     "src/01_storage_and_schema/02_custom_types_and_rules.sql",
     "src/01_storage_and_schema/03_integrity_constraints.sql",
     "src/01_storage_and_schema/04_partitioning_scheme.sql",

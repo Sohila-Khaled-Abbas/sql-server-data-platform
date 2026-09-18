@@ -12,6 +12,36 @@ export const SCHEMA_TREE = {
       storagePath: 'D:\\courses\\Data Science\\Data Engineering\\MaharaTech\\Implementing and Developing SQL server objects\\CH01\\Mydb',
       tables: [
         {
+          name: 'emp',
+          filegroup: 'fg2',
+          rowCount: 0,
+          description: 'Live case study employee table created in SSMS Wizard (CH01_VID02)',
+          columns: [
+            { name: 'eid', type: 'INT', isPk: true, isFk: false, isIdentity: true },
+            { name: 'ename', type: 'VARCHAR(50)', isPk: false, isFk: false },
+            { name: 'eadd', type: 'VARCHAR(50)', isPk: false, isFk: false, default: "'cairo'" },
+            { name: 'hiredate', type: 'DATE', isPk: false, isFk: false, default: 'getdate()' },
+            { name: 'salary', type: 'INT', isPk: false, isFk: false },
+            { name: 'overtime', type: 'INT', isPk: false, isFk: false },
+            { name: 'netsal', type: 'INT', isPk: false, isFk: false },
+            { name: 'bd', type: 'DATE', isPk: false, isFk: false },
+            { name: 'age', type: 'INT', isPk: false, isFk: false },
+            { name: 'hour_rate', type: 'INT', isPk: false, isFk: false },
+            { name: 'gender', type: 'VARCHAR(1)', isPk: false, isFk: false },
+            { name: 'dnum', type: 'INT', isPk: false, isFk: true, ref: 'depts.did' }
+          ]
+        },
+        {
+          name: 'depts',
+          filegroup: 'fg1',
+          rowCount: 0,
+          description: 'Live case study department table created in SSMS Wizard (CH01_VID02)',
+          columns: [
+            { name: 'did', type: 'INT', isPk: true, isFk: false },
+            { name: 'dname', type: 'VARCHAR(50)', isPk: false, isFk: false }
+          ]
+        },
+        {
           name: 'Employee',
           rowCount: 8,
           description: 'Core employee entity with recursive supervision',

@@ -162,34 +162,175 @@ graph LR
 
 ---
 
-## 4. SSMS Wizard vs. Production T-SQL Comparison
+## 4. MaharaTech CH01_VID02: Create Database Using Wizard & Diagramming
 
-In *CH01_VID02*, the instructor demonstrates creating this database via the **SSMS Database Wizard & Table Designer GUI**. Below is the comparative analysis from a DBRE perspective:
+In **CH01_VID02: Create Database Using Wizard**, Eng. Rami Mohamed Abonagi demonstrates visual database engineering using the **SSMS GUI**:
 
 ```mermaid
 flowchart LR
-    subgraph SSMS_GUI ["SSMS GUI Wizard (Educational)"]
-        GUI_Click["Point-and-Click Table Designer"]
-        GUI_Diag["SSMS Database Diagrams (.dtproperties)"]
-        GUI_Pros["Fast visual feedback for beginners"]
-        GUI_Cons["Non-repeatable, no version control,<br/>places everything on PRIMARY filegroup,<br/>default names like FK__Employee__Dno__382F"]
+    subgraph SSMS_Wizard ["1. SSMS Database Wizard"]
+        W1["Right Click Databases -> New Database..."]
+        W2["Name: ITItest"]
+        W3["Path: D:\\courses\\...\\CH01\\Mydb"]
+        W4["Filegroups: PRIMARY, fg1, fg2, fg3"]
+        W1 --> W2 --> W3 --> W4
     end
 
-    subgraph DBRE_Code ["Enterprise T-SQL Database-as-Code"]
-        SQL_Code["Idempotent DDL Scripts (src/...)"]
-        SQL_Control["Explicit Filegroups (DATA_FG, INDEX_FG)"]
-        SQL_Naming["Deterministic Constraint Names (FK_Emp_Dept_Dno)"]
-        SQL_CI["CI/CD Automation, Git Tracked, Docker Deployable"]
+    subgraph SSMS_Tables ["2. Table Designer"]
+        T1["Create Table dbo.depts on [fg1] (did PK, dname)"]
+        T2["Create Table dbo.emp on [fg2] (eid PK Identity, ename, ..., dnum)"]
     end
+
+    subgraph SSMS_Diagram ["3. Database Diagram Designer"]
+        D1["New Database Diagram (Sohila.ITItest - Diagram_0)"]
+        D2["Drag relationship from depts.did -> emp.dnum"]
+        D3["Enforce Foreign Key Constraint: FK_emp_depts"]
+        D1 --> D2 --> D3
+    end
+
+    SSMS_Wizard --> SSMS_Tables --> SSMS_Diagram
 ```
 
-| Criterion | SSMS Wizard Approach (VID02) | DBRE Code-First Approach (Our Platform) |
+### Key Implementation Details in `ITItest` (`CH01\Mydb`):
+1. **Primary & Secondary Data Files**:
+   - `ITItest.mdf` on `[PRIMARY]` (8 MB, 64 MB growth)
+   - `file2.ndf` on `[fg1]` (8 MB, 64 MB growth) -> designated for `dbo.depts`
+   - `file3.ndf` on `[fg2]` (8 MB, 64 MB growth) -> designated for `dbo.emp`
+   - `file4.ndf` on `[fg3]` (8 MB, 64 MB growth) -> designated for indexes and reporting
+   - `ITItest_log.ldf` (8 MB, 64 MB growth)
+2. **Tables Created**:
+   - **`dbo.depts`**: Stored on `[fg1]`. Primary key `did` (INT). Attribute `dname` (VARCHAR(50)).
+   - **`dbo.emp`**: Stored on `[fg2]`. Primary key `eid` (INT IDENTITY(1,1)). 12 attributes including defaults (`('cairo')`, `(getdate())`).
+3. **Database Diagram & Foreign Key**:
+   - Created database diagram in SSMS (`Sohila.ITItest - Diagram_0`).
+   - Defined `FK_emp_depts` referencing `dbo.depts(did)` from `dbo.emp(dnum)`.
+   - Enabled `Enforce Foreign Key Constraint = Yes` and `Check Existing Data On Creation = Yes`.
+
+---
+
+## 5. MaharaTech CH01_VID03: Create Database Using Code (T-SQL vs Wizard)
+
+In **CH01_VID03: Create Database Using Code**, Eng. Rami transitions students from the graphical wizard to programmatic **Database-as-Code** via T-SQL scripts.
+
+All concepts from the lecture are codified in [`src/01_storage_and_schema/01_create_database_code_ch01_vid03.sql`](file:///d:/courses/Data%20Science/Data%20Engineering/Projects/sql-server-data-platform/src/01_storage_and_schema/01_create_database_code_ch01_vid03.sql), tailored directly to your local environment:
+
+### 1. Minimal Database Creation & Default Instance Storage Paths
+```sql
+USE [master];
+GO
+
+-- Minimal T-SQL command
+CREATE DATABASE MyfirstDB;
+GO
+
+-- Where did SQL Server place these files?
+-- Query SQL Server instance default paths:
+SELECT 
+    CAST(SERVERPROPERTY('InstanceDefaultDataPath') AS NVARCHAR(512)) AS [Default_Data_Path_MDF],
+    CAST(SERVERPROPERTY('InstanceDefaultLogPath') AS NVARCHAR(512)) AS [Default_Log_Path_LDF];
+```
+> [!NOTE]
+> On your machine, SQL Server stores default databases in `D:\SQL Server\MSSQL16.MSSQLSERVER\MSSQL\DATA\`. When no path is specified, SQL Server automatically creates `MyfirstDB.mdf` and `MyfirstDB_log.ldf` there.
+
+---
+
+### 2. Creating Database with Explicit Files, Filegroups, and Growth Limits
+Instead of accepting arbitrary defaults, enterprise database reliability engineers (DBRE) declare exact sizes, growth increments, and maximum caps:
+
+```sql
+USE [master];
+GO
+
+CREATE DATABASE [MyDB]
+ON PRIMARY
+(
+    NAME = N'MyDB_data',
+    FILENAME = N'D:\courses\Data Science\Data Engineering\MaharaTech\Implementing and Developing SQL server objects\CH01\Mydb\MyDB_data.mdf',
+    SIZE = 10MB,
+    MAXSIZE = 100MB,
+    FILEGROWTH = 5MB
+),
+FILEGROUP [MyDB_FG1]
+(
+    NAME = N'MyDB_fg1_data',
+    FILENAME = N'D:\courses\Data Science\Data Engineering\MaharaTech\Implementing and Developing SQL server objects\CH01\Mydb\MyDB_fg1_data.ndf',
+    SIZE = 8MB,
+    MAXSIZE = 100MB,
+    FILEGROWTH = 5MB
+)
+LOG ON
+(
+    NAME = N'MyDB_log',
+    FILENAME = N'D:\courses\Data Science\Data Engineering\MaharaTech\Implementing and Developing SQL server objects\CH01\Mydb\MyDB_log.ldf',
+    SIZE = 5MB,
+    MAXSIZE = 50MB,
+    FILEGROWTH = 5MB
+);
+GO
+```
+
+---
+
+### 3. Backing Up the Database to Physical Disk (`.bak`)
+In the video, Eng. Rami runs `Backup DataBase Mydb to disk='e:\mydb.bak'`. On your workstation:
+
+```sql
+BACKUP DATABASE [MyDB]
+TO DISK = N'D:\courses\Data Science\Data Engineering\MaharaTech\Implementing and Developing SQL server objects\CH01\Mydb\MyDB.bak'
+WITH FORMAT,
+     INIT,
+     NAME = N'MyDB-Full Database Backup (CH01_VID03)',
+     STATS = 25;
+GO
+```
+
+---
+
+### 4. Dropping a Database Safely (Handling Open Connections)
+Running `DROP DATABASE MyDB` in SSMS often triggers **Error 3702** (*"Cannot drop database 'MyDB' because it is currently in use"*). The production pattern is:
+
+```sql
+USE [master];
+GO
+
+-- Forcefully close active sessions and rollback uncommitted transactions
+ALTER DATABASE [MyDB] SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+DROP DATABASE [MyDB];
+GO
+```
+
+---
+
+### 5. Restoring a Database from Disk Backup (`.bak`)
+To restore the database from its backup file:
+
+```sql
+USE [master];
+GO
+
+-- Verify contents of the backup media
+RESTORE FILELISTONLY 
+FROM DISK = N'D:\courses\Data Science\Data Engineering\MaharaTech\Implementing and Developing SQL server objects\CH01\Mydb\MyDB.bak';
+
+-- Restore and bring database online
+RESTORE DATABASE [MyDB]
+FROM DISK = N'D:\courses\Data Science\Data Engineering\MaharaTech\Implementing and Developing SQL server objects\CH01\Mydb\MyDB.bak'
+WITH REPLACE,
+     RECOVERY,
+     STATS = 25;
+GO
+```
+
+---
+
+### Comparison: Wizard (VID02) vs Code (VID03)
+| Criterion | SSMS Wizard Approach (VID02) | T-SQL Code-First Approach (VID03) |
 | :--- | :--- | :--- |
-| **Reproducibility** | Manual clicks; cannot be automated in CI/CD | 100% automated via PowerShell / `sqlcmd` / Docker |
-| **Physical Storage** | Dumps all data and indexes onto `PRIMARY.mdf` | Segregates tables to `DATA_FG` and indexes to `INDEX_FG` |
-| **Constraint Naming** | System-generated random hashes (`FK__Emp__Dno__4A82F1`) | Explicit convention (`FK_Employee_Department_Dno`) |
-| **Disaster Recovery** | Manual right-click wizard backups | Automated SQL Agent jobs with checksums and verification |
-| **Version Control** | Binary `.mdf` files cannot be diffed in Git | Pure `.sql` scripts with full Git commit history |
+| **Reproducibility** | Manual point-and-click; cannot be automated | 100% automated via `.sql` scripts and CI/CD |
+| **Storage Precision** | Easy to miss filegroup assignment | Explicit `ON [fg1]` and `LOG ON` declarations |
+| **Growth Management** | Defaults to arbitrary percentage growth | Explicit `FILEGROWTH = 5MB` prevents fragmentation |
+| **Disaster Recovery** | Manual right-click wizard | Scriptable `BACKUP` and `RESTORE` commands |
+| **Version Control** | Binary `.mdf` cannot be diffed | Plaintext SQL with full Git history and code reviews |
 
 ---
 
@@ -254,7 +395,7 @@ SELECT * FROM Dependent WHERE ESSN = '999887777'; -- Returns 0 rows!
 <!-- LIVE_ITITEST_SCHEMA_START -->
 
 > [!NOTE]
-> **Live SSMS Synchronization**: Auto-synchronized from local SQL Server instance (`-S .`) database **`ITItest`** at `2026-09-18 17:16:58 UTC`.
+> **Live SSMS Synchronization**: Auto-synchronized from local SQL Server instance (`-S .`) database **`ITItest`** at `2026-09-18 17:38:50 UTC`.
 > **Database File Storage Root**: `D:\courses\Data Science\Data Engineering\MaharaTech\Implementing and Developing SQL server objects\CH01\Mydb`
 
 ### 6.1 Physical Filegroup Allocations (`CH01\Mydb`)
@@ -267,11 +408,12 @@ SELECT * FROM Dependent WHERE ESSN = '999887777'; -- Returns 0 rows!
 | **`ITItest_log`** | `N/A (LOG)` | `LOG` | `8 MB` | `64 MB` | `D:\courses\Data Science\Data Engineering\MaharaTech\Implementing and Developing SQL server objects\CH01\Mydb\ITItest_log.ldf` |
 
 ### 6.2 Live Relational Tables Catalog
-Currently **1 tables** active in `ITItest`:
+Currently **2 tables** active in `ITItest`:
 
 | Schema | Table Name | Storage Filegroup | Row Count | Primary Key | Columns | Foreign Keys |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | `dbo` | **`depts`** | `fg1` | `0` | `did` | `2 cols` | `0 FKs` |
+| `dbo` | **`emp`** | `fg2` | `0` | `eid` | `12 cols` | `1 FKs` |
 
 ### 6.3 Live Reverse-Engineered ER Diagram
 
@@ -281,6 +423,21 @@ erDiagram
         int did PK
         varchar dname
     }
+    emp {
+        int eid PK
+        varchar ename
+        varchar eadd
+        date hiredate
+        int salary
+        int overtime
+        int netsal
+        date bd
+        int age
+        int hour_rate
+        varchar gender
+        int dnum
+    }
+    emp }|--|| depts : "FK_emp_depts"
 ```
 
 ### 6.4 Detailed Table Column Definitions
@@ -288,7 +445,23 @@ erDiagram
 #### Table: `dbo.depts` (Storage: `[fg1]`)
 | Column Name | Data Type | Nullable | Identity | Default | PK |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| `did` | `INT` | `NO` | `NO` | `-` | 🔑 PK |
+| `did` | `INT` | `NO` | `NO` | `-` | [PK] |
 | `dname` | `VARCHAR(50)` | `YES` | `NO` | `-` |  |
+
+#### Table: `dbo.emp` (Storage: `[fg2]`)
+| Column Name | Data Type | Nullable | Identity | Default | PK |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| `eid` | `INT` | `NO` | `YES` | `-` | [PK] |
+| `ename` | `VARCHAR(50)` | `NO` | `NO` | `-` |  |
+| `eadd` | `VARCHAR(50)` | `YES` | `NO` | `('cairo')` |  |
+| `hiredate` | `DATE` | `YES` | `NO` | `(getdate())` |  |
+| `salary` | `INT` | `YES` | `NO` | `-` |  |
+| `overtime` | `INT` | `YES` | `NO` | `-` |  |
+| `netsal` | `INT` | `YES` | `NO` | `-` |  |
+| `bd` | `DATE` | `YES` | `NO` | `-` |  |
+| `age` | `INT` | `YES` | `NO` | `-` |  |
+| `hour_rate` | `INT` | `YES` | `NO` | `-` |  |
+| `gender` | `VARCHAR(1)` | `YES` | `NO` | `-` |  |
+| `dnum` | `INT` | `YES` | `NO` | `-` |  |
 
 <!-- LIVE_ITITEST_SCHEMA_END -->

@@ -45,7 +45,7 @@
         "growth": "64 MB"
       }
     ],
-    "table_count": 1
+    "table_count": 2
   },
   "tables": [
     {
@@ -81,7 +81,140 @@
         ]
       },
       "foreign_keys": []
+    },
+    {
+      "schema": "dbo",
+      "name": "emp",
+      "full_name": "dbo.emp",
+      "filegroup": "fg2",
+      "row_count": 0,
+      "columns": [
+        {
+          "name": "eid",
+          "type": "INT",
+          "raw_type": "int",
+          "is_nullable": false,
+          "is_identity": true,
+          "default": "",
+          "is_pk": true
+        },
+        {
+          "name": "ename",
+          "type": "VARCHAR(50)",
+          "raw_type": "varchar",
+          "is_nullable": false,
+          "is_identity": false,
+          "default": "",
+          "is_pk": false
+        },
+        {
+          "name": "eadd",
+          "type": "VARCHAR(50)",
+          "raw_type": "varchar",
+          "is_nullable": true,
+          "is_identity": false,
+          "default": "('cairo')",
+          "is_pk": false
+        },
+        {
+          "name": "hiredate",
+          "type": "DATE",
+          "raw_type": "date",
+          "is_nullable": true,
+          "is_identity": false,
+          "default": "(getdate())",
+          "is_pk": false
+        },
+        {
+          "name": "salary",
+          "type": "INT",
+          "raw_type": "int",
+          "is_nullable": true,
+          "is_identity": false,
+          "default": "",
+          "is_pk": false
+        },
+        {
+          "name": "overtime",
+          "type": "INT",
+          "raw_type": "int",
+          "is_nullable": true,
+          "is_identity": false,
+          "default": "",
+          "is_pk": false
+        },
+        {
+          "name": "netsal",
+          "type": "INT",
+          "raw_type": "int",
+          "is_nullable": true,
+          "is_identity": false,
+          "default": "",
+          "is_pk": false
+        },
+        {
+          "name": "bd",
+          "type": "DATE",
+          "raw_type": "date",
+          "is_nullable": true,
+          "is_identity": false,
+          "default": "",
+          "is_pk": false
+        },
+        {
+          "name": "age",
+          "type": "INT",
+          "raw_type": "int",
+          "is_nullable": true,
+          "is_identity": false,
+          "default": "",
+          "is_pk": false
+        },
+        {
+          "name": "hour_rate",
+          "type": "INT",
+          "raw_type": "int",
+          "is_nullable": true,
+          "is_identity": false,
+          "default": "",
+          "is_pk": false
+        },
+        {
+          "name": "gender",
+          "type": "VARCHAR(1)",
+          "raw_type": "varchar",
+          "is_nullable": true,
+          "is_identity": false,
+          "default": "",
+          "is_pk": false
+        },
+        {
+          "name": "dnum",
+          "type": "INT",
+          "raw_type": "int",
+          "is_nullable": true,
+          "is_identity": false,
+          "default": "",
+          "is_pk": false
+        }
+      ],
+      "primary_key": {
+        "name": "PK_emp",
+        "columns": [
+          "eid"
+        ]
+      },
+      "foreign_keys": [
+        {
+          "fk_name": "FK_emp_depts",
+          "column": "dnum",
+          "ref_table": "dbo.depts",
+          "ref_column": "did",
+          "on_delete": "NO_ACTION",
+          "on_update": "NO_ACTION"
+        }
+      ]
     }
   ],
-  "synced_at": "2026-09-18T17:16:58.227627+00:00"
+  "synced_at": "2026-09-18T17:38:50.673450+00:00"
 }
