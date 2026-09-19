@@ -1,6 +1,6 @@
 import React from 'react';
 import { TECHNICAL_DEEP_DIVES, REPO_METADATA } from '../data/repositoryData.js';
-import { HardDrive, ExternalLink, ShieldCheck, ArrowRight } from 'lucide-react';
+import { HardDrive, ExternalLink, ShieldCheck, ArrowRight, FileCode } from 'lucide-react';
 
 export default function TechnicalDeepDive() {
   return (
@@ -13,52 +13,59 @@ export default function TechnicalDeepDive() {
         </p>
 
         <div className="deep-dive-grid">
-          {TECHNICAL_DEEP_DIVES.map((dive) => (
+          {TECHNICAL_DEEP_DIVES.map((dive, idx) => (
             <div key={dive.title} className="deep-dive-card">
-              <h3 className="deep-dive-title">{dive.title}</h3>
-              <div className="deep-dive-concept">{dive.concept}</div>
+              <div className="deep-dive-content-wrapper">
+                <div className="deep-dive-pillar-badge">
+                  <HardDrive size={13} />
+                  <span>PILLAR 0{idx + 1}</span>
+                </div>
 
-              <div style={{ marginBottom: '1rem' }}>
-                <span style={{ fontSize: '0.78rem', fontFamily: 'var(--font-mono)', color: 'var(--accent-red)', fontWeight: 700 }}>
-                  WHY IT MATTERS:
-                </span>
-                <p className="deep-dive-body" style={{ marginTop: '0.25rem' }}>
-                  {dive.why}
-                </p>
+                <h3 className="deep-dive-title">{dive.title}</h3>
+                <div className="deep-dive-concept">{dive.concept}</div>
+
+                <div className="deep-dive-block">
+                  <div className="deep-dive-tag deep-dive-tag-why">
+                    <ShieldCheck size={12} />
+                    <span>WHY IT MATTERS</span>
+                  </div>
+                  <p className="deep-dive-body">
+                    {dive.why}
+                  </p>
+                </div>
+
+                <div className="deep-dive-block">
+                  <div className="deep-dive-tag deep-dive-tag-impl">
+                    <FileCode size={12} />
+                    <span>IMPLEMENTATION</span>
+                  </div>
+                  <p className="deep-dive-body">
+                    {dive.implementation}
+                  </p>
+                </div>
               </div>
 
-              <div style={{ marginBottom: '1.25rem' }}>
-                <span style={{ fontSize: '0.78rem', fontFamily: 'var(--font-mono)', color: 'var(--accent-cyan)', fontWeight: 700 }}>
-                  IMPLEMENTATION:
-                </span>
-                <p className="deep-dive-body" style={{ marginTop: '0.25rem' }}>
-                  {dive.implementation}
-                </p>
-              </div>
-
-              <div style={{
-                paddingTop: '1rem',
-                borderTop: '1px solid var(--border-subtle)',
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center'
-              }}>
+              {/* Elevated Boxed Action Button Pinned Symmetrically to Bottom */}
+              <div className="deep-dive-action-box">
                 <a
                   href={`${REPO_METADATA.repoUrl}/blob/master/${dive.repoFile}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  style={{
-                    fontFamily: 'var(--font-mono)',
-                    fontSize: '0.75rem',
-                    color: 'var(--text-muted)',
-                    textDecoration: 'none',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.35rem'
-                  }}
+                  className="deep-dive-action-btn"
+                  title={`Inspect ${dive.repoFile} on GitHub`}
                 >
-                  <span>{dive.repoFile}</span>
-                  <ExternalLink size={12} />
+                  <div className="deep-dive-action-left">
+                    <div className="deep-dive-action-icon">
+                      <FileCode size={16} />
+                    </div>
+                    <div className="deep-dive-action-info">
+                      <span className="deep-dive-action-label">Inspect Source Script</span>
+                      <span className="deep-dive-action-path">{dive.repoFile}</span>
+                    </div>
+                  </div>
+                  <div className="deep-dive-action-arrow">
+                    <ExternalLink size={15} />
+                  </div>
                 </a>
               </div>
             </div>

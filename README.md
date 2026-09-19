@@ -317,7 +317,17 @@ sql-server-data-platform/
 ├── docs/
 │   ├── architecture-diagram.md         # Visual Mermaid architecture & storage diagrams
 │   ├── ch01-case-study-erd-and-implementation.md # Chapter 1 Company ERD & relational breakdown
+│   ├── ch01-vid06-constraints-rules-defaults-live.md # Live SQL Server 2022 telemetry for rules & defaults
 │   ├── course-syllabus-mapping.md      # Full syllabus to platform competency mapping
+│   ├── curriculum/                     # Complete 102-video course companion, notes & trackers
+│   │   ├── README.md                   # Curriculum guide and production mapping
+│   │   ├── 8-WEEK-STUDY-PLAN.md        # 8-week intensive study milestone tracker
+│   │   ├── LEARNING_TRACKER.md         # Interactive 102-lesson progress checklist
+│   │   ├── MENTOR_WORKFLOW.md          # 4-stage engineering mastery workflow
+│   │   ├── STUDY_PLAN.md               # 6-phase data engineering roadmap
+│   │   ├── VIDEO_INDEX.md              # 102 Mahara-Tech official video catalog with deep links
+│   │   ├── chapters/                   # CH01-CH05 chapter mastery overviews
+│   │   └── video-notes/                # All 102 individual video study notes (CH01-CH05)
 │   ├── data-dictionary.md              # Complete data dictionary for OLTP & OLAP schemas
 │   ├── db2-integrity-constraints-live.md # CH01_VID05 Live DB2 Integrity Constraints telemetry
 │   ├── dimensional-model.md            # Kimball star schema bus matrix & grain definitions

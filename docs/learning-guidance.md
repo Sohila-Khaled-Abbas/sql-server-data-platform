@@ -2,6 +2,9 @@
 
 A comprehensive companion guide to the **[MaharaTech: Implementing and Developing SQL Server Objects](https://maharatech.gov.eg/course/view.php?id=2305)** course, engineered from a **Database Reliability Engineering (DBRE)** and **Data Engineering** perspective.
 
+> [!TIP]
+> **Curriculum & Study Companion Available:** For the complete 102-video lesson-by-lesson study notes, official video catalog, 8-week schedule, and interactive checklist, see [**docs/curriculum/**](curriculum/README.md) (featuring the [Learning Tracker](curriculum/LEARNING_TRACKER.md), [8-Week Study Plan](curriculum/8-WEEK-STUDY-PLAN.md), and [102 Video Index](curriculum/VIDEO_INDEX.md)).
+
 ---
 
 ## Chapter 1: Physical Storage Architecture & Integrity Constraints

@@ -112,21 +112,15 @@ export default function ArchitectureSection() {
                       background: isSelected ? 'rgba(225, 29, 72, 0.08)' : 'var(--bg-surface)'
                     }}
                   >
-                    <div className="arch-comp-name" style={{ color: isSelected ? 'var(--accent-red)' : 'var(--accent-cyan)' }}>
-                      {comp.name}
+                    <div>
+                      <div className="arch-comp-name" style={{ color: isSelected ? 'var(--accent-red)' : 'var(--accent-cyan)' }}>
+                        {comp.name}
+                      </div>
+                      <div className="arch-comp-role">{comp.role}</div>
                     </div>
-                    <div className="arch-comp-role">{comp.role}</div>
-                    <div style={{
-                      marginTop: '0.75rem',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '0.35rem',
-                      fontFamily: 'var(--font-mono)',
-                      fontSize: '0.72rem',
-                      color: 'var(--text-muted)'
-                    }}>
-                      <FolderGit2 size={12} />
-                      <span>{comp.file}</span>
+                    <div className="arch-comp-file-wrapper" title={comp.file}>
+                      <FolderGit2 size={12} style={{ flexShrink: 0, color: isSelected ? 'var(--accent-red)' : 'var(--accent-cyan)' }} />
+                      <span className="arch-comp-file-text">{comp.file}</span>
                     </div>
                   </div>
                 );
@@ -154,59 +148,64 @@ export default function ArchitectureSection() {
               COMPONENT INSPECTOR
             </span>
 
-            {inspectedComponent ? (
-              <div style={{ marginTop: '1rem' }}>
-                <h3 style={{
-                  fontFamily: 'var(--font-heading)',
-                  fontSize: '1.35rem',
-                  fontWeight: 700,
-                  color: 'var(--text-primary)',
-                  marginBottom: '0.5rem'
-                }}>
-                  {inspectedComponent.name}
-                </h3>
-
-                <p style={{
-                  color: 'var(--text-secondary)',
-                  fontSize: '0.95rem',
-                  lineHeight: 1.6,
-                  marginBottom: '1.5rem'
-                }}>
-                  {inspectedComponent.role}
-                </p>
-
-                <div style={{
-                  background: 'var(--bg-deep)',
-                  border: '1px solid var(--border-subtle)',
-                  borderRadius: 'var(--radius-md)',
-                  padding: '1rem',
-                  marginBottom: '1.5rem'
-                }}>
-                  <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '0.25rem' }}>
-                    Repository Implementation:
-                  </div>
-                  <div style={{
-                    fontFamily: 'var(--font-mono)',
-                    fontSize: '0.85rem',
-                    color: 'var(--accent-cyan)',
-                    wordBreak: 'break-all'
+            {inspectedComponent ? (() => {
+              const resolvedPath = inspectedComponent.file.startsWith('src/') || inspectedComponent.file.startsWith('docs/')
+                ? inspectedComponent.file
+                : `${activeLayer.repoPath}${inspectedComponent.file}`;
+              return (
+                <div style={{ marginTop: '1rem' }}>
+                  <h3 style={{
+                    fontFamily: 'var(--font-heading)',
+                    fontSize: '1.35rem',
+                    fontWeight: 700,
+                    color: 'var(--text-primary)',
+                    marginBottom: '0.5rem'
                   }}>
-                    {activeLayer.repoPath}{inspectedComponent.file}
-                  </div>
-                </div>
+                    {inspectedComponent.name}
+                  </h3>
 
-                <a
-                  href={`${REPO_METADATA.repoUrl}/blob/master/${activeLayer.repoPath}${inspectedComponent.file}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-primary"
-                  style={{ width: '100%' }}
-                >
-                  <span>View File in GitHub</span>
-                  <ExternalLink size={15} />
-                </a>
-              </div>
-            ) : (
+                  <p style={{
+                    color: 'var(--text-secondary)',
+                    fontSize: '0.95rem',
+                    lineHeight: 1.6,
+                    marginBottom: '1.5rem'
+                  }}>
+                    {inspectedComponent.role}
+                  </p>
+
+                  <div style={{
+                    background: 'var(--bg-deep)',
+                    border: '1px solid var(--border-subtle)',
+                    borderRadius: 'var(--radius-md)',
+                    padding: '1rem',
+                    marginBottom: '1.5rem'
+                  }}>
+                    <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '0.25rem' }}>
+                      Repository Implementation:
+                    </div>
+                    <div style={{
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: '0.85rem',
+                      color: 'var(--accent-cyan)',
+                      wordBreak: 'break-all'
+                    }}>
+                      {resolvedPath}
+                    </div>
+                  </div>
+
+                  <a
+                    href={`${REPO_METADATA.repoUrl}/blob/master/${resolvedPath}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-primary"
+                    style={{ width: '100%' }}
+                  >
+                    <span>View File in GitHub</span>
+                    <ExternalLink size={15} />
+                  </a>
+                </div>
+              );
+            })() : (
               <p style={{ color: 'var(--text-muted)', marginTop: '1rem' }}>
                 Click any component on the left to inspect its implementation details.
               </p>
