@@ -15,7 +15,7 @@ import {
 import toast from 'react-hot-toast';
 
 export default function QueryStudio({ initialQuery, onClearInitialQuery }) {
-  const { presetQueries } = useDatabase();
+  const { presetQueries, runSql } = useDatabase();
   const [queryText, setQueryText] = useState(presetQueries.db_design);
   const [selectedPreset, setSelectedPreset] = useState('db_design');
   const [results, setResults] = useState(null);
@@ -37,14 +37,15 @@ export default function QueryStudio({ initialQuery, onClearInitialQuery }) {
     if (!text.trim()) return;
 
     setIsExecuting(true);
+    let ranOnLive = false;
+
     try {
       const response = await axios.post('http://localhost:8000/api/query/', {
         sql: text,
         database: 'master'
-      });
+      }, { timeout: 1500 });
       
       const res = response.data;
-      
       const mappedResults = {
         columns: res.columns,
         values: res.rows,
@@ -54,19 +55,32 @@ export default function QueryStudio({ initialQuery, onClearInitialQuery }) {
       };
       
       setResults(mappedResults);
+      ranOnLive = true;
       if (mappedResults.error) {
         toast.error('Execution Error');
       } else {
-        toast.success(`Success (${mappedResults.executionTimeMs}ms)`);
+        toast.success(`SQL Server Success (${mappedResults.executionTimeMs}ms)`);
       }
-    } catch (err) {
-      console.error(err);
-      toast.error('Backend connection failed');
-      setResults({ error: 'Failed to connect to FastAPI backend. Ensure python backend is running.' });
-    } finally {
-      setIsExecuting(false);
+    } catch {
+      // Backend not running or offline -> fallback to client WASM engine
     }
-  }, [queryText]);
+
+    if (!ranOnLive) {
+      try {
+        const wasmRes = runSql(text);
+        setResults(wasmRes);
+        if (wasmRes.error) {
+          toast.error('Query Error: ' + wasmRes.error);
+        } else {
+          toast.success(`WASM Success (${wasmRes.executionTimeMs}ms)`);
+        }
+      } catch (wasmErr) {
+        setResults({ error: wasmErr.message });
+      }
+    }
+
+    setIsExecuting(false);
+  }, [queryText, runSql]);
 
   // Keyboard shortcut: Ctrl+Enter or F5 to execute
   useEffect(() => {

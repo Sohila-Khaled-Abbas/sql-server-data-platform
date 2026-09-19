@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
+  <defs>
+    <linearGradient id="mssql-red-top" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E53935" />
+      <stop offset="100%" stop-color="#C62828" />
+    </linearGradient>
+    <linearGradient id="mssql-red-mid" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#D32F2F" />
+      <stop offset="100%" stop-color="#B71C1C" />
+    </linearGradient>
+    <linearGradient id="mssql-red-dark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#B71C1C" />
+      <stop offset="100%" stop-color="#880E4F" />
+    </linearGradient>
+    <filter id="mssql-shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000" flood-opacity="0.35" />
+    </filter>
+  </defs>
+
+  <!-- Base Layer (Bottom Disk) -->
+  <path d="M 6,32 C 6,28 14,26 24,26 C 34,26 42,28 42,32 L 42,37 C 42,41 34,43 24,43 C 14,43 6,41 6,37 Z" fill="url(#mssql-red-dark)" filter="url(#mssql-shadow)" />
+  <ellipse cx="24" cy="32" rx="18" ry="5.5" fill="#C62828" />
+
+  <!-- Middle Layer (Center Disk) -->
+  <path d="M 6,21 C 6,17 14,15 24,15 C 34,15 42,17 42,21 L 42,26 C 42,30 34,32 24,32 C 14,32 6,30 6,26 Z" fill="url(#mssql-red-mid)" />
+  <ellipse cx="24" cy="21" rx="18" ry="5.5" fill="#D32F2F" />
+
+  <!-- Top Layer (Top Disk) -->
+  <path d="M 6,10 C 6,6 14,4 24,4 C 34,4 42,6 42,10 L 42,15 C 42,19 34,21 24,21 C 14,21 6,19 6,15 Z" fill="url(#mssql-red-top)" />
+  <ellipse cx="24" cy="10" rx="18" ry="5.5" fill="#EF5350" />
+
+  <!-- Inner Data Grid Cuts / Highlighting -->
+  <path d="M 12,12 C 16,13.5 32,13.5 36,12" stroke="#FFCDD2" stroke-width="1.2" stroke-linecap="round" fill="none" opacity="0.75" />
+  <path d="M 12,23 C 16,24.5 32,24.5 36,23" stroke="#FFCDD2" stroke-width="1.2" stroke-linecap="round" fill="none" opacity="0.6" />
+  <path d="M 12,34 C 16,35.5 32,35.5 36,34" stroke="#FFCDD2" stroke-width="1.2" stroke-linecap="round" fill="none" opacity="0.5" />
+</svg>

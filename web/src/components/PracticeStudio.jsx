@@ -2,18 +2,23 @@ import React, { useState, useCallback, useEffect } from 'react';
 import axios from 'axios';
 import CodeEditor from './ui/CodeEditor.jsx';
 import ResultsTable from './ui/ResultsTable.jsx';
+import { useDatabase } from '../context/DatabaseContext.jsx';
+import { Terminal, Database, CheckCircle2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
-const DEFAULT_SQL = `-- Write any T-SQL query here
--- This runs against the real SQL Server backend
+const DEFAULT_SQL = `-- Write any T-SQL / SQL query here
+-- Executes against SQL Server (if backend connected) or in-browser WASM Engine
 
-SELECT 'Hello, Backend SQL Server!' AS greeting,
-       CURRENT_TIMESTAMP AS executed_at;`;
+SELECT 'Hello, Enterprise SQL Server!' AS Greeting,
+       DATE('now') AS CurrentDate,
+       'WASM & Live Engine Ready' AS PlatformStatus;`;
 
 export default function PracticeStudio({ initialQuery }) {
+  const { runSql } = useDatabase();
   const [sql, setSql] = useState(initialQuery || DEFAULT_SQL);
   const [results, setResults] = useState(null);
   const [isExecuting, setIsExecuting] = useState(false);
+  const [executionMode, setExecutionMode] = useState('auto'); // 'auto' | 'wasm' | 'live'
 
   useEffect(() => {
     if (initialQuery) {
@@ -29,39 +34,61 @@ export default function PracticeStudio({ initialQuery }) {
     }
     
     setIsExecuting(true);
-    try {
-      // Connect to the new FastAPI Backend
-      const response = await axios.post('http://localhost:8000/api/query/', {
-        sql: code,
-        database: 'master'
-      });
-      
-      const res = response.data;
-      
-      // Map API response to ResultsTable format
-      const mappedResults = {
-        columns: res.columns,
-        rows: res.rows,
-        rowCount: res.row_count,
-        executionTimeMs: res.execution_time_ms,
-        error: res.error
-      };
-      
-      setResults(mappedResults);
-      
-      if (mappedResults.error) {
-        toast.error('Query execution error');
-      } else {
-        toast.success(`Executed successfully (${mappedResults.executionTimeMs}ms)`);
+    let ranOnLive = false;
+
+    // 1. Try FastAPI backend if not explicitly set to WASM
+    if (executionMode !== 'wasm') {
+      try {
+        const response = await axios.post('http://localhost:8000/api/query/', {
+          sql: code,
+          database: 'master'
+        }, { timeout: 1500 });
+        
+        const res = response.data;
+        const mappedResults = {
+          columns: res.columns,
+          rows: res.rows,
+          rowCount: res.row_count,
+          executionTimeMs: res.execution_time_ms,
+          error: res.error,
+          engineSource: 'Live SQL Server 2022'
+        };
+        
+        setResults(mappedResults);
+        ranOnLive = true;
+
+        if (mappedResults.error) {
+          toast.error('SQL Execution Error');
+        } else {
+          toast.success(`Executed on SQL Server (${mappedResults.executionTimeMs}ms)`);
+        }
+      } catch {
+        // Live server unreachable, fall through to WASM
       }
-    } catch (err) {
-      console.error(err);
-      toast.error('Failed to connect to backend server');
-      setResults({ error: 'Backend connection failed. Is the FastAPI server running?' });
-    } finally {
-      setIsExecuting(false);
     }
-  }, [sql]);
+
+    // 2. Seamless client-side fallback to WASM engine
+    if (!ranOnLive) {
+      try {
+        const wasmRes = runSql(code);
+        const mappedResults = {
+          ...wasmRes,
+          engineSource: 'In-Browser WASM Engine'
+        };
+        setResults(mappedResults);
+
+        if (wasmRes.error) {
+          toast.error('Query Error: ' + wasmRes.error);
+        } else {
+          toast.success(`Executed via WASM (${wasmRes.executionTimeMs}ms)`);
+        }
+      } catch (wasmErr) {
+        setResults({ error: wasmErr.message, engineSource: 'WASM Error' });
+      }
+    }
+
+    setIsExecuting(false);
+  }, [sql, runSql, executionMode]);
 
   const handleClear = useCallback(() => {
     setSql('');
@@ -76,10 +103,31 @@ export default function PracticeStudio({ initialQuery }) {
   return (
     <div className="main-content" style={{ maxWidth: 960 }}>
       <div className="studio-header">
-        <h1 className="studio-title">Practice Studio & T-SQL Sandbox</h1>
-        <p className="studio-subtitle">
-          Write and execute T-SQL queries against the remote SQL Server database backend.
-        </p>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
+          <div>
+            <h1 className="studio-title">Practice Studio & T-SQL Sandbox</h1>
+            <p className="studio-subtitle">
+              Interactive query workspace with dual execution: live SQL Server backend or instant in-browser WASM engine.
+            </p>
+          </div>
+          {results?.engineSource && (
+            <div style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '6px 12px',
+              borderRadius: '20px',
+              fontSize: '12px',
+              fontWeight: 600,
+              background: results.engineSource.includes('Live') ? 'rgba(34, 197, 94, 0.15)' : 'rgba(56, 189, 248, 0.15)',
+              color: results.engineSource.includes('Live') ? '#4ade80' : '#38bdf8',
+              border: `1px solid ${results.engineSource.includes('Live') ? 'rgba(34, 197, 94, 0.3)' : 'rgba(56, 189, 248, 0.3)'}`
+            }}>
+              <CheckCircle2 size={13} />
+              <span>{results.engineSource}</span>
+            </div>
+          )}
+        </div>
       </div>
 
       <div className="sql-editor-section" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>

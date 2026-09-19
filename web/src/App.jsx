@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import { HashRouter, Routes, Route, useLocation, useNavigate, Navigate, useParams } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Toaster } from 'react-hot-toast';
 
+import ErrorBoundary from './components/ErrorBoundary.jsx';
 import { DatabaseProvider } from './context/DatabaseContext.jsx';
 import { useAppStore } from './store/useAppStore.js';
 
@@ -45,7 +46,10 @@ const getActiveTabFromPath = (path) => {
   if (path === '/plan-simulator') return 'plan-simulator';
   if (path === '/quiz') return 'quiz';
   if (path === '/docs') return 'docs';
-  if (path.startsWith('/docs/')) return path.replace('/', '-'); // e.g. docs-case-study
+  if (path.startsWith('/docs/')) {
+    const slug = path.replace('/docs/', '');
+    return slug.startsWith('docs-') ? slug : `docs-${slug}`;
+  }
   return 'roadmap';
 };
 
@@ -61,6 +65,18 @@ const PageTransition = ({ children }) => (
     {children}
   </motion.div>
 );
+
+/* ── Docs Route Wrapper Component ───────────────────────────────────── */
+function DocsRouteWrapper() {
+  const { docId } = useParams();
+  const navigate = useNavigate();
+  const docKey = docId ? (docId.startsWith('docs-') ? docId : `docs-${docId}`) : 'docs-case-study';
+  return (
+    <PageTransition>
+      <DocsViewer docKey={docKey} onBack={() => navigate('/docs')} />
+    </PageTransition>
+  );
+}
 
 /* ── Main Layout ────────────────────────────────────────────────────── */
 function MainLayout() {
@@ -83,6 +99,7 @@ function MainLayout() {
   const handleTabChange = (tab) => {
     const routeMap = {
       'roadmap': '/',
+      'resources': '/learn',
       'msdocs': '/msdocs',
       'learn': '/learn',
       'playground': '/playground',
@@ -164,11 +181,18 @@ function MainLayout() {
               <Route path="/plan-simulator" element={<PageTransition><PlanSimulator /></PageTransition>} />
               <Route path="/quiz" element={<PageTransition><QuizMaster /></PageTransition>} />
               <Route path="/docs" element={<PageTransition><DocsView /></PageTransition>} />
+              <Route path="/docs/:docId" element={<DocsRouteWrapper />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </AnimatePresence>
         </main>
       </div>
+
+      <AIChatbot 
+        isOpen={isChatbotOpen} 
+        onClose={() => setChatbotOpen(false)} 
+        onRunInPlayground={handleRunQueryInStudio}
+      />
 
       <Toaster 
         position="bottom-right"
@@ -186,16 +210,14 @@ function MainLayout() {
   );
 }
 
-import ErrorBoundary from './components/ErrorBoundary.jsx';
-
 export default function App() {
   return (
     <ErrorBoundary>
-      <BrowserRouter>
+      <HashRouter>
         <DatabaseProvider>
           <MainLayout />
         </DatabaseProvider>
-      </BrowserRouter>
+      </HashRouter>
     </ErrorBoundary>
   );
 }
