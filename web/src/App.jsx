@@ -3,17 +3,19 @@ import Navbar from './components/Navbar.jsx';
 import HeroSection from './components/HeroSection.jsx';
 import ProjectOverview from './components/ProjectOverview.jsx';
 import ArchitectureSection from './components/ArchitectureSection.jsx';
-import RepositoryExplorer from './components/RepositoryExplorer.jsx';
 import DatabaseDesign from './components/DatabaseDesign.jsx';
 import DataFlowSection from './components/DataFlowSection.jsx';
 import SqlEngineeringSection from './components/SqlEngineeringSection.jsx';
+import InteractivePlayground from './components/InteractivePlayground.jsx';
 import TechnicalDeepDive from './components/TechnicalDeepDive.jsx';
 import ProjectHighlights from './components/ProjectHighlights.jsx';
+import RepositoryExplorer from './components/RepositoryExplorer.jsx';
 import TechStackSection from './components/TechStackSection.jsx';
 import ProjectJourneySection from './components/ProjectJourneySection.jsx';
 import GitHubSection from './components/GitHubSection.jsx';
 import AboutCreatorSection from './components/AboutCreatorSection.jsx';
 import Footer from './components/Footer.jsx';
+import ScrollProgressWidget from './components/ScrollProgressWidget.jsx';
 
 import './styles/portfolio.css';
 
@@ -35,17 +37,17 @@ export default function App() {
       {/* 4. Data Platform Architecture */}
       <ArchitectureSection />
 
-      {/* 5. Explore the Repository */}
-      <RepositoryExplorer />
-
-      {/* 6. Database Design & Schemas */}
+      {/* 5. Database Design & Multi-Database Schemas (OmniFlowDW, Company, ITI & DB2 CH01_VID06) */}
       <DatabaseDesign />
 
-      {/* 7. How the Data Flows */}
+      {/* 6. How the Data Flows */}
       <DataFlowSection />
 
-      {/* 8. SQL Engineering Showcase */}
+      {/* 7. SQL Engineering Showcase */}
       <SqlEngineeringSection />
+
+      {/* 8. Interactive Live Query Execution Simulator */}
+      <InteractivePlayground />
 
       {/* 9. Technical Deep Dive */}
       <TechnicalDeepDive />
@@ -53,20 +55,26 @@ export default function App() {
       {/* 10. Project Highlights */}
       <ProjectHighlights />
 
-      {/* 11. Technology Stack */}
+      {/* 11. Explore the Repository */}
+      <RepositoryExplorer />
+
+      {/* 12. Technology Stack */}
       <TechStackSection />
 
-      {/* 12. Project Journey ("From Problem to Platform") */}
+      {/* 13. Project Journey ("From Problem to Platform") */}
       <ProjectJourneySection />
 
-      {/* 13. GitHub CTA Section */}
+      {/* 14. GitHub CTA Section */}
       <GitHubSection />
 
-      {/* 14. About the Creator */}
+      {/* 15. About the Creator */}
       <AboutCreatorSection />
 
       {/* Footer */}
       <Footer />
+
+      {/* Floating Scroll & Quick Jump Widget */}
+      <ScrollProgressWidget />
     </div>
   );
 }

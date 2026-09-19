@@ -9,13 +9,12 @@ export default function Navbar() {
   const navLinks = [
     { label: 'Overview', href: '#overview' },
     { label: 'Architecture', href: '#architecture' },
-    { label: 'Database Design', href: '#database-design' },
+    { label: 'Databases', href: '#database-design', badge: '3 DBs' },
     { label: 'Data Flow', href: '#data-flow' },
-    { label: 'SQL Engineering', href: '#sql-engineering' },
+    { label: 'SQL Showcase', href: '#sql-engineering' },
     { label: 'Deep Dive', href: '#deep-dive' },
     { label: 'Repository', href: '#repository-explorer' },
-    { label: 'Tech Stack', href: '#tech-stack' },
-    { label: 'Journey', href: '#journey' }
+    { label: 'Tech Stack', href: '#tech-stack' }
   ];
 
   return (
@@ -25,9 +24,9 @@ export default function Navbar() {
           <div className="nav-brand-icon">
             <Database size={18} />
           </div>
-          <div>
+          <div className="nav-brand-text">
             <span className="nav-brand-title">OmniFlow</span>
-            <span className="nav-brand-badge" style={{ marginLeft: '6px' }}>SQL Server 2022</span>
+            <span className="nav-brand-badge">SQL Server 2022</span>
           </div>
         </a>
 
@@ -37,22 +36,28 @@ export default function Navbar() {
             {navLinks.map((item) => (
               <li key={item.href}>
                 <a href={item.href} className="nav-link">
-                  {item.label}
+                  <span>{item.label}</span>
+                  {item.badge && <span className="nav-link-badge">{item.badge}</span>}
                 </a>
               </li>
             ))}
           </ul>
         </nav>
 
-        {/* GitHub Button */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+        {/* Right Actions: Live DB Status & GitHub */}
+        <div className="nav-actions">
+          <div className="nav-status-pill" title="Live Instances: OmniFlowDB, OmniFlowDW, ITI & DB2">
+            <span className="nav-status-dot" />
+            <span>3 DBs Online</span>
+          </div>
+
           <a
             href={REPO_METADATA.repoUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="nav-github-btn"
           >
-            <GithubIcon size={16} />
+            <GithubIcon size={15} />
             <span>GitHub</span>
             <ExternalLink size={12} style={{ opacity: 0.6 }} />
           </a>

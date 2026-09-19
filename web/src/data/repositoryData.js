@@ -89,6 +89,18 @@ export const ARCHITECTURE_LAYERS = [
     ]
   },
   {
+    id: 'academic',
+    name: 'ITI & DB2 Integrity Engine',
+    repoPath: 'src/01_storage_and_schema/',
+    description: 'Relational integrity constraints, UDDTs, global rules (sp_bindrule), and standalone defaults from MaharaTech CH01_VID05 & CH01_VID06.',
+    components: [
+      { name: 'dbo.Instructor (ITI)', role: 'Core entity with 16 rows, bound to global rule @x > 1000', file: 'ch01_vid06_constraints_rules_defaults.sql' },
+      { name: 'dbo.Department (ITI)', role: 'Parent academic track entity (SD, Java, BI)', file: 'ch01_vid06_constraints_rules_defaults.sql' },
+      { name: 'dbo.emps & depts (DB2)', role: 'Relational table with 8 explicit constraints c1-c8 & cascade rules', file: 'ch01_vid05_integrity_constraints.sql' },
+      { name: 'Global Rule [myrule]', role: 'Reusable domain check rule bound to columns & UDDTs', file: 'ch01_vid06_constraints_rules_defaults.sql' }
+    ]
+  },
+  {
     id: 'reliability',
     name: 'Disaster Recovery & Automation',
     repoPath: 'src/06_reliability_and_dr/',
@@ -238,6 +250,93 @@ export const SCHEMAS_ERD = {
         fks: ['DNum → Department.DNum'],
         columns: ['DNum [PK, FK]', 'DLocation [PK]']
       }
+    ]
+  },
+  itiSchema: {
+    name: 'ITI & DB2 (Academic & Relational Integrity Engine)',
+    databaseName: 'ITI & DB2',
+    description: 'Relational schemas illustrating domain check rules, UDDTs, sp_bindrule, and standalone defaults from MaharaTech CH01_VID05 and CH01_VID06.',
+    scriptRef: 'src/01_storage_and_schema/ch01_vid06_constraints_rules_defaults.sql',
+    docRef: 'docs/ch01-vid06-constraints-rules-defaults-live.md',
+    precedingScriptRef: 'src/01_storage_and_schema/ch01_vid05_integrity_constraints.sql',
+    precedingDocRef: 'docs/db2-integrity-constraints-live.md',
+    tables: [
+      {
+        name: 'dbo.Instructor (ITI)',
+        type: 'CORE ENTITY',
+        grain: 'One row per academic instructor with degree, salary, and track affiliation (16 Live Records)',
+        keys: ['Ins_Id [PK]'],
+        fks: ['Dept_Id → dbo.Department.Dept_Id'],
+        rules: ['CREATE RULE myrule AS @x > 1000 (Bound via sp_bindrule)'],
+        defaults: ['CREATE DEFAULT mydef AS 5000 (Bound via sp_bindefault)'],
+        columns: [
+          'Ins_Id [PK, INT]',
+          'Ins_Name [NVARCHAR(50)]',
+          'Ins_Degree [NVARCHAR(50)]',
+          'Salary [MONEY] (Bound to myrule: @x > 1000)',
+          'gender [VARCHAR(1)]',
+          'Dept_Id [FK, INT]'
+        ]
+      },
+      {
+        name: 'dbo.Department (ITI)',
+        type: 'PARENT TRACK ENTITY',
+        grain: 'One row per educational department track (SD, Java, BI)',
+        keys: ['Dept_Id [PK]'],
+        fks: [],
+        columns: [
+          'Dept_Id [PK, INT]',
+          'Dept_Name [VARCHAR(50), NOT NULL]',
+          'Dept_Desc [VARCHAR(100)]',
+          'Dept_Location [VARCHAR(50)]',
+          'Manager_hiredate [DATE]'
+        ]
+      },
+      {
+        name: 'dbo.emps (DB2)',
+        type: 'CONSTRAINT LAB ENTITY',
+        grain: 'Employee record with 8 explicit named constraints (c1 through c8)',
+        keys: ['(eid, ename) [PK, c1]'],
+        fks: ['dnum → dbo.depts.did [FK, c8] ON DELETE SET NULL ON UPDATE CASCADE'],
+        columns: [
+          'eid [PK, INT IDENTITY]',
+          'ename [PK, VARCHAR(10)]',
+          'eadd [VARCHAR(10)] (CHECK c6 IN cairo/alex/mansoura)',
+          'hiredate [DATE DEFAULT GETDATE()]',
+          'salary [INT UNIQUE c2, CHECK c4 > 1000]',
+          'overtime [INT UNIQUE c3, CHECK c5 BETWEEN 100 AND 5600]',
+          'netsal [COMPUTED PERSISTED: salary + overtime]',
+          'age [COMPUTED: YEAR(GETDATE()) - YEAR(bd)]',
+          'gender [VARCHAR(1) CHECK c7 IN F/M]',
+          'dnum [FK, INT]'
+        ]
+      },
+      {
+        name: 'dbo.depts (DB2)',
+        type: 'PARENT DIVISION ENTITY',
+        grain: 'One row per organizational department division',
+        keys: ['did [PK]'],
+        fks: [],
+        columns: ['did [PK, INT]', 'dname [VARCHAR(10)]']
+      }
+    ],
+    liveRows: [
+      { id: 1, name: 'Ahmed', degree: 'Master', salary: '5000.0000', gender: 'M', dept: 10, valid: true },
+      { id: 2, name: 'Hany', degree: 'Master', salary: '4320.0000', gender: 'M', dept: 10, valid: true },
+      { id: 3, name: 'Reham', degree: 'Master', salary: '2640.0000', gender: 'F', dept: 10, valid: true },
+      { id: 4, name: 'Yasmin', degree: 'PHD', salary: '264.0000', gender: 'F', dept: 10, valid: false, anomaly: 'Salary < 1000 (Violates standard CHECK constraint; bypassed by sp_bindrule / WITH NOCHECK)' },
+      { id: 5, name: 'Amany', degree: 'PHD', salary: '660.0000', gender: 'F', dept: 10, valid: false, anomaly: 'Salary < 1000 (Violates standard CHECK constraint; bypassed by sp_bindrule / WITH NOCHECK)' },
+      { id: 6, name: 'Eman', degree: 'Master', salary: '792.0000', gender: 'F', dept: 10, valid: false, anomaly: 'Salary < 1000 (Violates standard CHECK constraint; bypassed by sp_bindrule / WITH NOCHECK)' },
+      { id: 7, name: 'Saly', degree: 'NULL', salary: '12960.0000', gender: 'F', dept: 10, valid: true },
+      { id: 8, name: 'Amr', degree: 'NULL', salary: 'NULL', gender: 'M', dept: 20, valid: true },
+      { id: 9, name: 'Hussien', degree: 'NULL', salary: 'NULL', gender: 'M', dept: 20, valid: true },
+      { id: 10, name: 'Khalid', degree: 'NULL', salary: '11520.0000', gender: 'M', dept: 20, valid: true },
+      { id: 11, name: 'Salah', degree: 'NULL', salary: '12960.0000', gender: 'M', dept: 20, valid: true },
+      { id: 12, name: 'Adel', degree: 'NULL', salary: '8640.0000', gender: 'M', dept: 30, valid: true },
+      { id: 13, name: 'Fakry', degree: 'NULL', salary: '5760.0000', gender: 'M', dept: 30, valid: true },
+      { id: 14, name: 'Amena', degree: 'NULL', salary: '7200.0000', gender: 'F', dept: 30, valid: true },
+      { id: 15, name: 'Ghada', degree: 'NULL', salary: '4320.0000', gender: 'F', dept: 30, valid: true },
+      { id: 666, name: 'ahmed', degree: 'NULL', salary: 'NULL', gender: 'NULL', dept: null, valid: true, anomaly: 'Sparse audit test row (All attributes NULL)' }
     ]
   }
 };
