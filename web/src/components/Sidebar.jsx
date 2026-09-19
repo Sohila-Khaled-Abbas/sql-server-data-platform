@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDatabase } from '../context/DatabaseContext.jsx';
-import { useProgress } from '../context/ProgressContext.jsx';
+import { useProgress } from '../store/useProgressStore.js';
 import { 
   Map, 
   Video, 

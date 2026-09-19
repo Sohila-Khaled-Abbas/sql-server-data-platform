@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Award, CheckCircle2, XCircle, HelpCircle, Sparkles, RefreshCw } from 'lucide-react';
-import { useProgress } from '../context/ProgressContext';
+import { useProgress } from '../store/useProgressStore.js';
 
 const QUESTIONS = [
   {

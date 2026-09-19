@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useDatabase } from '../context/DatabaseContext.jsx';
-import { useProgress } from '../context/ProgressContext.jsx';
+import { useProgress } from '../store/useProgressStore.js';
 import { COURSE_VIDEOS, COURSE_METADATA } from '../data/videoCatalog.js';
 import confetti from 'canvas-confetti';
 import { 

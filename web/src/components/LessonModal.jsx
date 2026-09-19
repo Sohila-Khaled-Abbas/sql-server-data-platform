@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useProgress } from '../context/ProgressContext.jsx';
+import { useProgress } from '../store/useProgressStore.js';
 import { COURSE_VIDEOS, COURSE_METADATA } from '../data/videoCatalog.js';
 import { 
   X, 

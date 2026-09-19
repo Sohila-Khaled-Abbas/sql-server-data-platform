@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { COURSE_VIDEOS, COURSE_METADATA } from '../data/videoCatalog.js';
-import { useProgress } from '../context/ProgressContext.jsx';
+import { useProgress } from '../store/useProgressStore.js';
 import { 
   X, 
   Search, 

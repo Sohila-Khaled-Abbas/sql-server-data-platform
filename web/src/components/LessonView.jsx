@@ -189,6 +189,14 @@ export default function LessonView({ currentLessonId, onSelectLesson }) {
           {isCompleted ? 'Completed' : 'Mark complete'}
         </button>
 
+        {nextLesson ? (
+          <button
+            className="lesson-nav-btn"
+            onClick={() => onSelectLesson(nextLesson.id)}
+          >
+            {nextLesson.title}
+            <ArrowRight size={14} />
+          </button>
         ) : <div />}
       </div>
 
