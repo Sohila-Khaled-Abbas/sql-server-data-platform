@@ -1,77 +1,99 @@
-# 8-Week Mentor Study Plan
+---
+title: "8-Week Mentor Study Plan & Milestone Roadmap"
+aliases:
+  - "8-Week Study Plan"
+  - "Study Roadmap"
+tags:
+  - sql-server
+  - dbre
+  - data-engineering
+  - study-plan
+  - roadmap
+  - maharatech
+weeks: 8
+date_created: 2026-09-19
+last_modified: 2026-09-19
+---
 
-The portal lists about 11h47m of recorded video, but the target is mastery, not playlist completion. Plan roughly 4–7 hours/week including coding and documentation.
+# 8-Week Mentor Study Plan & Milestone Roadmap
 
-## Week 1 — Database foundations
-**Lessons:** CH01 VID01–VID16
+> [!abstract] Study Plan Overview
+> 📑 **Navigation:** [Curriculum Overview](README.md) · [Learning Tracker](LEARNING_TRACKER.md) · [102 Video Index](VIDEO_INDEX.md) · [Mentor Workflow](MENTOR_WORKFLOW.md)  
+> ⏱️ **Time Commitment:** 4–7 hours/week across 8 structured weekly sprints (35–50 hours total mastery time).  
+> 🎯 **Primary Goal:** Transform conceptual video lectures into production-grade database reliability engineering (DBRE) competencies.
 
-Focus: files/filegroups, integrity, constraints, indexes, backups, SQL Agent, snapshots.
+---
 
-**Deliverable:** create a small SQL Server database entirely from scripts and document the backup/recovery plan.
+## Sprints & Milestone Breakdown
 
-Checkpoint: explain why a database can be logically correct while still being operationally unsafe.
+### Week 1 — Database Foundations & Storage Architecture
+> [!info] Sprint Objectives
+> * **Modules:** CH01 VID01–VID16
+> * **Topics:** Physical files, multi-filegroups, relational integrity, constraints (PK, FK, CHECK, DEFAULT), clustered and non-clustered B-Trees, backup types, SQL Server Agent, and NTFS copy-on-write sparse database snapshots.
+> * **Production Deliverable:** Create an operational database entirely from declarative scripts with isolated secondary filegroups and an emergency snapshot rollback plan.
+> * **Mentor Checkpoint:** Explain why a database can be completely logically correct while remaining operationally unsafe and prone to catastrophic data loss.
 
-## Week 2 — T-SQL programming
-**Lessons:** CH02 VID01–VID15
+### Week 2 — T-SQL Programming Essentials & Transaction Boundaries
+> [!info] Sprint Objectives
+> * **Modules:** CH02 VID01–VID15
+> * **Topics:** Variable scoping, flow control (`IF/ELSE`, `WHILE`), Scalar functions vs Inline TVFs vs MSTVFs, system databases (`tempdb` allocation churn), temporary tables vs table variables, batches, and ACID transaction boundaries.
+> * **Production Deliverable:** Build a transactional order-processing routine with parameter validation, error trapping, and atomic rollback behavior.
+> * **Mentor Checkpoint:** Rewrite one procedural row-by-row routine into a set-based query and analyze the reduction in logical reads using `SET STATISTICS IO ON`.
 
-Focus: variables, scope, control flow, functions, system databases, temporary objects, batches, transactions.
+### Week 3 — Views, Partitioning & Advanced Querying
+> [!info] Sprint Objectives
+> * **Modules:** CH03 VID01–VID15
+> * **Topics:** Standard views, indexed materialized views (`WITH SCHEMABINDING`), sliding-window partition functions and partition switching (`ALTER TABLE SWITCH`), semi-structured XML shredding (`.nodes()`, `.value()`), hierarchical CTEs, pagination, sequences, and Table-Valued Parameters (TVPs).
+> * **Production Deliverable:** Implement an API-like query access layer using indexed views, TVPs for bulk streaming, and document the lock escalation trade-offs.
+> * **Mentor Checkpoint:** Identify and define the explicit grain of every query before designing its supporting index structure.
 
-**Deliverable:** transactional order workflow with validation and rollback behavior.
+### Week 4 — High Availability & Disaster Recovery
+> [!info] Sprint Objectives
+> * **Modules:** CH03 VID16–VID23
+> * **Topics:** Recovery Point Objective (RPO), Recovery Time Objective (RTO), multi-instance setup, Database Mirroring (legacy literacy), Log Shipping automation, tail-log backups, and failover mechanics.
+> * **Production Deliverable:** Write a one-page disaster recovery runbook showing primary and secondary server topologies, copy/restore schedules, monitoring alerts, and failover procedures.
+> * **Modern DBRE Lens:** Database Mirroring is deprecated; Microsoft recommends Always On Availability Groups. Study Mirroring for conceptual grounding and legacy maintenance, while positioning Availability Groups for new production architectures.
+> * **Mentor Checkpoint:** Answer: "What happens to potential data loss (RPO) and client application latency when secondary replication runs asynchronously vs synchronously?"
 
-Checkpoint: rewrite one procedural solution as a set-based solution where possible.
+### Week 5 — Stored Procedures, Triggers & DDL Governance
+> [!info] Sprint Objectives
+> * **Modules:** CH04 VID01–VID14
+> * **Topics:** Reusable stored procedure APIs, parameterization, dynamic SQL with `sp_executesql` and `QUOTENAME`, non-blocking audit triggers utilizing `inserted` and `deleted` virtual tables, server DDL triggers capturing `EVENTDATA()`, and the `OUTPUT` clause.
+> * **Production Deliverable:** Build an idempotent stored procedure pipeline that audits modifications simultaneously into an immutable history table without causing write lock contention.
+> * **Mentor Checkpoint:** Contrast two scenarios where a trigger makes a platform significantly safer against two scenarios where it creates unpredictable deadlocks and maintenance hazards.
 
-## Week 3 — Views + advanced querying
-**Lessons:** CH03 VID01–VID15
+### Week 6 — Cursors, SQL CLR & SMO Automation
+> [!info] Sprint Objectives
+> * **Modules:** CH04 VID15–VID27
+> * **Topics:** Cursors vs set-based operations, C# SQL CLR user-defined functions and types, SQL Server Management Objects (SMO) programmatic administration via PowerShell and Python.
+> * **Production Deliverable:** Write a PowerShell or Python script using SMO to automate database backup execution, checksum verification, and table scripting without opening SSMS.
+> * **Mentor Checkpoint:** Defend whether a cursor, set-based T-SQL, or an external script/worker process is the optimal engineering choice for a given batch update workload.
 
-Focus: views, indexed views, partitioning, XML, hierarchy, recursive CTEs, pagination, sequences, TVPs.
+### Week 7 — Reporting Services & Dimensional Modeling
+> [!info] Sprint Objectives
+> * **Modules:** CH05 VID01–VID20
+> * **Topics:** SQL Server Reporting Services (SSRS), report server configuration, tabular/matrix reports, expressions, cascading parameters, OLTP 3NF vs OLAP Star Schema, Ralph Kimball dimensional modeling, facts, dimensions, surrogate keys, and Slowly Changing Dimensions (SCD Type 1 & 2).
+> * **Production Deliverable:** Construct a star schema (`FactSales`, `DimCustomer`, `DimProduct`, `DimDate`) and design an enterprise SSRS paginated report (`.rdl`) with interactive drill-down.
+> * **Mentor Checkpoint:** Explain why query performance degrades severely when running complex analytical aggregations directly against a 3NF normalized operational OLTP schema.
 
-**Deliverable:** build an API-like SQL access layer using views/procedures/TVPs and document the trade-offs.
+### Week 8 — Capstone Project & Portfolio Finalization
+> [!info] Sprint Objectives
+> * **Modules:** Final Capstone Case Study
+> * **Topics:** Complete platform integration, automated orchestration, unit testing with tSQLt and pytest, containerized Docker deployments, and interactive portfolio presentation.
+> * **Production Deliverable:** Fully verified, reproducible repository with automated CI/CD and comprehensive technical documentation.
+> * **Mentor Checkpoint:** Demonstrate the platform end-to-end to a technical peer, defending architectural decisions across storage, indexing, programmability, and disaster recovery.
 
-Checkpoint: identify the grain of every important query before optimizing it.
+---
 
-## Week 4 — High availability & DR
-**Lessons:** CH03 VID16–VID23
+## Weekly Rhythm & Study Cadence
 
-Focus: RPO/RTO, instances, mirroring, log shipping, failure scenarios.
-
-**Deliverable:** a one-page DR runbook showing primary, secondary, backup/copy/restore flow, monitoring, and failover assumptions.
-
-**Modern lens:** Database mirroring is a legacy/deprecated SQL Server feature; Microsoft recommends Always On availability groups for new high-availability development. Study the legacy lesson for conceptual and maintenance literacy, while learning the modern architecture separately.
-
-Checkpoint: answer “What happens to data loss and recovery time when the secondary is asynchronous?”
-
-## Week 5 — Stored procedures & triggers
-**Lessons:** CH04 VID01–VID14
-
-Focus: reusable database APIs, parameters, dynamic SQL, triggers, auditing, OUTPUT.
-
-**Deliverable:** stored-procedure API for an operational database plus an auditable DML workflow.
-
-Checkpoint: list two ways a trigger can make a system safer and two ways it can make a system harder to maintain.
-
-## Week 6 — Cursors, CLR & SMO
-**Lessons:** CH04 VID15–VID27
-
-Focus: cursors, SQL CLR, SMO automation, administration through code.
-
-**Deliverable:** one small automation script/application and a decision note explaining why automation is better than manual SSMS steps for that task.
-
-Checkpoint: defend whether a row-by-row cursor, set-based SQL, or external application code is the right tool for a given workload.
-
-## Week 7 — SSRS + reporting
-**Lessons:** CH05 VID01–VID16
-
-Focus: datasets, expressions, parameters, grouping, actions, deployment, RDLC.
-
-**Deliverable:** one paginated report with a clean parameter model and a documented query/data grain.
-
-Checkpoint: explain the difference between a report parameter and a SQL query parameter.
-
-## Week 8 — Data warehousing + final project
-**Lessons:** CH05 VID17–VID20 + Final Project
-
-Focus: warehouse architecture, OLTP vs OLAP, dimensional modeling, integration.
-
-**Deliverable:** final GitHub case study with architecture, SQL scripts, tests, warehouse model, report output, and README.
-
-Checkpoint: explain why “define the grain first” is one of the most important steps in dimensional modeling.
+```mermaid
+graph LR
+    Watch["1. Watch & Predict
+(60-90 min)"] --> Repro["2. Hands-on Code
+(30-45 min)"]
+    Repro --> Mod["3. Break & Modify
+(20 min)"]
+    Mod --> Doc["4. Document in Obsidian
+(15 min)"]
+```

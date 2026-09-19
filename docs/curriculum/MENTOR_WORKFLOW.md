@@ -1,73 +1,87 @@
-# Mentor Workflow — How to Study With This Repository
+---
+title: "The 4-Stage Mentor Engineering Workflow"
+aliases:
+  - "Mentor Workflow"
+  - "Mastery Methodology"
+tags:
+  - sql-server
+  - dbre
+  - data-engineering
+  - methodology
+  - workflow
+date_created: 2026-09-19
+last_modified: 2026-09-19
+---
 
-Use this repo as an engineering lab, not a passive notebook.
+# The 4-Stage Mentor Engineering Workflow
 
-## Before a video
+> [!abstract] Methodology Overview
+> 📑 **Navigation:** [Curriculum Overview](README.md) · [Learning Tracker](LEARNING_TRACKER.md) · [8-Week Study Plan](8-WEEK-STUDY-PLAN.md) · [102 Video Index](VIDEO_INDEX.md)  
+> 🎯 **Core Law:** A lecture is never marked complete by merely viewing the video. Mastery requires active verification across four non-negotiable engineering stages.
 
-Ask yourself:
+---
 
-- What problem do I think this feature solves?
-- What alternative might solve the same problem?
-- What could go wrong?
+## The 4-Stage Mastery Framework
 
-## During the video
+```mermaid
+flowchart TD
+    Stage1["Stage 1: UNDERSTAND
+• Watch video actively
+• Predict engine behavior
+• Identify architectural invariants"]
+    Stage2["Stage 2: REPRODUCE
+• Open blank SSMS query
+• Write DDL/DML from scratch
+• Verify output and execution plan"]
+    Stage3["Stage 3: MODIFY
+• Test edge cases & boundaries
+• Trigger intentional errors
+• Compare alternative approaches"]
+    Stage4["Stage 4: EXPLAIN
+• Articulate trade-offs without SQL
+• Connect to DBRE operational pillars
+• Commit script & Obsidian note"]
 
-Pause at demonstrations and predict the result before the instructor runs the command. Capture only details that change your understanding:
-
-- syntax you did not know
-- SSMS workflow that matters operationally
-- important configuration choice
-- error message and why it happened
-- performance/security/recovery implication
-
-## After the video
-
-Complete the four-part loop:
-
-**1. Reproduce** — rebuild the example from scratch.
-
-**2. Modify** — change one meaningful part.
-
-**3. Break** — intentionally create one failure or edge case.
-
-**4. Explain** — teach the concept in 3–5 sentences without opening SSMS.
-
-## Mentor review questions
-
-For every lesson, challenge yourself with:
-
-1. What problem does this solve?
-2. Why does it work?
-3. What does it cost?
-4. What can fail?
-5. How would I monitor or test it?
-6. What would I choose in a new production system?
-
-## GitHub standard
-
-A good learning commit contains:
-
-```text
-video note + working SQL + test evidence + one takeaway
+    Stage1 --> Stage2 --> Stage3 --> Stage4
 ```
 
-Avoid commits that contain only copied code.
+---
 
-## How to use an AI mentor
+## Detailed Stage Execution Guidelines
 
-After completing a lesson, paste your answer to the checkpoint plus your SQL and ask:
+### Stage 1 — Understand
+* Watch the lesson actively without multitasking.
+* Pause the video before the instructor executes an action in SSMS or runs a query.
+* **Predict:** What will SQL Server do? Will this result in an index seek, index scan, or lock escalation? Will a constraint fail?
+* Distinguish transient UI clicks in SSMS from fundamental database engine mechanics.
 
-> Act as my SQL Server/Data Engineering mentor. Review my solution for correctness, set-based thinking, performance, security, maintainability, and production suitability. Do not rewrite everything immediately. First identify what I understand, what I misunderstand, and give me one targeted exercise to prove the concept.
+### Stage 2 — Reproduce
+* Open a blank query editor in SQL Server Management Studio or Azure Data Studio.
+* Write and execute the code **from memory without copying and pasting line-by-line**.
+* Inspect execution plans (`Ctrl + M`) and logical I/O statistics (`SET STATISTICS IO, TIME ON`).
+* Confirm that the relational tables, constraints, or stored procedures behave identically to expected specifications.
 
-## Monthly consolidation
+### Stage 3 — Modify
+* Introduce an intentional change:
+  * What happens if you insert an invalid foreign key or NULL value?
+  * What happens if two concurrent transactions attempt to update the same row?
+  * How does the execution plan change when an index column is wrapped in a scalar function?
+* Benchmark the change to verify the performance impact.
 
-After each chapter, create one page called `CHxx-MASTER-NOTES.md` containing:
+### Stage 4 — Explain
+* Formulate a clear, 2-minute verbal explanation or write the synthesis note in Obsidian:
+  * *What problem does this solve in an enterprise data platform?*
+  * *What is the operational cost (locking, memory grant, CPU, I/O)?*
+  * *When would this feature be the WRONG tool, and what alternative would you choose?*
+* Link the reproducible SQL script to the Obsidian study note and commit to version control.
 
-- 5 concepts I can explain
-- 3 patterns I can implement
-- 2 mistakes I made
-- 1 performance lesson
-- 1 production-design lesson
-- 5 interview questions
+---
 
-This prevents the repo from becoming 100 disconnected notes.
+## Definition of Done (Quality Gate)
+
+> [!check] Verification Checklist
+> - [ ] I can define the architectural concept in one sentence.
+> - [ ] I wrote and executed the working implementation from scratch.
+> - [ ] I tested at least one failure condition or edge case.
+> - [ ] I can articulate the performance and operational trade-offs without looking at notes.
+> - [ ] The study note and production script are linked in the repository.

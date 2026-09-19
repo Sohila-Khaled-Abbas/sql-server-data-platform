@@ -1,22 +1,52 @@
+---
+title: "CH04_VID16 — Create a Database Cursor"
+aliases:
+  - "CH04_VID16"
+  - "Create a Database Cursor"
+chapter: "CH04 — Procedures, Triggers, and SQL Automation"
+lesson: "VID16"
+tags:
+  - sql-server
+  - dbre
+  - data-engineering
+  - procedures-triggers-automation
+  - maharatech
+status: "planned" # planned | in-progress | completed
+course_url: "https://maharatech.gov.eg/mod/hvp/view.php?id=17593"
+code_reference: "src/02_indexing_and_performance/03_execution_plan_analysis.sql"
+date_created: 2026-09-19
+last_modified: 2026-09-19
+---
+
 # CH04_VID16 — Create a Database Cursor
 
-> **Learning note:** This is a mentor-created study note based on the lesson title and SQL Server subject matter. The Mahara-Tech lesson itself may include demonstrations, terminology, screenshots, or version-specific steps that should be captured in your own observations while watching.
+> [!abstract] Navigation & Metadata
+> ⬅️ **Previous:** [CH04_VID15 — Cursors](vid15-cursors.md) | 📑 **Index:** [102 Video Index](../../VIDEO_INDEX.md) | ➡️ **Next:** [CH04_VID17 — Practical Applications of SQL Cursors 01](vid17-practical-applications-of-sql-cursors-01.md)  
+> 📌 **Chapter:** [CH04 — Procedures, Triggers, and SQL Automation](../../chapters/ch04-readme.md) · **Official Lesson:** [MaharaTech 17593](https://maharatech.gov.eg/mod/hvp/view.php?id=17593)
 
-**Course lesson:** [Create a Database Cursor](https://maharatech.gov.eg/mod/hvp/view.php?id=17593)  
-**Chapter:** Procedures, Triggers, and SQL Automation
-**Status:** ☐ Watched · ☐ Reproduced · ☐ Understood · ☐ Documented
+> [!todo] Mastery Progress Checklist
+> - [ ] 📺 **Watched** (Core mechanics & architectural nuances)
+> - [ ] 💻 **Reproduced** (Hands-on execution in SQL Server 2022 / SSMS)
+> - [ ] 🧪 **Modified** (Tested boundary conditions, failure states & edge cases)
+> - [ ] 📝 **Documented & Explained** (Grounding without hand-waving)
 
-## 1. What I should learn
+---
+
+## 1. Learning Objectives
 
 By the end of this lesson, I should be able to explain the core idea behind **Create a Database Cursor**, write/reproduce a small working example, and describe when the feature is useful in a real SQL Server data platform.
 
-## 2. Core concept
+## 2. Core Architectural Concept
 
-Cursors process rows iteratively. Treat them as a deliberate exception to set-based design, after checking whether a set-based statement, window function, CTE, or batching approach works.
+> [!info] Architectural Principle
+> > > Cursors process rows iteratively. Treat them as a deliberate exception to set-based design, after checking whether a set-based statement, window function, CTE, or batching approach works.
 
 **2026 lens:** Prefer set-based SQL where practical. Cursors are valuable to understand because you will encounter them in legacy code and administrative scripts, but they should be justified by the workload.
 
-## 3. SQL / implementation pattern
+> [!tip] 2026 Data Engineering & DBRE Lens
+> Distinguish transient UI actions from durable database engineering invariants. Ensure all schema definitions in CH04_VID16 are captured in declarative T-SQL scripts rather than unrepeatable SSMS clicks.
+
+## 3. SQL Implementation Pattern
 
 ```sql
 DECLARE c CURSOR LOCAL FAST_FORWARD FOR
@@ -27,56 +57,70 @@ FETCH NEXT FROM c INTO @CustomerID;
 CLOSE c; DEALLOCATE c;
 ```
 
-## 4. Data engineering perspective
+## 4. Production Engineering Evaluation Matrix
 
-Think about this topic through four questions:
+| Dimension | Critical Engineering Evaluation |
+| :--- | :--- |
+| **Correctness** | What data invariant, operational behavior, or ACID guarantee does it enforce? |
+| **Performance** | How does this affect I/O operations, page allocation, buffer cache, CPU, or lock contention? |
+| **Operations** | How does this behave under disaster recovery, failover, backup chains, and migration? |
+| **Maintainability** | Can another engineer easily diagnose, extend, or alter this object without breaking dependent callers? |
 
-1. **Correctness:** What data invariant, operational behavior, or workload requirement does it support?
-2. **Performance:** What changes the amount of I/O, CPU, memory, locking, or network traffic?
-3. **Operations:** How would this behave under failure, deployment, monitoring, backup, or rollback?
-4. **Maintainability:** Would another engineer understand the object and safely change it later?
+## 5. Hands-on Reproduction & Modification Drill
 
-## 5. Hands-on task
-
-Rebuild the lesson example **without pausing and copying line-by-line**. Then make one meaningful modification: change the schema, add an edge case, parameterize the routine, compare two approaches, or test failure behavior.
-
-**My modification:**
+Rebuild the core pattern from memory in SSMS or Docker container. Test boundary conditions, edge cases, and failure modes.
 
 ```sql
--- Write your own extension here.
+-- Hands-on Verification & Edge Case Drill
+DECLARE c CURSOR LOCAL FAST_FORWARD FOR
+SELECT CustomerID FROM dbo.Customer;
+OPEN c;
+FETCH NEXT FROM c INTO @CustomerID;
+-- loop...
+CLOSE c; DEALLOCATE c;
 ```
 
-## 6. Validation checklist
+## 6. Definition of Done Checklist
 
-- [ ] I can define the feature in one sentence.
-- [ ] I can explain why it exists.
-- [ ] I reproduced the basic example successfully.
-- [ ] I tested at least one edge case.
-- [ ] I can explain one performance/operational trade-off.
-- [ ] I linked the final script from my learning repo.
+> [!check] Validation Checklist
+> - [ ] I can define the feature in one sentence.
+> - [ ] I can explain why it exists.
+> - [ ] I reproduced the basic example successfully.
+> - [ ] I tested at least one edge case.
+> - [ ] I can explain one performance/operational trade-off.
+> - [ ] I linked the final script from my learning repo.
 
-## 7. Mentor checkpoint
+## 7. Mentor Checkpoint & Interview Drill
 
-**Explain it without SQL:** What problem would this feature solve in a production data platform, and what would you use instead when the feature is the wrong tool?
+> [!question] Conceptual & Practical Challenge
+> **Explain without SQL:** What problem would this feature solve in a production data platform, and what would you use instead when the feature is the wrong tool?
+>
+> *My Synthesis:*
+> <!-- Document your synthesized mental model and engineering decision here -->
+>
+> *My Synthesis:*
+> <!-- Document your synthesized mental model and engineering decision here -->
+>
+> *My Synthesis:*
+> <!-- Document your synthesized mental model and engineering decision here -->
 
-**My answer:**
+## 8. Observation & SSMS Notes
 
-> Write your answer here before moving to the next lesson.
+- **Key demonstration observed:**
+- **Important SSMS / Engine setting:**
+- **Critical syntax nuance:**
+- **Failure mode or trap avoided:**
+- **Research item for deeper inquiry:**
 
-## 8. My notes from the video
+## 9. Interview Drill & Trade-Off Analysis
 
-- Key example shown by instructor:
-- Important UI/SSMS step:
-- Important syntax/detail:
-- Mistake I made:
-- Something I want to research:
+> [!example] Production Scenario Question
+> [!example] Production Scenario Question
 
-## 9. Interview / practical question
+## 10. Evidence & Production Artifact Links
 
-> When would you choose this technique, and what alternative could solve the same requirement?
-
-## 10. Evidence
-
-- Lesson URL: https://maharatech.gov.eg/mod/hvp/view.php?id=17593
-- My SQL script: `../scripts/ch04/vid16-create-a-database-cursor.sql`
-- Related docs / links I add later:
+* 🔗 **Official Course Module:** [MaharaTech Lesson 17593](https://maharatech.gov.eg/mod/hvp/view.php?id=17593)
+* 💾 **Production Script:** [`src/02_indexing_and_performance/03_execution_plan_analysis.sql`](../../../../src/02_indexing_and_performance/03_execution_plan_analysis.sql)
+* 📖 **Chapter Mastery Guide:** [CH04 — Procedures, Triggers, and SQL Automation](../../chapters/ch04-readme.md)
+* 🗺️ **Curriculum Tracker:** [Interactive Learning Tracker](../../LEARNING_TRACKER.md)
+* 🚀 **Interactive Showcase:** [OmniFlow Platform Web App](https://sohila-khaled-abbas.github.io/sql-server-data-platform/)
