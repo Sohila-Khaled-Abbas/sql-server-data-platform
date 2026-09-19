@@ -1,13 +1,10 @@
-/**
- * App.jsx — Root application shell with full sidebar + content routing.
- *
- * Routes all 14+ sidebar/navbar tabs to their corresponding view components.
- * Uses a TAB_COMPONENTS map for clean O(1) lookup instead of long if/else chains.
- */
-import React, { useState, useCallback } from 'react';
+import React, { useEffect } from 'react';
+import { BrowserRouter, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
 import { Toaster } from 'react-hot-toast';
+
 import { DatabaseProvider } from './context/DatabaseContext.jsx';
-import { ProgressProvider } from './context/ProgressContext.jsx';
+import { useAppStore } from './store/useAppStore.js';
 
 /* ── Layout Components ──────────────────────────────────────────────── */
 import Navbar from './components/Navbar.jsx';
@@ -21,7 +18,6 @@ import DocsView from './components/DocsView.jsx';
 import DocsViewer from './components/DocsViewer.jsx';
 import AIChatbot from './components/AIChatbot.jsx';
 import RoadmapDiagram from './components/RoadmapDiagram.jsx';
-import VideoLearningHub from './components/VideoLearningHub.jsx';
 import MicrosoftDocsHub from './components/MicrosoftDocsHub.jsx';
 import ChallengeArena from './components/ChallengeArena.jsx';
 import ProjectBlueprints from './components/ProjectBlueprints.jsx';
@@ -32,155 +28,109 @@ import PlanSimulator from './components/PlanSimulator.jsx';
 import QuizMaster from './components/QuizMaster.jsx';
 import QueryStudio from './components/QueryStudio.jsx';
 
-/* ── Data ───────────────────────────────────────────────────────────── */
 import { COURSE_VIDEOS } from './data/videoCatalog.js';
 
-/* ──────────────────────────────────────────────────────────────────── */
-/*  MAIN LAYOUT                                                        */
-/* ──────────────────────────────────────────────────────────────────── */
+/* ── Map Routes to Active Tabs ──────────────────────────────────────── */
+const getActiveTabFromPath = (path) => {
+  if (path === '/') return 'roadmap';
+  if (path === '/msdocs') return 'msdocs';
+  if (path.startsWith('/learn')) return 'learn';
+  if (path === '/playground') return 'playground';
+  if (path === '/query-studio') return 'query-studio';
+  if (path === '/challenges') return 'challenges';
+  if (path === '/projects') return 'projects';
+  if (path === '/architecture') return 'architecture';
+  if (path === '/migrations') return 'migrations';
+  if (path === '/erd') return 'erd';
+  if (path === '/plan-simulator') return 'plan-simulator';
+  if (path === '/quiz') return 'quiz';
+  if (path === '/docs') return 'docs';
+  if (path.startsWith('/docs/')) return path.replace('/', '-'); // e.g. docs-case-study
+  return 'roadmap';
+};
 
+/* ── Animated Route Wrapper ─────────────────────────────────────────── */
+const PageTransition = ({ children }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 10 }}
+    animate={{ opacity: 1, y: 0 }}
+    exit={{ opacity: 0, y: -10 }}
+    transition={{ duration: 0.25, ease: "easeOut" }}
+    style={{ height: '100%' }}
+  >
+    {children}
+  </motion.div>
+);
+
+/* ── Main Layout ────────────────────────────────────────────────────── */
 function MainLayout() {
-  /* ── Navigation state ────────────────────────────────────────────── */
-  const [activeTab, setActiveTab] = useState('roadmap');
-  const [activeLessonId, setActiveLessonId] = useState('ch01-vid01');
-  const [viewMode, setViewMode] = useState('lesson');
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isChatbotOpen, setIsChatbotOpen] = useState(false);
-  const [studioInitialQuery, setStudioInitialQuery] = useState(null);
+  const location = useLocation();
+  const navigate = useNavigate();
+  
+  const { 
+    isSidebarOpen, 
+    toggleSidebar, 
+    setSidebarOpen,
+    isChatbotOpen,
+    setChatbotOpen,
+    studioInitialQuery,
+    setStudioQuery
+  } = useAppStore();
 
-  /* ── Lesson selection handler ────────────────────────────────────── */
-  const handleSelectLesson = useCallback((id) => {
-    setActiveLessonId(id);
-    setViewMode('lesson');
-    setActiveTab('learn');
+  const activeTab = getActiveTabFromPath(location.pathname);
+
+  // Adapters for legacy prop passing
+  const handleTabChange = (tab) => {
+    const routeMap = {
+      'roadmap': '/',
+      'msdocs': '/msdocs',
+      'learn': '/learn',
+      'playground': '/playground',
+      'query-studio': '/query-studio',
+      'challenges': '/challenges',
+      'projects': '/projects',
+      'architecture': '/architecture',
+      'migrations': '/migrations',
+      'erd': '/erd',
+      'plan-simulator': '/plan-simulator',
+      'quiz': '/quiz',
+      'docs': '/docs',
+      'docs-case-study': '/docs/case-study',
+      'docs-perf': '/docs/perf',
+      'docs-dr': '/docs/dr',
+      'docs-learning': '/docs/learning',
+      'docs-syllabus': '/docs/syllabus'
+    };
+    navigate(routeMap[tab] || '/');
+    setSidebarOpen(false);
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, []);
-
-  /* ── Tab change handler ──────────────────────────────────────────── */
-  const handleTabChange = useCallback((tab) => {
-    setActiveTab(tab);
-    if (tab === 'learn') {
-      setViewMode('lesson');
-    }
-    setIsSidebarOpen(false);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, []);
-
-  /* ── Run query in playground ─────────────────────────────────────── */
-  const handleRunQueryInStudio = useCallback((sql) => {
-    setStudioInitialQuery(sql);
-    setActiveTab('playground');
-  }, []);
-
-  /* ── Toggle sidebar ──────────────────────────────────────────────── */
-  const toggleSidebar = useCallback(() => {
-    setIsSidebarOpen((prev) => !prev);
-  }, []);
-
-  /* ── Render the active tab's content ─────────────────────────────── */
-  const renderContent = () => {
-    switch (activeTab) {
-      /* ── Learning Journey ──────────────────────────────────────────── */
-      case 'roadmap':
-        return (
-          <RoadmapDiagram
-            onSelectTab={handleTabChange}
-            onRunQueryInStudio={handleRunQueryInStudio}
-          />
-        );
-
-      case 'resources':
-        return (
-          <VideoLearningHub
-            onSelectTab={handleTabChange}
-            onRunQueryInStudio={handleRunQueryInStudio}
-          />
-        );
-
-      case 'msdocs':
-        return <MicrosoftDocsHub />;
-
-      case 'learn':
-        return viewMode === 'lesson' ? (
-          <LessonView
-            currentLessonId={activeLessonId}
-            onSelectLesson={handleSelectLesson}
-          />
-        ) : (
-          <LessonList
-            activeLessonId={activeLessonId}
-            onSelectLesson={handleSelectLesson}
-          />
-        );
-
-      /* ── Interactive Labs & Sandbox ────────────────────────────────── */
-      case 'playground':
-        return <PracticeStudio initialQuery={studioInitialQuery} />;
-
-      case 'query-studio':
-        return <QueryStudio />;
-
-      case 'challenges':
-        return <ChallengeArena onRunQueryInStudio={handleRunQueryInStudio} />;
-
-      case 'projects':
-        return <ProjectBlueprints />;
-
-      case 'architecture':
-        return <ArchitectureViewer />;
-
-      case 'migrations':
-        return <MigrationSimulator />;
-
-      case 'erd':
-        return <ErdExplorer />;
-
-      case 'plan-simulator':
-        return <PlanSimulator />;
-
-      case 'quiz':
-        return <QuizMaster />;
-
-      /* ── Documentation ────────────────────────────────────────────── */
-      case 'docs':
-        return <DocsView />;
-
-      case 'docs-case-study':
-      case 'docs-perf':
-      case 'docs-dr':
-      case 'docs-learning':
-      case 'docs-syllabus':
-        return (
-          <DocsViewer
-            docKey={activeTab}
-            onBack={() => handleTabChange('roadmap')}
-          />
-        );
-
-      default:
-        return (
-          <RoadmapDiagram
-            onSelectTab={handleTabChange}
-            onRunQueryInStudio={handleRunQueryInStudio}
-          />
-        );
-    }
   };
+
+  const handleRunQueryInStudio = (sql) => {
+    setStudioQuery(sql);
+    navigate('/playground');
+  };
+
+  const handleSelectLesson = (id) => {
+    navigate(`/learn/${id}`);
+  };
+
+  // Close sidebar on location change for mobile
+  useEffect(() => {
+    setSidebarOpen(false);
+  }, [location, setSidebarOpen]);
 
   return (
     <div className="app-shell">
-      {/* ── Top Navigation Bar ──────────────────────────────────────── */}
       <Navbar
         activeTab={activeTab}
         onSelectTab={handleTabChange}
-        onOpenChatbot={() => setIsChatbotOpen(true)}
+        onOpenChatbot={() => setChatbotOpen(true)}
         onToggleSidebar={toggleSidebar}
         isSidebarOpen={isSidebarOpen}
       />
 
-      {/* ── Layout: Sidebar + Main Content ─────────────────────────── */}
       <div className="app-layout">
-        {/* Sidebar Navigation */}
         <Sidebar
           isOpen={isSidebarOpen}
           activeTab={activeTab}
@@ -188,41 +138,39 @@ function MainLayout() {
           onRunQueryInStudio={handleRunQueryInStudio}
         />
 
-        {/* Mobile sidebar overlay */}
         {isSidebarOpen && (
           <div
             className="sidebar-overlay"
-            onClick={() => setIsSidebarOpen(false)}
+            onClick={() => setSidebarOpen(false)}
           />
         )}
 
-        {/* Main Content Area */}
         <main className="app-main-content">
-          {renderContent()}
+          <AnimatePresence mode="wait">
+            <Routes location={location} key={location.pathname}>
+              <Route path="/" element={<PageTransition><RoadmapDiagram onSelectTab={handleTabChange} onRunQueryInStudio={handleRunQueryInStudio} /></PageTransition>} />
+              <Route path="/msdocs" element={<PageTransition><MicrosoftDocsHub /></PageTransition>} />
+              
+              <Route path="/learn" element={<PageTransition><LessonList activeLessonId="ch01-vid01" onSelectLesson={handleSelectLesson} /></PageTransition>} />
+              <Route path="/learn/:id" element={<PageTransition><LessonView currentLessonId={location.pathname.split('/').pop()} onSelectLesson={handleSelectLesson} /></PageTransition>} />
+              
+              <Route path="/playground" element={<PageTransition><PracticeStudio initialQuery={studioInitialQuery} /></PageTransition>} />
+              <Route path="/query-studio" element={<PageTransition><QueryStudio /></PageTransition>} />
+              <Route path="/challenges" element={<PageTransition><ChallengeArena onRunQueryInStudio={handleRunQueryInStudio} /></PageTransition>} />
+              <Route path="/projects" element={<PageTransition><ProjectBlueprints /></PageTransition>} />
+              <Route path="/architecture" element={<PageTransition><ArchitectureViewer /></PageTransition>} />
+              <Route path="/migrations" element={<PageTransition><MigrationSimulator /></PageTransition>} />
+              <Route path="/erd" element={<PageTransition><ErdExplorer /></PageTransition>} />
+              <Route path="/plan-simulator" element={<PageTransition><PlanSimulator /></PageTransition>} />
+              <Route path="/quiz" element={<PageTransition><QuizMaster /></PageTransition>} />
+              <Route path="/docs" element={<PageTransition><DocsView /></PageTransition>} />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </AnimatePresence>
         </main>
       </div>
 
-      {/* ── AI Chatbot Drawer ──────────────────────────────────────── */}
-      <div
-        className={`ai-drawer-overlay ${isChatbotOpen ? 'open' : ''}`}
-        onClick={() => setIsChatbotOpen(false)}
-      />
-      <AIChatbot
-        isOpen={isChatbotOpen}
-        onClose={() => setIsChatbotOpen(false)}
-        onRunInPlayground={(sql) => {
-          setStudioInitialQuery(sql);
-          setActiveTab('playground');
-        }}
-        pageContext={{
-          activeTab,
-          activeLesson: COURSE_VIDEOS.find((v) => v.id === activeLessonId),
-          currentQuery: studioInitialQuery,
-        }}
-      />
-
-      {/* ── Toast Notifications ────────────────────────────────────── */}
-      <Toaster
+      <Toaster 
         position="bottom-right"
         toastOptions={{
           style: {
@@ -238,16 +186,16 @@ function MainLayout() {
   );
 }
 
-/* ──────────────────────────────────────────────────────────────────── */
-/*  APP ROOT                                                            */
-/* ──────────────────────────────────────────────────────────────────── */
+import ErrorBoundary from './components/ErrorBoundary.jsx';
 
 export default function App() {
   return (
-    <DatabaseProvider>
-      <ProgressProvider>
-        <MainLayout />
-      </ProgressProvider>
-    </DatabaseProvider>
+    <ErrorBoundary>
+      <BrowserRouter>
+        <DatabaseProvider>
+          <MainLayout />
+        </DatabaseProvider>
+      </BrowserRouter>
+    </ErrorBoundary>
   );
 }

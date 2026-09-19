@@ -8,7 +8,7 @@
  * @param {boolean}  isSidebarOpen   - Whether the sidebar is currently open
  */
 import React from 'react';
-import { useProgress } from '../context/ProgressContext.jsx';
+import { useProgressStore } from '../store/useProgressStore.js';
 import {
   BookOpen,
   Code2,
@@ -18,6 +18,7 @@ import {
   X,
   Map,
   GraduationCap,
+  Flame
 } from 'lucide-react';
 import mssqlLogo from '../assets/mssql-logo.svg';
 
@@ -25,8 +26,7 @@ import mssqlLogo from '../assets/mssql-logo.svg';
 const NAV_ITEMS = [
   { id: 'roadmap',    label: 'Roadmap',   icon: Map },
   { id: 'learn',      label: 'Lessons',   icon: BookOpen },
-  { id: 'playground', label: 'Practice',  icon: Code2 },
-  { id: 'docs',       label: 'Resources', icon: GraduationCap },
+  { id: 'playground', label: 'Practice',  icon: Code2 }
 ];
 
 export default function Navbar({
@@ -36,7 +36,7 @@ export default function Navbar({
   onToggleSidebar,
   isSidebarOpen,
 }) {
-  const { progressPercent } = useProgress();
+  const { xp, completedLessons } = useProgressStore();
 
   return (
     <header className="site-header">
@@ -76,14 +76,9 @@ export default function Navbar({
 
       {/* ── Right: progress + AI ───────────────────────────────────── */}
       <div className="header-actions">
-        <div className="header-progress-pill">
-          <div className="header-progress-bar">
-            <div
-              className="header-progress-fill"
-              style={{ width: `${progressPercent}%` }}
-            />
-          </div>
-          <span>{Math.round(progressPercent)}%</span>
+        <div className="header-progress-pill" style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'rgba(56, 189, 248, 0.1)', color: '#38bdf8', padding: '6px 12px', borderRadius: '20px', fontWeight: 600, fontSize: '13px' }}>
+          <Flame size={16} fill="currentColor" />
+          <span>{xp} XP</span>
         </div>
 
         <button

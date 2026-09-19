@@ -12,93 +12,56 @@ let isReady = false;
 
 // Sample queries for presets
 export const PRESET_QUERIES = {
-  company_hierarchy: `-- 1. Company Organization Hierarchy (Supervisors and Direct Reports)
-SELECT 
-    e.SSN,
-    e.FName || ' ' || e.LName AS EmployeeName,
-    e.Gender,
-    e.Salary,
-    d.DName AS Department,
-    COALESCE(s.FName || ' ' || s.LName, 'Top Executive / None') AS Supervisor
-FROM Employee e
-LEFT JOIN Employee s ON e.SuperSSN = s.SSN
-LEFT JOIN Department d ON e.Dno = d.DNum
-ORDER BY e.Dno, e.Salary DESC;`,
+  db_design: `-- Module 1: Database Design & Architecture
+-- Experiment with creating tables, filegroups, and constraints
+CREATE TABLE #CourseDesign (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    ModuleName VARCHAR(50) NOT NULL,
+    DurationHours INT CHECK(DurationHours > 0)
+);
+INSERT INTO #CourseDesign VALUES ('Storage Internals', 4);
+SELECT * FROM #CourseDesign;`,
 
-  company_workload: `-- 2. Multi-Department Project Effort Matrix (M:N Aggregation)
-SELECT 
-    d.DName AS Department,
-    p.PName AS ProjectName,
-    p.City AS ProjectCity,
-    COUNT(w.ESSN) AS AssignedEmployees,
-    COALESCE(SUM(w.Hours), 0) AS TotalWeeklyHours
-FROM Project p
-JOIN Department d ON p.DNum = d.DNum
-LEFT JOIN WorksOn w ON p.PNum = w.PNo
-GROUP BY d.DName, p.PName, p.City
-ORDER BY d.DName, TotalWeeklyHours DESC;`,
+  programmability: `-- Module 2: Programmability Objects
+-- Variables, Stored Procedures, and UDFs
+DECLARE @Counter INT = 1;
+WHILE @Counter <= 3
+BEGIN
+    SELECT 'Processing Batch: ' + CAST(@Counter AS VARCHAR) AS LogMessage;
+    SET @Counter = @Counter + 1;
+END;`,
 
-  company_dependents: `-- 3. Weak Entity Dependents & Employee Family Records
-SELECT 
-    e.FName || ' ' || e.LName AS EmployeeName,
-    e.SSN AS ParentSSN,
-    dp.DependentName,
-    dp.Relationship,
-    dp.Gender AS DependentGender,
-    dp.BDate AS BirthDate
-FROM Employee e
-JOIN Dependent dp ON e.SSN = dp.ESSN
-ORDER BY e.LName, dp.BDate;`,
+  performance: `-- Module 3: Performance & Optimization
+-- Indexing and Execution Plans
+-- (Test this against a real SQL Server with data to see the execution plan)
+SELECT TOP 10 
+    OBJECT_NAME(object_id) AS TableName, 
+    index_id, 
+    name AS IndexName 
+FROM sys.indexes 
+WHERE type > 0;`,
 
-  ititest_live: `-- 3b. ITItest Case Study: Querying live emp and depts tables (CH01_VID02)
-SELECT 
-    e.eid AS EmpID,
-    e.ename AS EmployeeName,
-    e.salary AS BaseSalary,
-    e.overtime AS OvertimePay,
-    e.netsal AS NetSalary,
-    e.eadd AS Address,
-    d.dname AS Department
-FROM emp e
-INNER JOIN depts d ON e.dnum = d.did
-ORDER BY d.dname, e.salary DESC;`,
+  advanced_tsql: `-- Module 4: Advanced T-SQL
+-- CTEs, Window Functions, and Ranking
+WITH RankedData AS (
+    SELECT 
+        name,
+        create_date,
+        ROW_NUMBER() OVER(ORDER BY create_date DESC) as RecentRank
+    FROM sys.databases
+)
+SELECT * FROM RankedData WHERE RecentRank <= 5;`,
 
-  dw_sales_summary: `-- 4. Kimball Star Schema: Monthly Revenue by Product Category
+  security_admin: `-- Module 5: Security & Administration
+-- DMVs for Diagnostics and Status
 SELECT 
-    d.CalendarYear,
-    d.MonthName,
-    p.CategoryName,
-    COUNT(f.SalesKey) AS TotalOrders,
-    SUM(f.Quantity) AS TotalUnitsSold,
-    ROUND(SUM(f.NetSalesAmount), 2) AS TotalRevenue
-FROM FactSales f
-JOIN DimDate d ON f.DateKey = d.DateKey
-JOIN DimProduct p ON f.ProductSK = p.ProductSK
-GROUP BY d.CalendarYear, d.MonthName, p.CategoryName
-ORDER BY d.CalendarYear DESC, TotalRevenue DESC;`,
-
-  dw_customer_scd: `-- 5. Kimball Star Schema: SCD Type 2 Customer Relocations
-SELECT 
-    CustomerSK,
-    CustomerId,
-    CustomerName,
-    PostalCode,
-    ValidFrom,
-    ValidTo,
-    CASE WHEN IsCurrent = 1 THEN 'Active Version 🟢' ELSE 'Historical Version ⚪' END AS VersionStatus
-FROM DimCustomer
-ORDER BY CustomerId, CustomerSK;`,
-
-  dept_locations: `-- 6. Department Multi-Valued Locations (1:N Sub-table)
-SELECT 
-    d.DNum,
-    d.DName AS Department,
-    m.FName || ' ' || m.LName AS Manager,
-    GROUP_CONCAT(dl.Location, ', ') AS OfficeLocations
-FROM Department d
-JOIN Employee m ON d.MgrSSN = m.SSN
-JOIN DeptLocations dl ON d.DNum = dl.DNum
-GROUP BY d.DNum, d.DName, Manager;`
+    session_id, 
+    status, 
+    command, 
+    cpu_time, 
+    total_elapsed_time 
+FROM sys.dm_exec_requests
+WHERE session_id > 50;`
 };
 
 export async function initDatabase(onStatusUpdate) {

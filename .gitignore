@@ -1,56 +1,10 @@
-# Operating System Files
-Thumbs.db
-ehthumbs.db
-Desktop.ini
-$RECYCLE.BIN/
-.DS_Store
-
-# SQL Server Database Files & Backups
-*.mdf
-*.ldf
-*.ndf
-*.bak
-*.trn
-*.dif
-*.snap
-
-# IDE & Editor Settings
-.vs/
-.vscode/
-*.suo
-*.user
-*.userosscache
-*.sln.docstates
-.idea/
-
-# .NET / CLR Build Artifacts
-bin/
-obj/
-*.dll
-*.pdb
-
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-*.env
-.venv/
-env/
-venv/
-ENV/
-
-# Docker Local State
+node_modules/
 .env
-docker/data/
-
-# Logs & Temporary Output
-*.log
-*.tmp
-*.pid
-TestResults/
-/data/
-
-# Node.js & Web App
-web/node_modules/
-web/dist/
-web/.vite/
+.DS_Store
+dist/
+build/
+.venv/
+__pycache__/
+*.pyc
+.idea/
+.vscode/

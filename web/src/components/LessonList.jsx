@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { useProgress } from '../context/ProgressContext.jsx';
+import { useProgressStore } from '../store/useProgressStore.js';
 import { COURSE_VIDEOS } from '../data/videoCatalog.js';
 import { CheckCircle2, Circle, Search } from 'lucide-react';
 
 export default function LessonList({ activeLessonId, onSelectLesson }) {
-  const { watchedVideos } = useProgress();
+  const { completedLessons } = useProgressStore();
   const [searchQuery, setSearchQuery] = useState('');
 
   // Group by chapter
@@ -76,7 +76,7 @@ export default function LessonList({ activeLessonId, onSelectLesson }) {
             <div className="chapter-group-title">{ch.title}</div>
             <ul className="chapter-lesson-list">
               {ch.lessons.map(lesson => {
-                const done = watchedVideos.includes(lesson.id);
+                const done = completedLessons.includes(lesson.id);
                 const isActive = lesson.id === activeLessonId;
                 return (
                   <li

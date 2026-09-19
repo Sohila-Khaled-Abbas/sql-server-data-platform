@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
+import axios from 'axios';
 import { useDatabase } from '../context/DatabaseContext.jsx';
 import { 
   Play, 
@@ -11,17 +12,18 @@ import {
   FileSpreadsheet, 
   Terminal 
 } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 export default function QueryStudio({ initialQuery, onClearInitialQuery }) {
-  const { runSql, presetQueries } = useDatabase();
-  const [queryText, setQueryText] = useState(presetQueries.company_hierarchy);
-  const [selectedPreset, setSelectedPreset] = useState('company_hierarchy');
+  const { presetQueries } = useDatabase();
+  const [queryText, setQueryText] = useState(presetQueries.db_design);
+  const [selectedPreset, setSelectedPreset] = useState('db_design');
   const [results, setResults] = useState(null);
   const [activeResultTab, setActiveResultTab] = useState('grid');
   const [isExecuting, setIsExecuting] = useState(false);
   const textareaRef = useRef(null);
 
-  // Set query from external sources (Object Explorer, Chatbot, Blueprints, Lesson Modal)
+  // Set query from external sources
   useEffect(() => {
     if (initialQuery) {
       setQueryText(initialQuery);
@@ -30,18 +32,41 @@ export default function QueryStudio({ initialQuery, onClearInitialQuery }) {
     }
   }, [initialQuery]);
 
-  const handleExecute = useCallback((sqlToRun) => {
+  const handleExecute = useCallback(async (sqlToRun) => {
     const text = sqlToRun || queryText;
     if (!text.trim()) return;
 
     setIsExecuting(true);
-    // Allow UI to show executing state
-    setTimeout(() => {
-      const res = runSql(text);
-      setResults(res);
+    try {
+      const response = await axios.post('http://localhost:8000/api/query/', {
+        sql: text,
+        database: 'master'
+      });
+      
+      const res = response.data;
+      
+      const mappedResults = {
+        columns: res.columns,
+        values: res.rows,
+        rowCount: res.row_count,
+        executionTimeMs: res.execution_time_ms,
+        error: res.error
+      };
+      
+      setResults(mappedResults);
+      if (mappedResults.error) {
+        toast.error('Execution Error');
+      } else {
+        toast.success(`Success (${mappedResults.executionTimeMs}ms)`);
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error('Backend connection failed');
+      setResults({ error: 'Failed to connect to FastAPI backend. Ensure python backend is running.' });
+    } finally {
       setIsExecuting(false);
-    }, 20);
-  }, [queryText, runSql]);
+    }
+  }, [queryText]);
 
   // Keyboard shortcut: Ctrl+Enter or F5 to execute
   useEffect(() => {
@@ -83,7 +108,7 @@ export default function QueryStudio({ initialQuery, onClearInitialQuery }) {
   // Run initial query on mount if empty results
   useEffect(() => {
     if (!results) {
-      handleExecute(presetQueries.company_hierarchy);
+      handleExecute(presetQueries.db_design);
     }
   }, []);
 
@@ -92,9 +117,9 @@ export default function QueryStudio({ initialQuery, onClearInitialQuery }) {
       {/* Studio Header & Preset Bar */}
       <div className="studio-header card">
         <div className="studio-title-group">
-          <h1 className="studio-title">Query Studio & T-SQL Playground</h1>
+          <h1 className="studio-title">Query Studio & T-SQL Sandbox</h1>
           <p className="studio-desc">
-            In-browser SQL Server relational engine powered by WebAssembly. Query the normalized <strong>Company Case Study</strong> and <strong>OmniFlowDW</strong> schemas with sub-millisecond latency.
+            Connects to your local SQL Server instance via the new Python backend. Learn and experiment with T-SQL concepts directly mapped to the MaharaTech course syllabus.
           </p>
         </div>
 
@@ -105,12 +130,11 @@ export default function QueryStudio({ initialQuery, onClearInitialQuery }) {
               value={selectedPreset} 
               onChange={handlePresetChange}
             >
-              <option value="company_hierarchy">1. Company Org Chart Hierarchy (Supervisors)</option>
-              <option value="company_workload">2. Multi-Department Project Effort Matrix</option>
-              <option value="company_dependents">3. Weak Entity Dependents & Family</option>
-              <option value="dw_sales_summary">4. Kimball DW: Monthly Sales Summary</option>
-              <option value="dw_customer_scd">5. Kimball DW: SCD2 Active Customers</option>
-              <option value="dept_locations">6. Department Multi-Valued Locations</option>
+              <option value="db_design">Module 1: Database Design & Architecture</option>
+              <option value="programmability">Module 2: Programmability (Variables, Flow)</option>
+              <option value="performance">Module 3: Performance (Indexes & Plans)</option>
+              <option value="advanced_tsql">Module 4: Advanced T-SQL (CTEs, Windowing)</option>
+              <option value="security_admin">Module 5: Security & Administration</option>
             </select>
           </div>
 

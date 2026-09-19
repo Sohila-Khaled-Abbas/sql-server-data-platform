@@ -1,19 +1,19 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { useDatabase } from '../context/DatabaseContext.jsx';
+import axios from 'axios';
 import CodeEditor from './ui/CodeEditor.jsx';
 import ResultsTable from './ui/ResultsTable.jsx';
 import toast from 'react-hot-toast';
 
 const DEFAULT_SQL = `-- Write any T-SQL query here
--- This runs against the in-memory WASM engine
+-- This runs against the real SQL Server backend
 
-SELECT 'Hello, SQL Server!' AS greeting,
+SELECT 'Hello, Backend SQL Server!' AS greeting,
        CURRENT_TIMESTAMP AS executed_at;`;
 
 export default function PracticeStudio({ initialQuery }) {
-  const { runSql } = useDatabase();
   const [sql, setSql] = useState(initialQuery || DEFAULT_SQL);
   const [results, setResults] = useState(null);
+  const [isExecuting, setIsExecuting] = useState(false);
 
   useEffect(() => {
     if (initialQuery) {
@@ -21,22 +21,47 @@ export default function PracticeStudio({ initialQuery }) {
     }
   }, [initialQuery]);
 
-  const handleRun = useCallback((queryToRun) => {
+  const handleRun = useCallback(async (queryToRun) => {
     const code = queryToRun ?? sql;
     if (!code || !code.trim()) {
       toast.error('Please enter a query to execute');
       return;
     }
-    setTimeout(() => {
-      const res = runSql(code);
-      setResults(res);
-      if (res?.error) {
+    
+    setIsExecuting(true);
+    try {
+      // Connect to the new FastAPI Backend
+      const response = await axios.post('http://localhost:8000/api/query/', {
+        sql: code,
+        database: 'master'
+      });
+      
+      const res = response.data;
+      
+      // Map API response to ResultsTable format
+      const mappedResults = {
+        columns: res.columns,
+        rows: res.rows,
+        rowCount: res.row_count,
+        executionTimeMs: res.execution_time_ms,
+        error: res.error
+      };
+      
+      setResults(mappedResults);
+      
+      if (mappedResults.error) {
         toast.error('Query execution error');
       } else {
-        toast.success(`Executed successfully (${res?.executionTimeMs || '<1'}ms)`);
+        toast.success(`Executed successfully (${mappedResults.executionTimeMs}ms)`);
       }
-    }, 15);
-  }, [sql, runSql]);
+    } catch (err) {
+      console.error(err);
+      toast.error('Failed to connect to backend server');
+      setResults({ error: 'Backend connection failed. Is the FastAPI server running?' });
+    } finally {
+      setIsExecuting(false);
+    }
+  }, [sql]);
 
   const handleClear = useCallback(() => {
     setSql('');
@@ -53,7 +78,7 @@ export default function PracticeStudio({ initialQuery }) {
       <div className="studio-header">
         <h1 className="studio-title">Practice Studio & T-SQL Sandbox</h1>
         <p className="studio-subtitle">
-          Write and execute T-SQL queries against the in-memory WASM database engine with syntax highlighting and schema exploration.
+          Write and execute T-SQL queries against the remote SQL Server database backend.
         </p>
       </div>
 
@@ -66,6 +91,7 @@ export default function PracticeStudio({ initialQuery }) {
           onClear={handleClear}
           placeholder="-- Write your T-SQL query here..."
           minHeight="220px"
+          isExecuting={isExecuting}
         />
 
         {results && (
@@ -78,4 +104,3 @@ export default function PracticeStudio({ initialQuery }) {
     </div>
   );
 }
-

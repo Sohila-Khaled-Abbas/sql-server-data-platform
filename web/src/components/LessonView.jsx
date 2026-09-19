@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useDatabase } from '../context/DatabaseContext.jsx';
-import { useProgress } from '../context/ProgressContext.jsx';
+import { useProgressStore } from '../store/useProgressStore.js';
 import { COURSE_VIDEOS, COURSE_METADATA } from '../data/videoCatalog.js';
 import confetti from 'canvas-confetti';
 import CodeEditor from './ui/CodeEditor.jsx';
@@ -17,11 +17,11 @@ import {
 
 export default function LessonView({ currentLessonId, onSelectLesson }) {
   const { runSql } = useDatabase();
-  const { watchedVideos, toggleWatched } = useProgress();
+  const { completedLessons, toggleLesson } = useProgressStore();
 
   const activeIndex = COURSE_VIDEOS.findIndex(v => v.id === currentLessonId);
   const lesson = COURSE_VIDEOS[activeIndex >= 0 ? activeIndex : 0];
-  const isCompleted = watchedVideos.includes(lesson.id);
+  const isCompleted = completedLessons.includes(lesson.id);
   const prevLesson = activeIndex > 0 ? COURSE_VIDEOS[activeIndex - 1] : null;
   const nextLesson = activeIndex < COURSE_VIDEOS.length - 1 ? COURSE_VIDEOS[activeIndex + 1] : null;
 
@@ -64,8 +64,8 @@ export default function LessonView({ currentLessonId, onSelectLesson }) {
   }, []);
 
   const handleToggleComplete = () => {
-    const wasCompleted = watchedVideos.includes(lesson.id);
-    toggleWatched(lesson.id);
+    const wasCompleted = completedLessons.includes(lesson.id);
+    toggleLesson(lesson.id, !wasCompleted);
     if (!wasCompleted) {
       confetti({ particleCount: 60, spread: 55, origin: { y: 0.7 }, colors: ['#818cf8', '#34d399', '#fbbf24'] });
     }
@@ -189,15 +189,42 @@ export default function LessonView({ currentLessonId, onSelectLesson }) {
           {isCompleted ? 'Completed' : 'Mark complete'}
         </button>
 
-        {nextLesson ? (
-          <button
-            className="lesson-nav-btn"
-            onClick={() => onSelectLesson(nextLesson.id)}
-          >
-            {nextLesson.title}
-            <ArrowRight size={14} />
-          </button>
         ) : <div />}
+      </div>
+
+      {/* Global Resources Embed */}
+      <div className="card" style={{ marginTop: '2rem', padding: '1.5rem', borderLeft: '4px solid var(--mssql-red)' }}>
+        <h3 style={{ marginTop: 0, marginBottom: '1rem', color: 'var(--text-primary)' }}>Curated Learning Resources</h3>
+        <p style={{ color: 'var(--text-dim)', marginBottom: '1rem', fontSize: '14px' }}>
+          Explore these highly recommended resources to deepen your understanding of T-SQL and SQL Server.
+        </p>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
+          <div style={{ background: 'var(--bg-secondary)', padding: '1rem', borderRadius: '8px' }}>
+            <h4 style={{ margin: '0 0 0.5rem 0', color: 'var(--text-primary)' }}>Recommended Reading</h4>
+            <ul style={{ margin: 0, paddingLeft: '1.2rem', color: 'var(--text-secondary)', fontSize: '13px' }}>
+              <li><strong>T-SQL Fundamentals</strong> (Itzik Ben-Gan)</li>
+              <li><strong>T-SQL Querying</strong> (Itzik Ben-Gan)</li>
+            </ul>
+          </div>
+          <div style={{ background: 'var(--bg-secondary)', padding: '1rem', borderRadius: '8px' }}>
+            <h4 style={{ margin: '0 0 0.5rem 0', color: 'var(--text-primary)' }}>Official MS Learn</h4>
+            <a href="https://learn.microsoft.com/training/paths/design-implement-database-objects/" target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8', textDecoration: 'none', fontSize: '13px', display: 'block', marginBottom: '4px' }}>
+              Design and Implement DB Objects ↗
+            </a>
+            <a href="https://learn.microsoft.com/sql/sql-server/tutorials/sql-server-tutorials" target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8', textDecoration: 'none', fontSize: '13px', display: 'block' }}>
+              SQL Server Tutorials ↗
+            </a>
+          </div>
+          <div style={{ background: 'var(--bg-secondary)', padding: '1rem', borderRadius: '8px' }}>
+            <h4 style={{ margin: '0 0 0.5rem 0', color: 'var(--text-primary)' }}>Practice</h4>
+            <a href="https://www.sqlservertutorial.net/" target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8', textDecoration: 'none', fontSize: '13px', display: 'block', marginBottom: '4px' }}>
+              SQLServerTutorial.net ↗
+            </a>
+            <a href="https://maharatech.gov.eg/" target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8', textDecoration: 'none', fontSize: '13px', display: 'block' }}>
+              MaharaTech Official Platform ↗
+            </a>
+          </div>
+        </div>
       </div>
     </div>
   );
