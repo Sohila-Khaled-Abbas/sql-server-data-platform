@@ -162,3 +162,22 @@ ALTER TABLE dbo.emps DROP CONSTRAINT c3;
 ALTER TABLE dbo.emps WITH NOCHECK ADD CONSTRAINT c9 CHECK(hour_rate > 1000);
 GO
 
+-- ----------------------------------------------------------------------------
+-- Step 8: Continuation to CH01_VID06 - Constraints vs Rules & Defaults
+-- ----------------------------------------------------------------------------
+/*
+   ----constraint ---> new data XXXX
+   ----constraint ---> shared between tables XXXX
+   ----constraint ---> new data type XXXX
+
+   ---> Rule [Global check constraint]
+   create rule myrule as @x>1000
+   sp_bindrule myrule, 'instructor.salary'
+
+   For full implementation, cross-table rules, and UDDT binding on [ITI].[dbo].[Instructor],
+   see: src/01_storage_and_schema/ch01_vid06_constraints_rules_defaults.sql
+   Documentation: docs/ch01-vid06-constraints-rules-defaults-live.md
+*/
+GO
+
+

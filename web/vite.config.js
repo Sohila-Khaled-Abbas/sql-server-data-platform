@@ -12,25 +12,14 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          'vendor-react': ['react', 'react-dom', 'react-router-dom', 'zustand'],
-          'vendor-ui': ['framer-motion', 'lucide-react', 'react-hot-toast'],
-          'vendor-editor': ['prismjs', 'react-simple-code-editor', 'marked']
+          'vendor-react': ['react', 'react-dom'],
+          'vendor-icons': ['lucide-react']
         }
       }
     }
   },
   server: {
     port: 5173,
-    open: false,
-    proxy: {
-      '/api/ollama': {
-        target: 'http://localhost:11434',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api\/ollama/, '')
-      }
-    }
-  },
-  optimizeDeps: {
-    exclude: ['sql.js']
+    open: false
   }
 });

@@ -14,7 +14,6 @@
 [![T-SQL](https://img.shields.io/badge/Language-T--SQL-blue.svg)](https://learn.microsoft.com/en-us/sql/t-sql/)
 [![Architecture](https://img.shields.io/badge/Architecture-OLTP%20%7C%20OLAP%20%7C%20SMO-green.svg)](#architecture-overview)
 [![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.110%2B-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
 [![React](https://img.shields.io/badge/React-19.0-61DAFB?logo=react&logoColor=black)](https://react.dev/)
 [![Vite](https://img.shields.io/badge/Vite-6.0-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
 [![Docker](https://img.shields.io/badge/Container-SQL%20Server%202022-2496ED?logo=docker&logoColor=white)](https://hub.docker.com/_/microsoft-mssql-server)
@@ -96,19 +95,19 @@ Moving far beyond isolated classroom scripts, this repository provides a unified
   </tr>
   <tr>
     <td width="50%" valign="top">
-      <h3>💻 5. Client-Side WebAssembly SQL Engine</h3>
+      <h3>💻 5. Modern Architecture Portfolio &amp; Case Study</h3>
       <ul>
-        <li><b>Zero-Config T-SQL Sandbox:</b> Embedded SQLite WASM engine running entirely in the browser with persistent local storage.</li>
-        <li><b>Execution Plan Simulator:</b> Visualizes cost distributions, seek vs scan operations, and index lookup warnings.</li>
-        <li><b>Vibe Coding UI:</b> Powered by React 19, Outfit typography, JetBrains Mono code editors, and animated sliding drawers.</li>
+        <li><b>2026-Style Dark Interface:</b> Built with Plus Jakarta Sans, JetBrains Mono, and subtle SQL Server red accents.</li>
+        <li><b>Interactive Topology &amp; ERD:</b> Interactive layer inspector, dual-mode ERD viewer, and animated data flow pipeline.</li>
+        <li><b>Searchable Repo Explorer:</b> Real-time filtering across SQL scripts, runbooks, schemas, and test suites.</li>
       </ul>
     </td>
     <td width="50%" valign="top">
-      <h3>🤖 6. Enterprise Automation & Tooling</h3>
+      <h3>🤖 6. Enterprise Automation &amp; Tooling</h3>
       <ul>
-        <li><b>SMO PowerShell & Python:</b> Declarative schema generation, automated scripting, and backup validation via Microsoft SMO.</li>
+        <li><b>SMO PowerShell &amp; Python:</b> Declarative schema generation, automated scripting, and backup validation via Microsoft SMO.</li>
         <li><b>SQL CLR Assemblies:</b> In-engine C# high-speed cryptographic hashing (SHA-256) and regex pattern matching.</li>
-        <li><b>FastAPI Bridge:</b> Optional Python backend for executing queries directly against live SQL Server 2022 instances.</li>
+        <li><b>Containerized CI/CD:</b> GitHub Actions workflows running automated pytest integration suites against SQL Server 2022.</li>
       </ul>
     </td>
   </tr>
@@ -118,14 +117,13 @@ Moving far beyond isolated classroom scripts, this repository provides a unified
 
 ## 🏛️ Architecture Overview
 
-The following diagram illustrates the end-to-end data lifecycle across storage tiers, procedural ETL pipelines, governance triggers, analytical warehousing, and the client web studio:
+The following diagram illustrates the end-to-end data lifecycle across storage tiers, procedural ETL pipelines, governance triggers, analytical warehousing, and the client portfolio showcase:
 
 ```mermaid
 flowchart TD
     subgraph ClientTiers ["🌐 Presentation & Developer Tooling"]
-        Web["Interactive Learning Studio\n(React 19 + WASM T-SQL Engine)"]
+        Web["Interactive Architecture Portfolio\n(React 19 + Vite Showcase)"]
         SSMS["SQL Server Management Studio\n(Live Query Execution)"]
-        API["FastAPI Execution Bridge\n(Python 3.10+ / pyodbc)"]
     end
 
     subgraph PhysicalStorage ["💾 Physical Storage & Storage Engine (src/01_storage_and_schema)"]
@@ -158,8 +156,7 @@ flowchart TD
         FactSales --> SSRS["Operational SSRS Reports\n(.rdl & Executive Dashboards)"]
     end
 
-    Web <-->|Local WASM Queries| IngestionETL
-    API <--> IngestionETL
+    Web <-->|Interactive Specs & Topology| IngestionETL
     SSMS <--> IngestionETL
 ```
 
@@ -179,49 +176,23 @@ The platform directly operationalizes every topic from **MaharaTech Course 2305*
 
 ---
 
-## 💻 Interactive Learning Studio & Vibe Coding UI
+## 💻 Interactive Architecture Showcase & Portfolio
 
-The `/web` client is built as a complete single-page interactive application, designed with the **Outfit** typography system and a dark-mode glassmorphism aesthetic:
+The `/web` client is built as a modern, 2026-style project portfolio and interactive case study platform, designed with the **Plus Jakarta Sans** typography system, technical grid lines, and a dark-first charcoal aesthetic:
 
-```mermaid
-flowchart LR
-    subgraph UI_Layer ["🎨 Modern React 19 Frontend"]
-        Nav["Sidebar Navigation\n(14 Distinct Views)"]
-        Editor["T-SQL Editor\n(Prism.js Syntax Engine)"]
-        Plan["Execution Plan Simulator\n(Visual Cost Trees)"]
-        ERD["Peter Chen ERD Explorer\n(Interactive Schema Visuals)"]
-    end
-
-    subgraph State_Layer ["⚡ State & Data Layer"]
-        Zustand["Zustand Progress Store\n(XP, Badges, Rank Engine)"]
-        Catalog["Catalog & Curricula\n(102 Interactive Lessons)"]
-    end
-
-    subgraph Engine_Layer ["⚙️ Execution Engine"]
-        WASM["SQLite WASM Virtual MSSQL Engine\n(Offline Client Execution)"]
-        FastAPI_Conn["FastAPI Optional Server\n(Live MSSQL 2022 Connection)"]
-    end
-
-    Nav --> Zustand
-    Editor --> WASM
-    Editor -.->|Optional Live Run| FastAPI_Conn
-    Editor --> Plan
-    Catalog --> Nav
-```
-
-### ✨ Web Platform Features
-* **102 Interactive Lessons**: Structured curriculum covering basic DDL to advanced partition switching and dimensional modeling.
-* **In-Browser T-SQL Execution**: Powered by `sql.js` (WebAssembly SQLite) with schema initialization and instant query results.
-* **Live Execution Plan Visualizer**: Interactive node tree highlighting Clustered Index Scans, Index Seeks, Nested Loops, and cost percentages.
-* **Gamified Progress Tracking**: Earn XP, rank up from *SQL Novice* to *Principal Database Architect*, and unlock achievement badges.
-* **Peter Chen ERD Explorer**: Interactive schema diagrams mapping entities, cardinalities, and relational constraints visually.
-* **Curated Resources Hub**: Over 40 hand-picked references, standard books (Itzik Ben-Gan, Ralph Kimball), certifications (DP-300, DP-203), and diagnostic tools.
+### ✨ Portfolio Website Features
+* **14 Detailed Sections**: Fully responsive architecture showcase with sticky navigation, executive problem breakdown, and creator profile.
+* **Live Pipeline Topology**: Visual tracking of data movement from TVP batch streaming to Kimball star schema aggregation.
+* **Searchable Repository Explorer**: Instant real-time filtering across SQL scripts, runbooks, schemas, and test suites with direct GitHub links.
+* **Dual-Mode ERD Visualizer**: Interactive schema cards toggling between the analytical Star Schema (`OmniFlowDW`) and the normalized 3NF Company ERD.
+* **SQL Engineering Showcase**: Curated, syntax-highlighted T-SQL engineering patterns with one-click copy and repository links.
+* **Technical Deep Dives**: Comprehensive coverage of storage allocation, ACID boundaries, DR runbooks, and event-driven DDL defense.
 
 ---
 
 ## 🚀 Local Development & Quickstart
 
-You can run the entire platform locally via Docker, natively on Windows, or standalone in the web browser.
+You can run the entire platform locally via Docker, natively on Windows, or explore the portfolio showcase.
 
 ### Option 1: Full Docker Containerized Stack (Recommended)
 
@@ -257,9 +228,9 @@ If you have SQL Server 2022 Developer Edition installed locally with SQL Server 
 
 ---
 
-### Option 3: Launch the Web Studio (Vite + React)
+### Option 3: Launch the Portfolio Web Application (Vite + React)
 
-To launch the interactive learning studio, sandbox, and career progression roadmap:
+To launch the interactive architecture portfolio locally:
 
 ```bash
 # Navigate to web directory
@@ -274,26 +245,10 @@ npm run dev
 
 Open **`http://localhost:5173`** in your browser to begin exploring!
 
----
-
-### Option 4: Optional Python FastAPI Execution Backend
-
-If you want the web app to execute queries directly against your live SQL Server 2022 instance:
-
+To produce a production-ready static build:
 ```bash
-# 1. Create and activate virtual environment
-python -m venv .venv
-.\.venv\Scripts\activate     # On Windows
-# source .venv/bin/activate  # On Linux/macOS
-
-# 2. Install dependencies
-pip install -r requirements.txt
-
-# 3. Launch FastAPI server
-uvicorn backend.main:app --reload --port 8000
+npm run build
 ```
-
-The API docs will be immediately accessible at **`http://localhost:8000/docs`**.
 
 ---
 
@@ -354,10 +309,6 @@ sql-server-data-platform/
 │   ├── dependabot.yml                  # Automated actions, docker & pip dependencies
 │   ├── release-drafter.yml             # Categorized release changelog configuration
 │   └── PULL_REQUEST_TEMPLATE.md        # DBRE pull request checklist & template
-├── backend/
-│   ├── api/
-│   │   └── query.py                    # Live SQL Server query execution endpoints
-│   └── main.py                         # FastAPI application entrypoint with CORS
 ├── docker/
 │   ├── docker-compose.yml              # Local SQL Server 2022 containerized instance
 │   ├── .env.example                    # Sample environment variables
@@ -387,7 +338,8 @@ sql-server-data-platform/
 │   │   ├── 03_integrity_constraints.sql # Foreign keys, check constraints & cascading rules
 │   │   ├── 04_partitioning_scheme.sql  # Partition functions & sliding window partition switching
 │   │   ├── 05_company_case_study_schema.sql # Canonical ITI Company ERD implementation
-│   │   └── ch01_vid05_integrity_constraints.sql # DB2 DDL with 8 constraints (c1-c8) & cascade tests
+│   │   ├── ch01_vid05_integrity_constraints.sql # DB2 DDL with 8 constraints (c1-c8) & cascade tests
+│   │   └── ch01_vid06_constraints_rules_defaults.sql # ITI Instructor DDL, rules (myrule), sp_bindrule & defaults
 │   ├── 02_indexing_and_performance/
 │   │   ├── 01_clustered_nonclustered.sql # Clustered, covering non-clustered, filtered & columnstore
 │   │   ├── 02_indexed_views.sql        # Materialized aggregation views with SCHEMABINDING
@@ -426,15 +378,17 @@ sql-server-data-platform/
 │   │   └── test_data_platform.py                # pytest DBRE integration test harness
 │   └── tSQLt/
 │       └── test_stored_procedures.sql           # In-engine unit testing suite
-├── web/                                         # Interactive learning platform & T-SQL sandbox
+├── web/                                         # Modern Data Platform Portfolio & Case Study Showcase
 │   ├── src/
-│   │   ├── components/                          # Sidebar, Studio, ChallengeArena, LessonView, etc.
-│   │   ├── components/ui/                       # Reusable CodeEditor, ResultsTable, ResourceCard
-│   │   ├── store/                               # Zustand useProgressStore.js
-│   │   ├── style.css                            # Glassmorphic Vibe Coding design system
-│   │   └── data/                                # Video catalog, challenges, and concepts
-│   ├── index.html                               # Single-page application shell
-│   └── package.json                             # React 19, Vite, Zustand, PrismJS
+│   │   ├── components/                          # 14 Portfolio Showcase Sections (Architecture, ERD, SQL, Explorer, etc.)
+│   │   │   └── icons/                           # Custom vector icon components (GithubIcon, etc.)
+│   │   ├── data/                                # Grounded repository metadata, schemas, and SQL scripts
+│   │   ├── styles/                              # 2026 dark-first responsive design system (portfolio.css)
+│   │   ├── App.jsx                              # Modular portfolio application container
+│   │   └── main.jsx                             # React 19 entrypoint
+│   ├── index.html                               # Single-page portfolio shell with SEO & OpenGraph
+│   ├── vite.config.js                           # Vite build configuration with chunk splitting
+│   └── package.json                             # React 19, Vite, Lucide React
 ├── deploy.ps1                                   # Universal PowerShell deployment orchestrator
 ├── CONTRIBUTING.md                              # T-SQL coding standards & contribution guide
 ├── CODE_OF_CONDUCT.md                           # Contributor Covenant Code of Conduct
@@ -455,6 +409,7 @@ Explore our deep-dive handbooks located in [`/docs`](docs/):
 * 🛡️ **[Disaster Recovery Runbook](docs/disaster-recovery-runbook.md)**: RPO/RTO calculations, VLF optimization, non-blocking snapshots, and log shipping runbooks.
 * 🏢 **[Company Case Study ERD & Relational Mapping](docs/ch01-case-study-erd-and-implementation.md)**: Peter Chen ERD mapping to 3NF relational schemas with integrity constraints.
 * 🛡️ **[Live Integrity Constraints Telemetry (DB2)](docs/db2-integrity-constraints-live.md)**: Live verification of constraints c1 through c8 with cascade rule behavior.
+* ⚙️ **[Constraints, Rules & Defaults Live Telemetry (ITI)](docs/ch01-vid06-constraints-rules-defaults-live.md)**: Live verification of `CREATE RULE`, `sp_bindrule`, `sp_bindefault`, and `WITH NOCHECK` on SQL Server 2022.
 * 📊 **[Data Dictionary](docs/data-dictionary.md)**: Full metadata specification for all transactional and dimensional schemas.
 * ⭐ **[Dimensional Model Bus Matrix](docs/dimensional-model.md)**: Kimball star schema grain definitions, conformed dimensions, and additive facts.
 * 🗺️ **[Full Course Syllabus Mapping](docs/course-syllabus-mapping.md)**: Video-by-video curriculum alignment with corresponding code modules.
