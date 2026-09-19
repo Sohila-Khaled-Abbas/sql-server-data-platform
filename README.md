@@ -18,13 +18,16 @@
 ## Executive Summary
 This repository serves as an operational codebase and architectural proof of competency for modern **Data Engineering & Database Reliability Engineering (DBRE)** on Microsoft SQL Server 2022. It is engineered directly from the curriculum of the official ITI / MaharaTech course: **[Implementing and Developing SQL Server Objects (Course ID: 2305)](https://maharatech.gov.eg/course/view.php?id=2305)** taught by Eng. Rami Mohamed Abonagi.
 
-Rather than a loose collection of academic lecture scripts, it is designed as a unified enterprise database platform demonstrating physical storage design, ACID transaction management, high-throughput procedural ETL, database governance, automated administrative operations via SMO, disaster recovery strategies, and an analytical dimensional warehouse (Kimball Star Schema).
+Rather than a loose collection of academic lecture scripts, it is designed as a unified enterprise database platform demonstrating physical storage design, ACID transaction management, high-throughput procedural ETL, database governance, automated administrative operations via SMO, disaster recovery strategies, an analytical dimensional warehouse (Kimball Star Schema), and a rich interactive learning environment.
 
-* 🌐 **Interactive Web App (GitHub Pages)**: [https://sohila-khaled-abbas.github.io/sql-server-data-platform/](https://sohila-khaled-abbas.github.io/sql-server-data-platform/) — Minimal dark-mode learning platform with 102 lessons, embedded T-SQL editor with in-browser WASM execution, and AI Mentor
+* 🌐 **[Interactive Web Application (GitHub Pages)](https://sohila-khaled-abbas.github.io/sql-server-data-platform/)**: Full-featured learning platform with 102 lessons, in-browser WASM T-SQL execution, and an AI Mentor
+* 🗺️ **[DBRE Career Progression Roadmap](docs/learning-guidance.md#%EF%B8%8F-dbre--data-engineering-career-progression-roadmap)**: 5-Phase career progression path (Foundations → Programming → Performance & HA → Automation & Governance → Kimball Data Warehousing)
+* 📚 **[Curated Learning Resources Hub](web/src/components/DocsView.jsx)**: 40+ verified resources spanning architecture guides, storage engine internals, books (Ben-Gan, Delaney, Kimball), video channels, LeetCode practice plans, certifications (DP-300, DP-203), and DBA tools (`dbatools`, `sp_WhoIsActive`, Plan Explorer)
+* 💻 **[T-SQL Sandbox & Reusable Editor](web/src/components/ui/CodeEditor.jsx)**: Syntax-highlighted T-SQL editor powered by `prismjs` and `react-simple-code-editor` with live query execution metrics (`ResultsTable`)
+* 🧭 **[14-View Navigation & SSMS Object Explorer](web/src/components/Sidebar.jsx)**: Slide-in responsive sidebar featuring an interactive Object Explorer schema tree, Challenge Arena, Execution Plan Simulator, and Chen ERD Explorer
 * 🚀 **Enterprise Migration Engine**: Deterministic SHA-256 migration orchestrator (`scripts/migration_runner.py`) with idempotent execution and audit logging
 * 🧪 **Automated DBRE Test Suite**: `pytest` harness (`tests/python/test_data_platform.py`) verifying 3NF circular FKs, partition schemes, TVP types, and SCD Type 2
 * 🎲 **Synthetic Enterprise Data Generator**: High-throughput mock data generator (`scripts/generate_mock_data.py`) producing 50,000+ relational & dimensional rows
-* 🗺️ **102-Lesson Curriculum**: Clean chapter-grouped lesson navigator with progress tracking
 * 🏢 **Case Study ERD**: [Company Database Peter Chen ERD & Relational Mapping](docs/ch01-case-study-erd-and-implementation.md)
 * 🛡️ **Live Integrity Constraints (DB2 Case Study)**: [DB2 Schema, Constraints c1–c8 & Referential Cascades](docs/db2-integrity-constraints-live.md) (MaharaTech CH01_VID05 live verified)
 * 📖 **Deep-Dive Handbook**: [Learning Guidance & DBRE Deep-Dive](docs/learning-guidance.md)
@@ -168,10 +171,15 @@ sql-server-data-platform/
 ├── tests/
 │   └── tSQLt/                                   # Unit testing test cases for stored procedures
 │       └── test_stored_procedures.sql
-├── web/                                         # Minimal dark-mode learning platform (Vite + React + WASM)
-│   ├── src/                                     # LessonView, PracticeStudio, AI Mentor, WASM SQL engine
+├── web/                                         # Interactive learning platform & T-SQL sandbox (React 19 + Vite + WASM)
+│   ├── src/
+│   │   ├── components/ui/                       # Reusable UI layer: CodeEditor, ResultsTable, ResourceCard
+│   │   ├── components/                          # Sidebar, RoadmapDiagram, DocsView, PracticeStudio, LessonView
+│   │   ├── context/                             # DatabaseContext (WASM SQLite) & ProgressContext
+│   │   └── data/                                # Video catalog, challenges, and concepts
 │   ├── index.html                               # Clean single-page app shell
-│   └── package.json
+│   ├── package.json                             # Dependencies: prismjs, react-simple-code-editor, react-hot-toast
+│   └── README.md                                # Web application architecture & dev guide
 ├── deploy.ps1                                   # Universal deployment orchestrator
 ├── CONTRIBUTING.md                              # T-SQL coding standards & contribution guide
 ├── CODE_OF_CONDUCT.md                           # Contributor Covenant Code of Conduct
@@ -208,6 +216,14 @@ sql-server-data-platform/
 * **Slowly Changing Dimensions**: Automated SCD Type 2 tracking (`ValidFrom`, `ValidTo`, `IsCurrent`) on `DimCustomer` and SCD Type 1 on `DimProduct`.
 * **SSRS Operational Reporting**: Parameterized enterprise report definition (`.rdl`) featuring date ranges, regional grouping, matrix aggregates, and drillthrough capabilities.
 
+### 5. Interactive Learning Platform & T-SQL Sandbox (`/web`)
+* **WASM In-Browser SQL Engine**: Zero-setup offline relational execution powered by `sql.js` (SQLite WebAssembly) with in-memory persistence and schema introspection.
+* **Prism.js Syntax-Highlighted Editor**: Reusable `CodeEditor` component with T-SQL grammar highlighting, line formatting, keyboard shortcuts (`Ctrl + Enter` / `F5`), and toast alerts (`react-hot-toast`).
+* **Execution Metrics Table**: Reusable `ResultsTable` displaying row counts, millisecond timing metrics (`⏱️ <1 ms`), NULL indicators, and comprehensive error formatting.
+* **DBRE Career Progression Roadmap**: 5-phase career progression guide with interactive phase cards, course module alignment, and certification targets (AZ-900 → DP-900 → DP-300 → DP-203).
+* **Curated Learning Resources Hub**: 40+ verified resources spanning Architecture, Storage Internals, Coding Standards, Books (Ben-Gan, Delaney, Kimball), Video Channels, LeetCode Practice Plans, Certifications, and DBA Tools.
+* **14-View Navigation & SSMS Object Explorer**: Complete sidebar routing with interactive database/table schema tree, Challenge Arena, Execution Plan Simulator, and Peter Chen ERD Explorer.
+
 ---
 
 ## Local Development & Reproduction
@@ -240,6 +256,23 @@ docker compose up -d
 # 2. Deploy platform objects to Docker container
 cd ..
 pwsh ./deploy.ps1 -Environment Docker
+```
+
+#### Option C: Run the Interactive Web Platform (Local Vite Server)
+To launch the in-browser learning studio, career roadmap, and T-SQL sandbox:
+
+```bash
+# Navigate to web directory and start Vite development server
+cd web
+npm install
+npm run dev
+```
+
+Open [http://localhost:5173/](http://localhost:5173/) in your browser.
+
+To produce a production-ready static build:
+```bash
+npm run build
 ```
 
 ---

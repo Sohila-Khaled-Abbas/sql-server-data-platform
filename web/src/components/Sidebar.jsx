@@ -17,7 +17,10 @@ import {
   ChevronDown, 
   Table, 
   Key, 
-  ExternalLink 
+  ExternalLink,
+  GraduationCap,
+  Award,
+  PlayCircle,
 } from 'lucide-react';
 
 export default function Sidebar({ isOpen, activeTab, onSelectTab, onRunQueryInStudio }) {
@@ -246,6 +249,27 @@ LIMIT 25;`);
         >
           <FileText size={16} className="nav-icon" />
           <span className="nav-label">Disaster Recovery Runbook</span>
+        </button>
+      </nav>
+
+      {/* 5. Learning & Career Growth */}
+      <div className="sidebar-section-title">Learning & Career Growth</div>
+      <nav className="sidebar-nav">
+        <button 
+          className={`nav-item ${activeTab === 'docs' ? 'active' : ''}`}
+          onClick={() => onSelectTab('docs')}
+        >
+          <GraduationCap size={16} className="nav-icon" />
+          <span className="nav-label">Learning Resources</span>
+          <span className="nav-pill badge-cyan">40+</span>
+        </button>
+        <button 
+          className={`nav-item ${activeTab === 'learn' ? 'active' : ''}`}
+          onClick={() => onSelectTab('learn')}
+        >
+          <PlayCircle size={16} className="nav-icon" />
+          <span className="nav-label">Video Lessons</span>
+          <span className="nav-pill badge-green">102</span>
         </button>
       </nav>
 

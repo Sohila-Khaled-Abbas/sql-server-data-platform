@@ -1,18 +1,18 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useDatabase } from '../context/DatabaseContext.jsx';
 import { useProgress } from '../context/ProgressContext.jsx';
 import { COURSE_VIDEOS, COURSE_METADATA } from '../data/videoCatalog.js';
 import confetti from 'canvas-confetti';
+import CodeEditor from './ui/CodeEditor.jsx';
+import ResultsTable from './ui/ResultsTable.jsx';
+import toast from 'react-hot-toast';
 import {
-  Play,
   ArrowLeft,
   ArrowRight,
   ExternalLink,
   Clock,
   CheckCircle2,
   Circle,
-  Copy,
-  Check,
 } from 'lucide-react';
 
 export default function LessonView({ currentLessonId, onSelectLesson }) {
@@ -27,9 +27,6 @@ export default function LessonView({ currentLessonId, onSelectLesson }) {
 
   const [editorSql, setEditorSql] = useState(lesson.sampleSql || '');
   const [queryResults, setQueryResults] = useState(null);
-  const [isExecuting, setIsExecuting] = useState(false);
-  const [copied, setCopied] = useState(false);
-  const textareaRef = useRef(null);
 
   // Sync when lesson changes
   useEffect(() => {
@@ -39,53 +36,38 @@ export default function LessonView({ currentLessonId, onSelectLesson }) {
     }
   }, [lesson?.id]);
 
-  const handleExecute = useCallback(() => {
-    if (!editorSql.trim()) return;
-    setIsExecuting(true);
+  const handleExecute = useCallback((codeToRun) => {
+    const sql = codeToRun ?? editorSql;
+    if (!sql || !sql.trim()) {
+      toast.error('Please enter a query to execute');
+      return;
+    }
     setTimeout(() => {
-      const res = runSql(editorSql);
+      const res = runSql(sql);
       setQueryResults(res);
-      setIsExecuting(false);
+      if (res?.error) {
+        toast.error('Query execution error');
+      } else {
+        toast.success(`Executed in ${res?.executionTimeMs || '<1'}ms`);
+      }
     }, 15);
   }, [editorSql, runSql]);
 
-  // Ctrl+Enter
-  useEffect(() => {
-    const handler = (e) => {
-      if ((e.ctrlKey && e.key === 'Enter') || e.key === 'F5') {
-        e.preventDefault();
-        handleExecute();
-      }
-    };
-    window.addEventListener('keydown', handler);
-    return () => window.removeEventListener('keydown', handler);
-  }, [handleExecute]);
+  const handleReset = useCallback(() => {
+    setEditorSql(lesson.sampleSql || '');
+    setQueryResults(null);
+  }, [lesson.sampleSql]);
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(editorSql);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1500);
-  };
+  const handleClear = useCallback(() => {
+    setEditorSql('');
+    setQueryResults(null);
+  }, []);
 
   const handleToggleComplete = () => {
     const wasCompleted = watchedVideos.includes(lesson.id);
     toggleWatched(lesson.id);
     if (!wasCompleted) {
       confetti({ particleCount: 60, spread: 55, origin: { y: 0.7 }, colors: ['#818cf8', '#34d399', '#fbbf24'] });
-    }
-  };
-
-  // Tab support in textarea
-  const handleKeyDown = (e) => {
-    if (e.key === 'Tab') {
-      e.preventDefault();
-      const start = e.target.selectionStart;
-      const end = e.target.selectionEnd;
-      const newValue = editorSql.substring(0, start) + '  ' + editorSql.substring(end);
-      setEditorSql(newValue);
-      setTimeout(() => {
-        e.target.selectionStart = e.target.selectionEnd = start + 2;
-      }, 0);
     }
   };
 
@@ -163,90 +145,27 @@ export default function LessonView({ currentLessonId, onSelectLesson }) {
         )}
       </div>
 
-      {/* SQL Editor */}
-      <div className="sql-editor-section">
+      {/* SQL Editor Section */}
+      <div className="sql-editor-section" style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
         <div className="sql-editor-label">
           Try it yourself
         </div>
-        <div className="sql-editor-container">
-          <textarea
-            ref={textareaRef}
-            className="sql-editor-textarea"
-            value={editorSql}
-            onChange={(e) => setEditorSql(e.target.value)}
-            onKeyDown={handleKeyDown}
-            placeholder="-- Write your T-SQL here..."
-            spellCheck={false}
-          />
-          <div className="sql-editor-toolbar">
-            <div style={{ display: 'flex', gap: 6 }}>
-              <button
-                className="sql-run-btn"
-                onClick={handleExecute}
-                disabled={isExecuting || !editorSql.trim()}
-              >
-                <Play size={14} />
-                {isExecuting ? 'Running...' : 'Run'}
-              </button>
-              <button
-                className="header-icon-btn"
-                onClick={handleCopy}
-                title="Copy SQL"
-                style={{ width: 32, height: 32 }}
-              >
-                {copied ? <Check size={14} /> : <Copy size={14} />}
-              </button>
-            </div>
-            <div className="sql-shortcut-hint">
-              <kbd>Ctrl</kbd> + <kbd>Enter</kbd> to run
-            </div>
-          </div>
-        </div>
+        <CodeEditor
+          value={editorSql}
+          onChange={setEditorSql}
+          onExecute={handleExecute}
+          onReset={handleReset}
+          onClear={handleClear}
+          placeholder="-- Write your T-SQL here..."
+          minHeight="180px"
+        />
 
         {/* Results */}
         {queryResults && (
-          <div className="sql-results">
-            <div className="sql-results-header">
-              <span className="sql-results-title">
-                {queryResults.error ? 'Error' : 'Results'}
-              </span>
-              {queryResults.rows && (
-                <span className="sql-results-count">
-                  {queryResults.rows.length} row{queryResults.rows.length !== 1 ? 's' : ''}
-                </span>
-              )}
-            </div>
-
-            {queryResults.error ? (
-              <div className="sql-results-error">{queryResults.error}</div>
-            ) : queryResults.rows?.length > 0 ? (
-              <div className="sql-results-table-wrap">
-                <table>
-                  <thead>
-                    <tr>
-                      {queryResults.columns.map((col, i) => (
-                        <th key={i}>{col}</th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {queryResults.rows.map((row, ri) => (
-                      <tr key={ri}>
-                        {queryResults.columns.map((col, ci) => (
-                          <td key={ci}>{row[col] ?? 'NULL'}</td>
-                        ))}
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            ) : (
-              <div className="sql-results-success">
-                <CheckCircle2 size={15} />
-                Query executed successfully. No rows returned.
-              </div>
-            )}
-          </div>
+          <ResultsTable
+            results={queryResults}
+            emptyMessage="Query executed successfully. No rows returned."
+          />
         )}
       </div>
 

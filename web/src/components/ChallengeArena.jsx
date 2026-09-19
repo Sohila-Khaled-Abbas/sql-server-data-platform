@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useDatabase } from '../context/DatabaseContext.jsx';
 import { useProgress } from '../context/ProgressContext.jsx';
 import { CHALLENGES } from '../data/challenges.js';
+import CodeEditor from './ui/CodeEditor.jsx';
+import ResultsTable from './ui/ResultsTable.jsx';
 import { 
   Trophy, 
   CheckCircle2, 
@@ -209,12 +211,14 @@ export default function ChallengeArena() {
               </div>
             </div>
 
-            <textarea
-              className="challenge-textarea"
-              rows={8}
-              spellCheck="false"
+            <CodeEditor
               value={editorSql}
-              onChange={(e) => setEditorSql(e.target.value)}
+              onChange={setEditorSql}
+              onExecute={() => handleRunTest(false)}
+              onReset={() => setEditorSql(activeChallenge.starterSql)}
+              minHeight="180px"
+              showToolbar={false}
+              className="challenge-code-editor"
             />
 
             {/* Test Status Banner */}
@@ -235,29 +239,9 @@ export default function ChallengeArena() {
             )}
 
             {/* Execution Output Grid */}
-            {testResult && testResult.columns && (
-              <div className="challenge-output-pane">
-                <div className="output-header">
-                  <span>Execution Output ({testResult.rowCount} rows in {testResult.executionTimeMs} ms)</span>
-                </div>
-                <div className="output-table-scroll">
-                  <table className="query-result-table">
-                    <thead>
-                      <tr>
-                        {testResult.columns.map(c => <th key={c}>{c}</th>)}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {testResult.values.slice(0, 10).map((row, rIdx) => (
-                        <tr key={rIdx}>
-                          {row.map((val, cIdx) => (
-                            <td key={cIdx}>{val === null ? 'NULL' : String(val)}</td>
-                          ))}
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+            {testResult && (
+              <div style={{ marginTop: '12px' }}>
+                <ResultsTable results={testResult} />
               </div>
             )}
           </div>

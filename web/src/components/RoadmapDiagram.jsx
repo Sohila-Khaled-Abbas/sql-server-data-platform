@@ -5,7 +5,8 @@ import { CONCEPT_CATEGORIES, COURSE_CONCEPTS } from '../data/courseConceptRoadma
 import { 
   CheckCircle2, 
   Circle, 
-  ExternalLink, 
+  ExternalLink,
+  GraduationCap, 
   Plus, 
   Sparkles, 
   Award, 
@@ -145,7 +146,7 @@ export default function RoadmapDiagram({ onSelectTab, onRunQueryInStudio }) {
     addStudentAttachment 
   } = useProgress();
 
-  // View state: 'concepts' | 'stages'
+  // View state: 'concepts' | 'stages' | 'career'
   const [activeView, setActiveView] = useState('concepts');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [conceptSearch, setConceptSearch] = useState('');
@@ -192,7 +193,7 @@ export default function RoadmapDiagram({ onSelectTab, onRunQueryInStudio }) {
 
           <h1 className="hero-title">SQL Server Data Platform & DBRE Learning Roadmap</h1>
           <p className="hero-desc">
-            A visual, architectural curriculum traversing all 102 official modules of <strong>Implementing and Developing SQL Server Objects</strong> taught by Eng. Rami Mohamed Abonagi (ITI). Toggle between the <strong>Course Concepts Architecture Flowchart</strong> and the <strong>Curriculum Stages Progression</strong> to inspect relational patterns, storage internals, and live T-SQL scripts.
+            A visual, architectural curriculum traversing all 102 official modules of <strong>Implementing and Developing SQL Server Objects</strong> taught by Eng. Rami Mohamed Abonagi (ITI). Toggle between the <strong>Course Concepts Architecture Flowchart</strong>, the <strong>Curriculum Stages Progression</strong>, and the <strong>DBRE Career Roadmap</strong> to inspect relational patterns, storage internals, and career growth paths.
           </p>
 
           {/* Current Rank Banner */}
@@ -268,6 +269,18 @@ export default function RoadmapDiagram({ onSelectTab, onRunQueryInStudio }) {
               <span className="tab-sub">Chapter-by-chapter 102 lesson tracking</span>
             </div>
             <span className="badge badge-sm badge-dark">102 Lessons</span>
+          </button>
+
+          <button 
+            className={`switcher-tab-btn ${activeView === 'career' ? 'active' : ''}`}
+            onClick={() => setActiveView('career')}
+          >
+            <GraduationCap size={18} />
+            <div className="tab-text">
+              <span className="tab-title">DBRE Career Roadmap</span>
+              <span className="tab-sub">5-phase career progression path</span>
+            </div>
+            <span className="badge badge-sm badge-green">Career</span>
           </button>
         </div>
       </div>
@@ -567,6 +580,213 @@ export default function RoadmapDiagram({ onSelectTab, onRunQueryInStudio }) {
                 </div>
               );
             })}
+          </div>
+        </div>
+      )}
+
+      {/* VIEW C: DBRE CAREER ROADMAP */}
+      {activeView === 'career' && (
+        <div className="career-roadmap-section card">
+          <div className="section-title-row">
+            <div className="title-with-logo">
+              <GraduationCap size={28} className="text-emerald" />
+              <div>
+                <h2>Database Reliability Engineer Career Roadmap</h2>
+                <p className="section-subtitle">
+                  A 5-phase progression path from SQL beginner to enterprise DBRE architect, with curated resources at each stage.
+                </p>
+              </div>
+            </div>
+            <span className="badge badge-green">5 Career Phases</span>
+          </div>
+
+          <div className="career-phases-flow">
+            {/* Phase 1: Foundation */}
+            <div className="career-phase-card" style={{ '--phase-accent': '#0ea5e9' }}>
+              <div className="career-phase-header">
+                <span className="career-phase-number">Phase 01</span>
+                <span className="career-phase-level badge badge-cyan">Beginner</span>
+              </div>
+              <h3 className="career-phase-title">🧱 SQL Foundations & Relational Theory</h3>
+              <p className="career-phase-desc">
+                Master the building blocks: SQL syntax, relational algebra, 3NF normalization, ERD design, and basic CRUD operations.
+              </p>
+              <div className="career-phase-topics">
+                <span>SELECT/INSERT/UPDATE/DELETE</span>
+                <span>JOINs & Subqueries</span>
+                <span>Data Types</span>
+                <span>Peter Chen ERD</span>
+                <span>1NF → 3NF</span>
+                <span>Primary & Foreign Keys</span>
+              </div>
+              <div className="career-phase-resources">
+                <strong>Resources:</strong>
+                <a href="https://sqlbolt.com/" target="_blank" rel="noopener noreferrer">SQLBolt ↗</a>
+                <a href="https://www.w3schools.com/sql/" target="_blank" rel="noopener noreferrer">W3Schools SQL ↗</a>
+                <a href="https://sqlzoo.net/wiki/SQL_Tutorial" target="_blank" rel="noopener noreferrer">SQLZoo ↗</a>
+              </div>
+              <div className="career-phase-course-link">
+                📚 Course Alignment: <strong>CH01 VID01–VID05</strong> (Storage, Filegroups, ERD, Relational Mapping)
+              </div>
+            </div>
+
+            <div className="career-phase-connector">
+              <div className="connector-line" />
+              <div className="connector-arrow">▼</div>
+            </div>
+
+            {/* Phase 2: Intermediate */}
+            <div className="career-phase-card" style={{ '--phase-accent': '#10b981' }}>
+              <div className="career-phase-header">
+                <span className="career-phase-number">Phase 02</span>
+                <span className="career-phase-level badge badge-green">Intermediate</span>
+              </div>
+              <h3 className="career-phase-title">⚡ T-SQL Programming & Transactions</h3>
+              <p className="career-phase-desc">
+                Write production T-SQL: variables, control flow, stored procedures, UDFs, error handling with TRY/CATCH, and ACID transactions.
+              </p>
+              <div className="career-phase-topics">
+                <span>Variables & Flow Control</span>
+                <span>Stored Procedures</span>
+                <span>Scalar & Table UDFs</span>
+                <span>TRY...CATCH</span>
+                <span>XACT_ABORT</span>
+                <span>Temp Tables</span>
+                <span>Transactions & Savepoints</span>
+              </div>
+              <div className="career-phase-resources">
+                <strong>Resources:</strong>
+                <a href="https://www.microsoftpressstore.com/store/t-sql-fundamentals-9780138102104" target="_blank" rel="noopener noreferrer">T-SQL Fundamentals (Itzik Ben-Gan) ↗</a>
+                <a href="https://leetcode.com/studyplan/top-sql-50/" target="_blank" rel="noopener noreferrer">LeetCode SQL 50 ↗</a>
+              </div>
+              <div className="career-phase-course-link">
+                📚 Course Alignment: <strong>CH02</strong> (Variables, UDFs, System DBs, ACID Transactions)
+              </div>
+            </div>
+
+            <div className="career-phase-connector">
+              <div className="connector-line" />
+              <div className="connector-arrow">▼</div>
+            </div>
+
+            {/* Phase 3: Advanced */}
+            <div className="career-phase-card" style={{ '--phase-accent': '#8b5cf6' }}>
+              <div className="career-phase-header">
+                <span className="career-phase-number">Phase 03</span>
+                <span className="career-phase-level badge badge-purple">Advanced</span>
+              </div>
+              <h3 className="career-phase-title">🔍 Performance Tuning & High Availability</h3>
+              <p className="career-phase-desc">
+                Optimize at scale: B-Tree indexing, execution plan analysis, partitioning, covering indexes, views, CTEs, and disaster recovery with Log Shipping and Database Mirroring.
+              </p>
+              <div className="career-phase-topics">
+                <span>Clustered & NC Indexes</span>
+                <span>Execution Plans</span>
+                <span>Partitioning</span>
+                <span>Table-Valued Parameters</span>
+                <span>Indexed Views</span>
+                <span>Log Shipping</span>
+                <span>Database Mirroring</span>
+                <span>XML/XQuery</span>
+              </div>
+              <div className="career-phase-resources">
+                <strong>Resources:</strong>
+                <a href="https://www.youtube.com/@BrentOzar" target="_blank" rel="noopener noreferrer">Brent Ozar (YouTube) ↗</a>
+                <a href="https://www.sentryone.com/plan-explorer" target="_blank" rel="noopener noreferrer">Plan Explorer ↗</a>
+                <a href="https://learn.microsoft.com/en-us/sql/relational-databases/query-processing-architecture-guide" target="_blank" rel="noopener noreferrer">Query Processing Guide ↗</a>
+              </div>
+              <div className="career-phase-course-link">
+                📚 Course Alignment: <strong>CH01 VID06–16 + CH03</strong> (Indexes, Views, Partitioning, HA/DR)
+              </div>
+            </div>
+
+            <div className="career-phase-connector">
+              <div className="connector-line" />
+              <div className="connector-arrow">▼</div>
+            </div>
+
+            {/* Phase 4: Expert */}
+            <div className="career-phase-card" style={{ '--phase-accent': '#f59e0b' }}>
+              <div className="career-phase-header">
+                <span className="career-phase-number">Phase 04</span>
+                <span className="career-phase-level badge badge-amber">Expert</span>
+              </div>
+              <h3 className="career-phase-title">🛡️ Automation, Governance & Security</h3>
+              <p className="career-phase-desc">
+                Build enterprise systems: DML/DDL audit triggers, schema guard triggers, CLR integration, PowerShell SMO automation, and CI/CD database deployment pipelines.
+              </p>
+              <div className="career-phase-topics">
+                <span>DML Audit Triggers</span>
+                <span>DDL Security Triggers</span>
+                <span>OUTPUT Clause</span>
+                <span>C# SQL CLR</span>
+                <span>PowerShell SMO</span>
+                <span>GitHub Actions CI/CD</span>
+                <span>Idempotent Migrations</span>
+              </div>
+              <div className="career-phase-resources">
+                <strong>Resources:</strong>
+                <a href="https://dbatools.io/" target="_blank" rel="noopener noreferrer">dbatools PowerShell ↗</a>
+                <a href="https://github.com/amachanic/sp_whoisactive" target="_blank" rel="noopener noreferrer">sp_WhoIsActive ↗</a>
+                <a href="https://learn.microsoft.com/en-us/credentials/certifications/azure-database-administrator-associate/" target="_blank" rel="noopener noreferrer">DP-300 Certification ↗</a>
+              </div>
+              <div className="career-phase-course-link">
+                📚 Course Alignment: <strong>CH04</strong> (Stored Procedures, Triggers, CLR, SMO)
+              </div>
+            </div>
+
+            <div className="career-phase-connector">
+              <div className="connector-line" />
+              <div className="connector-arrow">▼</div>
+            </div>
+
+            {/* Phase 5: Architect */}
+            <div className="career-phase-card" style={{ '--phase-accent': '#CC292B' }}>
+              <div className="career-phase-header">
+                <span className="career-phase-number">Phase 05</span>
+                <span className="career-phase-level badge badge-mssql-red">Architect</span>
+              </div>
+              <h3 className="career-phase-title">📊 Data Warehousing & Enterprise Architecture</h3>
+              <p className="career-phase-desc">
+                Design enterprise data platforms: Kimball star schemas, Slowly Changing Dimensions (SCD), SSRS reporting, OLAP vs OLTP, columnstore indexes, and full platform architecture.
+              </p>
+              <div className="career-phase-topics">
+                <span>Star Schema Design</span>
+                <span>SCD Type 1 & 2</span>
+                <span>Surrogate Keys</span>
+                <span>Columnstore Indexes</span>
+                <span>SSRS Reports</span>
+                <span>ETL Architecture</span>
+                <span>Enterprise DBRE</span>
+              </div>
+              <div className="career-phase-resources">
+                <strong>Resources:</strong>
+                <a href="https://www.kimballgroup.com/data-warehouse-business-intelligence-resources/books/" target="_blank" rel="noopener noreferrer">Kimball Toolkit ↗</a>
+                <a href="https://www.oreilly.com/library/view/database-reliability-engineering/9781491925935/" target="_blank" rel="noopener noreferrer">Database Reliability Engineering ↗</a>
+                <a href="https://learn.microsoft.com/en-us/credentials/certifications/azure-data-engineer/" target="_blank" rel="noopener noreferrer">DP-203 Data Engineer ↗</a>
+              </div>
+              <div className="career-phase-course-link">
+                📚 Course Alignment: <strong>CH05 + Final Capstone</strong> (Kimball Star, SCD, SSRS, Platform Deployment)
+              </div>
+            </div>
+          </div>
+
+          {/* Career Progress Indicator */}
+          <div className="career-progress-summary">
+            <div className="career-progress-info">
+              <span>Your current progress places you at:</span>
+              <strong style={{ color: progressPercent < 20 ? '#0ea5e9' : progressPercent < 40 ? '#10b981' : progressPercent < 60 ? '#8b5cf6' : progressPercent < 80 ? '#f59e0b' : '#CC292B' }}>
+                {progressPercent < 20 ? 'Phase 1: SQL Foundations' :
+                 progressPercent < 40 ? 'Phase 2: T-SQL Programming' :
+                 progressPercent < 60 ? 'Phase 3: Performance & HA' :
+                 progressPercent < 80 ? 'Phase 4: Automation & Governance' :
+                 'Phase 5: Enterprise Architecture'}
+              </strong>
+            </div>
+            <div className="career-progress-bar-track">
+              <div className="career-progress-bar-fill" style={{ width: `${progressPercent}%` }} />
+            </div>
+            <span className="career-progress-pct">{progressPercent}% Complete</span>
           </div>
         </div>
       )}

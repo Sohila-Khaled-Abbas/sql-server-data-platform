@@ -196,3 +196,51 @@ gantt
 
 ### Q3: Why does `MERGE` fail when a table has a bound `RULE`?
 **Answer**: SQL Server rules created via `CREATE RULE` and bound via `sp_bindrule` represent legacy Sybase-era constraints. The modern relational query optimizer's `MERGE` engine does not support evaluating old-style rule objects during execution. Production tables should exclusively use declarative `CHECK` and `DEFAULT` constraints.
+
+---
+
+## 🗺️ DBRE & Data Engineering Career Progression Roadmap
+
+A structured 5-phase professional trajectory bridging relational database fundamentals with enterprise data platform architecture:
+
+```mermaid
+flowchart LR
+    P1["🌱 Phase 1: Foundations<br/>(3NF, 8KB Pages, B-Trees)"] --> P2["⚡ Phase 2: Programming<br/>(ACID, Savepoints, UDFs)"]
+    P2 --> P3["🚀 Phase 3: Performance<br/>(Partitioning, HA, TVPs)"]
+    P3 --> P4["🛡️ Phase 4: Governance<br/>(Audit Triggers, CLR, SMO)"]
+    P4 --> P5["🏛️ Phase 5: Architecture<br/>(Kimball DW, SCDs, DBRE)"]
+```
+
+| Phase | Seniority Tier | Core Competencies | Course Alignment | Key Target Certification |
+| :---: | :--- | :--- | :---: | :--- |
+| **01** | **🌱 Foundational (Junior DBA / SQL Dev)** | 3NF Relational Modeling, 8 KB Page Geometry, Filegroups, Constraints (PK/FK/Check), Clustered/Non-Clustered Indexes, Differential Backups | **CH01** | [AZ-900: Azure Fundamentals](https://learn.microsoft.com/en-us/credentials/certifications/azure-fundamentals/) |
+| **02** | **⚡ Intermediate (T-SQL Engineer)** | T-SQL Flow Control, Scalar UDF Inlining, Inline vs Multi-Statement TVFs, `tempdb` Mechanics, Explicit ACID Transactions & Savepoints | **CH02** | [DP-900: Azure Data Fundamentals](https://learn.microsoft.com/en-us/credentials/certifications/azure-data-fundamentals/) |
+| **03** | **🚀 Advanced (Performance & HA Specialist)** | Horizontal Range Partitioning, Zero-IO Partition Switching (`SWITCH`), Semi-Structured XML/XQuery, TVP Bulk Ingestion, Log Shipping, Mirroring | **CH03** | [DP-300: Azure Database Administrator](https://learn.microsoft.com/en-us/credentials/certifications/azure-database-administrator-associate/) |
+| **04** | **🛡️ Expert (DBRE & Automation Engineer)** | DML CDC Audit Triggers, DDL Server Triggers (`EVENTDATA`), Managed C# SQL CLR Assemblies, PowerShell SMO, CI/CD Migrations | **CH04** | [DP-300 / DevOps Engineer](https://learn.microsoft.com/en-us/credentials/certifications/devops-engineer/) |
+| **05** | **🏛️ Architect (Data Platform & BI Architect)** | Kimball Dimensional Modeling, Star Schemas, SCD Type 1 & 2, Columnstore Indexes, SSRS Paginated Reports, High-Availability Topology | **CH05 + Capstone** | [DP-203: Azure Data Engineer Associate](https://learn.microsoft.com/en-us/credentials/certifications/azure-data-engineer/) |
+
+---
+
+## 📚 Curated Learning Resources Matrix
+
+All external documentation and study materials verified and mapped to practical engineering applications:
+
+### 📖 Essential Books & Industry Texts
+* 📘 **T-SQL Fundamentals** by *Itzik Ben-Gan* — The definitive manual on set-based T-SQL programming, window functions, and relational theory.
+* 📗 **Microsoft SQL Server Internals** by *Kalen Delaney* — Deep architectural breakdown of SQL Server storage engine, buffer pool, locking, and memory managers.
+* 📙 **The Data Warehouse Toolkit** by *Ralph Kimball* — Industry standard on dimensional modeling, bus matrix architecture, and slowly changing dimensions.
+* 📕 **Database Reliability Engineering** by *Laine Campbell & Charity Majors* — Operational design principles, SLOs/SLIs, automated failover, and observability.
+
+### 🏆 Interactive Practice Platforms
+* 🎯 **[LeetCode SQL 50 Study Plan](https://leetcode.com/studyplan/top-sql-50/)** — Real-world interview query challenges (window functions, self-joins, CTEs).
+* 🎯 **[HackerRank SQL Track](https://www.hackerrank.com/domains/sql)** — Structured skill assessments with automated grading.
+* 🎯 **[SQLZoo](https://sqlzoo.net/wiki/SQL_Tutorial)** — Interactive SQL tutorials with immediate live execution.
+* 🎯 **[SQLBolt](https://sqlbolt.com/)** — Guided bite-sized exercises for relational concepts.
+
+### 🔧 Production Tooling & Utilities
+* 🛠️ **[SQL Server Management Studio (SSMS)](https://learn.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms)** — Primary enterprise GUI and query engine tool.
+* 🛠️ **[Azure Data Studio](https://learn.microsoft.com/en-us/azure-data-studio/download-azure-data-studio)** — Modern cross-platform notebook-first SQL IDE.
+* 🛠️ **[sp_WhoIsActive by Adam Machanic](https://github.com/amachanic/sp_whoisactive)** — Industry gold-standard query diagnostic and lock-monitoring procedure.
+* 🛠️ **[dbatools PowerShell Module](https://dbatools.io/)** — Community PowerShell automation framework featuring 500+ administrative commands.
+* 🛠️ **[SentryOne Plan Explorer](https://www.sentryone.com/plan-explorer)** — Advanced graphical execution plan diagnostics and cost visualization.
+
