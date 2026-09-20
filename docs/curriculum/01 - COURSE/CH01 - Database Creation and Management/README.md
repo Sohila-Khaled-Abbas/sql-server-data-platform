@@ -16,7 +16,11 @@ tags:
 > **Production Code:** [`src/01_storage_and_schema/`](../../../../src/01_storage_and_schema/)
 
 ## 🎯 Engineering Focus
-Physical storage architecture, data pages, extents, multi-filegroups (PRIMARY, DATA_FG, INDEX_FG), declarative constraints, B-Tree indexes, backup chains, and database snapshots.
+Physical storage architecture, data pages, extents, multi-filegroups (PRIMARY, DATA_FG, INDEX_FG), declarative ANSI constraints, legacy standalone rules & defaults (`CREATE RULE`, `sp_bindrule`, `sp_unbindrule`, `DROP RULE`, `CREATE DEFAULT`, `sp_bindefault`, `sp_unbindefault`), B-Tree indexes, backup chains, and database snapshots.
+
+> [!tip] Verified Live Telemetry
+> - [Live DB2 Integrity Constraints Telemetry (CH01_VID05)](../../../../docs/db2-integrity-constraints-live.md)
+> - [Live ITI Rules & Defaults Telemetry (CH01_VID06)](../../../../docs/ch01-vid06-constraints-rules-defaults-live.md)
 
 ---
 

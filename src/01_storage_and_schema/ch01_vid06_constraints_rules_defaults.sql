@@ -194,85 +194,104 @@ DELETE FROM dbo.Instructor WHERE Ins_Id = 999;
 GO
 
 -- ----------------------------------------------------------------------------
--- Step 6: Advantage 1 - Sharing a Rule Between Multiple Tables
+-- Step 6: Advantage 1 - Sharing a Rule Across Tables (instructor.salary & emps.overtime)
 -- ----------------------------------------------------------------------------
-IF OBJECT_ID(N'dbo.Consultant', N'U') IS NOT NULL DROP TABLE dbo.Consultant;
+-- Ensure table emps exists with column overtime (matching authentic course environment)
+IF OBJECT_ID(N'dbo.emps', N'U') IS NULL
+BEGIN
+    CREATE TABLE dbo.emps
+    (
+        eid INT IDENTITY(1,1) PRIMARY KEY,
+        ename VARCHAR(50) NULL,
+        salary INT NULL,
+        overtime INT NULL
+    );
+    PRINT '>>> Table dbo.emps created successfully.';
+END
+ELSE
+BEGIN
+    ALTER TABLE dbo.emps ALTER COLUMN ename VARCHAR(50) NULL;
+END
 GO
 
-CREATE TABLE dbo.Consultant
-(
-    ConsultantId INT PRIMARY KEY,
-    ConsultantName NVARCHAR(50),
-    HourlyRate MONEY
-);
+-- Seed sample rows in emps
+IF NOT EXISTS (SELECT 1 FROM dbo.emps WHERE ename = 'Ali')
+BEGIN
+    INSERT INTO dbo.emps (ename, salary, overtime) VALUES ('Ali', 3000, 1500);
+END
 GO
 
--- Bind the EXACT same rule object to another table's column
-EXEC sp_bindrule 'myrule', 'dbo.Consultant.HourlyRate';
-PRINT '>>> Rule [myrule] bound to dbo.Consultant.HourlyRate (Shared across tables).';
+-- Bind the EXACT same rule object to another table's column: emps.overtime
+EXEC sp_bindrule 'myrule', 'emps.overtime';
+PRINT '>>> sp_bindrule executed: myrule bound to emps.overtime (Shared across tables).';
 GO
 
--- Test enforcement on second table
+-- Test enforcement on emps.overtime
 BEGIN TRY
-    INSERT INTO dbo.Consultant (ConsultantId, ConsultantName, HourlyRate)
-    VALUES (1, N'Dr. Smith', 300);
+    INSERT INTO dbo.emps (ename, salary, overtime)
+    VALUES ('BadEmp', 4000, 500); -- 500 <= 1000, violates myrule
 END TRY
 BEGIN CATCH
-    PRINT '>>> [EXPECTED] Shared rule enforced on dbo.Consultant:';
+    PRINT '>>> [EXPECTED] Rule successfully blocked invalid INSERT on emps.overtime (overtime = 500):';
     PRINT '    Error ' + CAST(ERROR_NUMBER() AS VARCHAR) + ': ' + ERROR_MESSAGE();
 END CATCH;
 GO
 
--- Clean up Consultant table
-EXEC sp_unbindrule 'dbo.Consultant.HourlyRate';
-DROP TABLE dbo.Consultant;
+-- ----------------------------------------------------------------------------
+-- Step 7: Dropping Rules & Dependency Handling (Msg 3716 Demonstration)
+-- ----------------------------------------------------------------------------
+-- Attempting to drop rule while it is still bound to columns triggers Msg 3716:
+-- "The rule 'myrule' cannot be dropped because it is bound to one or more column."
+BEGIN TRY
+    DROP RULE myrule;
+END TRY
+BEGIN CATCH
+    PRINT '>>> [EXPECTED] Cannot drop rule while bound to columns (Msg 3716):';
+    PRINT '    Error ' + CAST(ERROR_NUMBER() AS VARCHAR) + ': ' + ERROR_MESSAGE();
+END CATCH;
+GO
+
+-- Unbind rule from all bound columns before dropping (Authentic Video Sequence)
+EXEC sp_unbindrule 'instructor.salary';
+PRINT '>>> sp_unbindrule executed: myrule unbound from instructor.salary.';
+
+EXEC sp_unbindrule 'emps.overtime';
+PRINT '>>> sp_unbindrule executed: myrule unbound from emps.overtime.';
+
+-- Now DROP RULE succeeds cleanly
+DROP RULE myrule;
+PRINT '>>> DROP RULE myrule executed successfully.';
 GO
 
 -- ----------------------------------------------------------------------------
--- Step 7: Advantage 2 - Binding a Rule to a User-Defined Data Type (UDDT)
+-- Step 8: Standalone Default Objects (create default & sp_bindefault)
 -- ----------------------------------------------------------------------------
-IF TYPE_ID(N'dbo.udt_CompSalary') IS NOT NULL
-BEGIN
-    DROP TYPE dbo.udt_CompSalary;
-END
-GO
+-- In the video:
+-- --default
+-- create default mydef as 5000
+-- sp_bindefault mydef,'instructor.salary'
+-- sp_unbindefault 'instructor.salary'
+-- drop default mydef
 
-CREATE TYPE dbo.udt_CompSalary FROM MONEY NOT NULL;
-GO
-
--- Bind rule directly to the user-defined type
-EXEC sp_bindrule 'myrule', 'dbo.udt_CompSalary';
-PRINT '>>> Rule [myrule] bound to User-Defined Data Type dbo.udt_CompSalary.';
-GO
-
--- Clean up type binding
-EXEC sp_unbindrule 'dbo.udt_CompSalary';
-DROP TYPE dbo.udt_CompSalary;
-GO
-
--- ----------------------------------------------------------------------------
--- Step 8: Defaults (Global Standalone Default Values)
--- ----------------------------------------------------------------------------
 IF EXISTS (SELECT 1 FROM sys.objects WHERE name = N'mydef' AND type = 'D')
 BEGIN
-    EXEC sp_unbindefault 'dbo.Instructor.Salary';
+    EXEC sp_unbindefault 'instructor.salary';
     DROP DEFAULT mydef;
 END
 GO
 
----> Default [Global default value]
+-- Create global standalone default
 CREATE DEFAULT mydef AS 5000;
 GO
-
-PRINT '>>> Default [mydef] created successfully.';
+PRINT '>>> CREATE DEFAULT mydef AS 5000 executed successfully.';
 GO
 
--- Bind default to column
-EXEC sp_bindefault 'mydef', 'dbo.Instructor.Salary';
-PRINT '>>> sp_bindefault executed: mydef bound to dbo.Instructor.Salary.';
+-- Bind default to instructor.salary
+EXEC sp_bindefault 'mydef', 'instructor.salary';
+PRINT '>>> sp_bindefault executed: mydef bound to instructor.salary.';
 GO
 
--- Test default value on INSERT with unspecified Salary
+-- Test default value on INSERT when Salary is omitted
 INSERT INTO dbo.Instructor (Ins_Id, Ins_Name)
 VALUES (888, N'DefaultSalaryInstructor');
 
@@ -285,19 +304,25 @@ DELETE FROM dbo.Instructor WHERE Ins_Id = 888;
 GO
 
 -- ----------------------------------------------------------------------------
--- Step 9: Unbinding & Object Lifecycle Management
+-- Step 9: Unbinding & Dropping Default Object (Lifecycle Cleanup)
 -- ----------------------------------------------------------------------------
-EXEC sp_unbindrule 'dbo.Instructor.Salary';
-PRINT '>>> Rule unbound from dbo.Instructor.Salary.';
+-- Attempting to drop default while bound triggers Msg 3716:
+BEGIN TRY
+    DROP DEFAULT mydef;
+END TRY
+BEGIN CATCH
+    PRINT '>>> [EXPECTED] Cannot drop default while bound to column (Msg 3716):';
+    PRINT '    Error ' + CAST(ERROR_NUMBER() AS VARCHAR) + ': ' + ERROR_MESSAGE();
+END CATCH;
+GO
 
-DROP RULE myrule;
-PRINT '>>> Rule [myrule] dropped successfully.';
+-- Unbind default from column
+EXEC sp_unbindefault 'instructor.salary';
+PRINT '>>> sp_unbindefault executed: mydef unbound from instructor.salary.';
 
-EXEC sp_unbindefault 'dbo.Instructor.Salary';
-PRINT '>>> Default unbound from dbo.Instructor.Salary.';
-
+-- Drop default
 DROP DEFAULT mydef;
-PRINT '>>> Default [mydef] dropped successfully.';
+PRINT '>>> DROP DEFAULT mydef executed successfully.';
 GO
 
 PRINT '============================================================================';

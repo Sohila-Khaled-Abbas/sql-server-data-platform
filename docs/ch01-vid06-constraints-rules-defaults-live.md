@@ -119,39 +119,96 @@ GO
    The statement was terminated. The conflict occurred in database 'ITI', table 'dbo.Instructor', column 'Salary'.
    ```
 
-### Scenario 4: Cross-Table Rule Sharing
+### Scenario 4: Cross-Table Rule Sharing (`instructor.salary` & `emps.overtime`)
 ```sql
--- Bind the same rule object to an independent table
-CREATE TABLE dbo.Consultant (ConsultantId INT PRIMARY KEY, HourlyRate MONEY);
-EXEC sp_bindrule 'myrule', 'dbo.Consultant.HourlyRate';
+-- In the video: sp_bindrule myrule, 'emps.overtime'
+-- Bind the EXACT same rule object to another table's column
+EXEC sp_bindrule 'myrule', 'emps.overtime';
+GO
 ```
-**Result:** Single rule definition enforces consistency across unrelated schemas.
-
-### Scenario 5: User-Defined Data Type (UDDT) Rule Binding
-```sql
-CREATE TYPE dbo.SalaryType FROM MONEY NOT NULL;
-EXEC sp_bindrule 'myrule', 'dbo.SalaryType';
+**SQL Server Telemetry:**
+```text
+Rule bound to table column.
 ```
-**Result:** Any new column declared with `dbo.SalaryType` automatically inherits the `@x > 1000` rule.
-
-### Scenario 6: Global Default Object (`mydef`)
+**Validation on `emps.overtime`:**
 ```sql
----> Default [Global default value]
+-- Attempting to insert overtime <= 1000 triggers rule violation
+INSERT INTO dbo.emps (ename, salary, overtime) VALUES ('BadEmp', 4000, 500);
+```
+**SQL Server Error Output:**
+```text
+Msg 513, Level 16, State 0, Line 1
+A column insert or update conflicts with a rule imposed by a previous CREATE RULE statement.
+The statement was terminated. The conflict occurred in database 'ITI', table 'dbo.emps', column 'overtime'.
+```
+
+### Scenario 5: Dropping Rules & Dependency Handling (Msg 3716 Error)
+```sql
+-- In the video: attempting to drop rule while bound fails!
+DROP RULE myrule;
+```
+**SQL Server Output:**
+```text
+Msg 3716, Level 16, State 1, Line 1
+The rule 'myrule' cannot be dropped because it is bound to one or more column.
+```
+
+### Scenario 6: Safe Unbinding Sequence (`sp_unbindrule`)
+```sql
+-- In the video: unbind from both tables before dropping
+EXEC sp_unbindrule 'instructor.salary';
+EXEC sp_unbindrule 'emps.overtime';
+DROP RULE myrule;
+```
+**SQL Server Output:**
+```text
+Rule unbound from table column.
+Rule unbound from table column.
+Command(s) completed successfully.
+```
+
+### Scenario 7: Standalone Global Default Object (`mydef`)
+```sql
+-- In the video:
+-- --default
+-- create default mydef as 5000
+-- sp_bindefault mydef,'instructor.salary'
 CREATE DEFAULT mydef AS 5000;
 GO
-EXEC sp_bindefault 'mydef', 'dbo.Instructor.Salary';
+EXEC sp_bindefault 'mydef', 'instructor.salary';
 GO
 ```
-**Result:** New rows inserted without specifying `Salary` automatically receive `5000.0000`.
-
-### Scenario 7: Unbinding & Object Lifecycle Management
+**SQL Server Telemetry:**
+```text
+Default bound to column.
+```
+**Default Value Verification:**
 ```sql
--- Safe unbinding before dropping standalone objects
-EXEC sp_unbindrule 'dbo.Instructor.Salary';
-DROP RULE myrule;
+INSERT INTO dbo.Instructor (Ins_Id, Ins_Name) VALUES (888, N'DefaultSalaryInstructor');
+SELECT Ins_Id, Ins_Name, Salary FROM dbo.Instructor WHERE Ins_Id = 888;
+```
+| Ins_Id | Ins_Name | Salary |
+| :---: | :--- | :---: |
+| `888` | DefaultSalaryInstructor | `5000.0000` |
 
-EXEC sp_unbindefault 'dbo.Instructor.Salary';
+### Scenario 8: Dropping Bound Default & Safe Unbinding (`sp_unbindefault`)
+```sql
+-- In the video:
+-- sp_unbindefault 'instructor.salary'
+-- drop default mydef
+
+-- Attempting drop before unbinding:
 DROP DEFAULT mydef;
+-- Triggers: Msg 3716, Level 16, State 3: The default 'mydef' cannot be dropped because it is bound to one or more column.
+
+-- Unbind and drop:
+EXEC sp_unbindefault 'instructor.salary';
+DROP DEFAULT mydef;
+```
+**SQL Server Output:**
+```text
+Default unbound from table column.
+Command(s) completed successfully.
 ```
 
 ---
@@ -160,4 +217,5 @@ DROP DEFAULT mydef;
 
 * **Source T-SQL Script**: [`src/01_storage_and_schema/ch01_vid06_constraints_rules_defaults.sql`](file:///d:/courses/Data%20Science/Data%20Engineering/Projects/sql-server-data-platform/src/01_storage_and_schema/ch01_vid06_constraints_rules_defaults.sql)
 * **Preceding Module**: [`src/01_storage_and_schema/ch01_vid05_integrity_constraints.sql`](file:///d:/courses/Data%20Science/Data%20Engineering/Projects/sql-server-data-platform/src/01_storage_and_schema/ch01_vid05_integrity_constraints.sql)
+* **Obsidian Note**: [`docs/curriculum/01 - COURSE/CH01 - Database Creation and Management/CH01_VID06 - Constraints, Rules, and Default Values.md`](file:///d:/courses/Data%20Science/Data%20Engineering/Projects/sql-server-data-platform/docs/curriculum/01%20-%20COURSE/CH01%20-%20Database%20Creation%20and%20Management/CH01_VID06%20-%20Constraints,%20Rules,%20and%20Default%20Values.md)
 * **Syllabus Mapping**: [`docs/course-syllabus-mapping.md`](file:///d:/courses/Data%20Science/Data%20Engineering/Projects/sql-server-data-platform/docs/course-syllabus-mapping.md)

@@ -42,44 +42,102 @@ Constraints, Rules, and Default Values provides foundational capabilities in SQL
 
 ## 🔧 SQL Syntax
 ```sql
--- Standard T-SQL Syntax Reference for Constraints, Rules, and Default Values
--- Reference Source: src/02_data_integrity_and_ddl/02_check_constraints_and_defaults.sql
+-- Global Rule Creation & Column Binding
+CREATE RULE myrule AS @x > 1000;
+GO
+EXEC sp_bindrule myrule, 'instructor.salary';
+EXEC sp_bindrule myrule, 'emps.overtime';
+GO
+
+-- Unbinding & Dropping Rule (Must unbind before dropping to avoid Msg 3716)
+EXEC sp_unbindrule 'instructor.salary';
+EXEC sp_unbindrule 'emps.overtime';
+DROP RULE myrule;
+GO
+
+-- Standalone Global Default Creation & Binding
+CREATE DEFAULT mydef AS 5000;
+GO
+EXEC sp_bindefault mydef, 'instructor.salary';
+GO
+
+-- Unbinding & Dropping Default
+EXEC sp_unbindefault 'instructor.salary';
+DROP DEFAULT mydef;
+GO
 ```
 
 > [!example] Mentor Example
-> *VERIFIED FROM MICROSOFT DOCUMENTATION & REPOSITORY IMPLEMENTATION*  
-> The following sample illustrates production-ready patterns for **Constraints, Rules, and Default Values** aligned with the repository implementation in `src/02_data_integrity_and_ddl/02_check_constraints_and_defaults.sql`.
+> *VERIFIED FROM LIVE MAHARATECH LECTURE & SQL SERVER 2022 TELEMETRY*  
+> The following sample illustrates the authentic sequence demonstrated by Eng. Rami Mohamed Abonagi in `CH01_VID06`, executing against `[ITI]`:
 
 ```sql
--- Production Pattern Demonstration for Constraints, Rules, and Default Values
--- Designed for SQL Server 2022 Developer / Enterprise Edition
+USE ITI;
+GO
 
-SET NOCOUNT ON;
-SET XACT_ABORT ON;
+-- 1. Create global rule object
+CREATE RULE myrule AS @x > 1000;
+GO
 
--- Code referenced from src/02_data_integrity_and_ddl/02_check_constraints_and_defaults.sql
-SELECT 
-    @@SERVERNAME AS ServerInstance,
-    DB_NAME() AS CurrentDatabase,
-    N'Constraints, Rules, and Default Values' AS DemonstratedTopic,
-    SYSUTCDATETIME() AS ExecutionTimeUTC;
+-- 2. Bind rule to instructor.salary and emps.overtime (Shared across tables)
+EXEC sp_bindrule myrule, 'instructor.salary';
+EXEC sp_bindrule myrule, 'emps.overtime';
+GO
+
+-- 3. Verify rule enforcement on new data in emps
+BEGIN TRY
+    INSERT INTO dbo.emps (ename, salary, overtime) VALUES ('BadEmp', 4000, 500);
+END TRY
+BEGIN CATCH
+    PRINT '>>> [EXPECTED] Rule violation (Msg 513): ' + ERROR_MESSAGE();
+END CATCH;
+GO
+
+-- 4. Unbinding sequence (Attempting DROP RULE before unbinding fails with Msg 3716)
+EXEC sp_unbindrule 'instructor.salary';
+EXEC sp_unbindrule 'emps.overtime';
+DROP RULE myrule;
+GO
+
+-- 5. Standalone default creation and binding
+CREATE DEFAULT mydef AS 5000;
+GO
+
+EXEC sp_bindefault mydef, 'instructor.salary';
+GO
+
+-- 6. Verify default value on INSERT without salary
+INSERT INTO dbo.Instructor (Ins_Id, Ins_Name) VALUES (888, N'DefaultSalaryInstructor');
+SELECT Ins_Id, Ins_Name, Salary FROM dbo.Instructor WHERE Ins_Id = 888;
+DELETE FROM dbo.Instructor WHERE Ins_Id = 888;
+GO
+
+-- 7. Unbind and drop default (Attempting DROP DEFAULT before unbinding fails with Msg 3716)
+EXEC sp_unbindefault 'instructor.salary';
+DROP DEFAULT mydef;
+GO
 ```
 
 ### 🔍 Line-by-Line Explanation
-- `SET NOCOUNT ON`: Suppresses the `(n rows affected)` network packets, reducing client-server communication chatter in automated pipelines.
-- `SET XACT_ABORT ON`: Guarantees that any T-SQL runtime error immediately terminates and rolls back the current active transaction, preventing orphaned locks.
-- `SYSUTCDATETIME()`: Returns high-precision UTC timestamp (datetime2) avoiding timezone skew across distributed staging agents.
+- `CREATE RULE myrule AS @x > 1000`: Defines a standalone database-scoped rule object with parameter variable `@x`.
+- `sp_bindrule myrule, 'instructor.salary'`: Binds `myrule` to `salary` in `dbo.Instructor`. Existing data violating `@x > 1000` is preserved, but new modifications are strictly validated.
+- `sp_bindrule myrule, 'emps.overtime'`: Demonstrates **Advantage 1: Cross-table sharing**—binding the exact same rule object to a column in a completely different table (`dbo.emps`).
+- `Msg 3716 Dependency Protection`: SQL Server prevents dropping rules or defaults that are currently bound to columns or UDDTs.
+- `sp_unbindrule 'instructor.salary'` & `sp_unbindrule 'emps.overtime'`: Detaches the rule from all target columns, allowing `DROP RULE myrule` to proceed safely.
+- `CREATE DEFAULT mydef AS 5000`: Creates a standalone default value object in the database catalog.
+- `sp_bindefault mydef, 'instructor.salary'`: Binds the default to `Instructor.Salary`, auto-populating `5000.0000` whenever `Salary` is omitted on `INSERT`.
+- `sp_unbindefault 'instructor.salary'`: Unbinds the default object prior to calling `DROP DEFAULT mydef`.
 
 ## 🏗️ Data Engineering Perspective
-- **Why does this matter to a Data Engineer?** Data platforms must reliably ingest, transform, and serve batch and streaming datasets. Misunderstanding **Constraints, Rules, and Default Values** results in pipeline stalls, unintended table scans, deadlocks during batch loads, or dirty reads in downstream analytics.
-- **Where does this appear in real systems?** Automated orchestration DAGs (Airflow, Azure Data Factory, dbt), staging database ETL loads, data quality auditing triggers, and Kimball dimensional mart refreshes.
-- **What operational problem does it solve?** Provides predictable data access patterns, ensures referential integrity across operational boundaries, and prevents pipeline silent failures.
-- **What dependencies does it create?** Requires explicit schema management, index maintenance jobs, transaction log capacity planning, and deployment scripting coordination.
+- **Why does this matter to a Data Engineer?** Legacy enterprise migrations often encounter bound rules and standalone defaults. Knowing how to safely unbind (`sp_unbindrule`, `sp_unbindefault`) and replace them with declarative `ALTER TABLE ... ADD CONSTRAINT ... CHECK` / `DEFAULT` without table lock escalation is critical during schema modernization.
+- **Where does this appear in real systems?** Legacy banking, government, and healthcare SQL Server databases; automated migration harnesses (dbt, Flyway, Liquibase, SSMS).
+- **What operational problem does it solve?** Enables non-blocking historical data retention while enforcing validation on new ingest streams.
+- **What dependencies does it create?** Standalone objects introduce cross-table coupling and require strict unbinding order before schema teardown.
 
 > [!warning] Legacy / Version Awareness: CREATE RULE and CREATE DEFAULT
-> **Architectural Status**: CREATE RULE and CREATE DEFAULT are deprecated features marked for removal in future SQL Server versions. They are included in legacy curriculum because older enterprise databases still have bound rules. Modern SQL Server standards mandate ANSI CHECK constraints and DEFAULT constraints declared directly in table DDL.
-> 
-> **Modern Engineering Alternative**: Use `ALTER TABLE ... ADD CONSTRAINT CK_... CHECK (...)` and `ADD CONSTRAINT DF_... DEFAULT (...)`.
+> **Architectural Status**: `CREATE RULE` and `CREATE DEFAULT` are deprecated legacy features marked for eventual removal by Microsoft. Modern SQL Server best practices mandate ANSI declarative table constraints:
+> - Rule replacement: `ALTER TABLE dbo.Instructor ADD CONSTRAINT CK_Instructor_Salary CHECK (Salary > 1000);`
+> - Default replacement: `ALTER TABLE dbo.Instructor ADD CONSTRAINT DF_Instructor_Salary DEFAULT 5000 FOR Salary;`
 
 ## ✅ What I Should Be Able to Do
 - [x] Explain the underlying architectural concept of **Constraints, Rules, and Default Values** to a peer without referencing notes. ✅ 2026-09-20

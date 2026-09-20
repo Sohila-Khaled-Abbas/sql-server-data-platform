@@ -357,7 +357,7 @@ sql-server-data-platform/
 │   │   ├── 04_partitioning_scheme.sql  # Partition functions & sliding window partition switching
 │   │   ├── 05_company_case_study_schema.sql # Canonical ITI Company ERD implementation
 │   │   ├── ch01_vid05_integrity_constraints.sql # DB2 DDL with 8 constraints (c1-c8) & cascade tests
-│   │   └── ch01_vid06_constraints_rules_defaults.sql # ITI Instructor DDL, rules (myrule), sp_bindrule & defaults
+│   │   └── ch01_vid06_constraints_rules_defaults.sql # ITI rules (myrule), multi-table bindings (emps.overtime), unbinding & defaults (mydef)
 │   ├── 02_indexing_and_performance/
 │   │   ├── 01_clustered_nonclustered.sql # Clustered, covering non-clustered, filtered & columnstore
 │   │   ├── 02_indexed_views.sql        # Materialized aggregation views with SCHEMABINDING
@@ -435,7 +435,7 @@ Explore our deep-dive handbooks located in [`/docs`](docs/):
 * 🛡️ **[Disaster Recovery Runbook](docs/disaster-recovery-runbook.md)**: RPO/RTO calculations, VLF optimization, non-blocking snapshots, and log shipping runbooks.
 * 🏢 **[Company Case Study ERD & Relational Mapping](docs/ch01-case-study-erd-and-implementation.md)**: Peter Chen ERD mapping to 3NF relational schemas with integrity constraints.
 * 🛡️ **[Live Integrity Constraints Telemetry (DB2)](docs/db2-integrity-constraints-live.md)**: Live verification of constraints c1 through c8 with cascade rule behavior.
-* ⚙️ **[Constraints, Rules & Defaults Live Telemetry (ITI)](docs/ch01-vid06-constraints-rules-defaults-live.md)**: Live verification of `CREATE RULE`, `sp_bindrule`, `sp_bindefault`, and `WITH NOCHECK` on SQL Server 2022.
+* ⚙️ **[Constraints, Rules & Defaults Live Telemetry (ITI)](docs/ch01-vid06-constraints-rules-defaults-live.md)**: Live verification of `CREATE RULE`, multi-table binding (`emps.overtime`), unbinding (`sp_unbindrule`), and default teardown (`sp_unbindefault`, `DROP DEFAULT`) on SQL Server 2022.
 * 📊 **[Data Dictionary](docs/data-dictionary.md)**: Full metadata specification for all transactional and dimensional schemas.
 * ⭐ **[Dimensional Model Bus Matrix](docs/dimensional-model.md)**: Kimball star schema grain definitions, conformed dimensions, and additive facts.
 * 🗺️ **[Full Course Syllabus Mapping](docs/course-syllabus-mapping.md)**: Video-by-video curriculum alignment with corresponding code modules.
