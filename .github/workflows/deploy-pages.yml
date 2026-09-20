@@ -7,6 +7,8 @@ on:
       - main
     paths:
       - 'web/**'
+      - 'docs/curriculum/**'
+      - 'scripts/build_web_curriculum_manifest.py'
       - '.github/workflows/deploy-pages.yml'
   workflow_dispatch:
 
@@ -26,6 +28,14 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Build Curriculum Manifest
+        run: python scripts/build_web_curriculum_manifest.py
 
       - name: Setup Node.js
         uses: actions/setup-node@v4

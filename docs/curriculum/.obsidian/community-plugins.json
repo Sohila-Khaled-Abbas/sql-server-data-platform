@@ -15,5 +15,7 @@
   "obsidian-checklist-plugin",
   "buttons",
   "homepage",
-  "calendar"
+  "calendar",
+  "obsidian-minimal-settings",
+  "obsidian-style-settings"
 ]
