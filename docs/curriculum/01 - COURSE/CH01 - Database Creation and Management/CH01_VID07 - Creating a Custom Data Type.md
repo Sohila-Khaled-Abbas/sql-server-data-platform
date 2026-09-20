@@ -13,8 +13,6 @@ explained: false
 estimated_minutes: 15
 source: https://maharatech.gov.eg/mod/hvp/view.php?id=17526
 code_reference: src/01_storage_and_schema/04_user_defined_types.sql
-last_reviewed:
-next_review:
 topics:
   - storage-physical-architecture
   - creating-a-custom-data-type
