@@ -82,11 +82,11 @@ SELECT
 > **Modern Engineering Alternative**: Use `ALTER TABLE ... ADD CONSTRAINT CK_... CHECK (...)` and `ADD CONSTRAINT DF_... DEFAULT (...)`.
 
 ## ✅ What I Should Be Able to Do
-- [ ] Explain the underlying architectural concept of **Constraints, Rules, and Default Values** to a peer without referencing notes.
-- [ ] Reproduce the basic T-SQL implementation in SQL Server Management Studio (SSMS) or Azure Data Studio.
-- [ ] Modify the implementation to handle edge conditions, NULL inputs, and high-concurrency workloads.
-- [ ] Explain when this feature is the appropriate architectural tool versus when an alternative pattern should be selected.
-- [ ] Identify performance bottlenecks, wait statistics, and storage costs associated with this feature.
+- [x] Explain the underlying architectural concept of **Constraints, Rules, and Default Values** to a peer without referencing notes. ✅ 2026-09-20
+- [x] Reproduce the basic T-SQL implementation in SQL Server Management Studio (SSMS) or Azure Data Studio. ✅ 2026-09-20
+- [x] Modify the implementation to handle edge conditions, NULL inputs, and high-concurrency workloads. ✅ 2026-09-20
+- [x] Explain when this feature is the appropriate architectural tool versus when an alternative pattern should be selected. ✅ 2026-09-20
+- [x] Identify performance bottlenecks, wait statistics, and storage costs associated with this feature. ✅ 2026-09-20
 
 ## 🧪 Hands-On Lab
 Write a T-SQL verification script in your local sandbox:
@@ -141,8 +141,8 @@ You are asked by a senior data architect to evaluate whether **Constraints, Rule
 3. How would you test this implementation in an automated CI/CD pipeline running in Docker?
 
 ## 🔖 Status
-- [ ] Watched
-- [ ] Reproduced
-- [ ] Modified
-- [ ] Explained from memory
-- [ ] Reviewed
+- [x] Watched ✅ 2026-09-20
+- [x] Reproduced ✅ 2026-09-20
+- [x] Modified ✅ 2026-09-20
+- [x] Explained from memory ✅ 2026-09-20
+- [x] Reviewed ✅ 2026-09-20
