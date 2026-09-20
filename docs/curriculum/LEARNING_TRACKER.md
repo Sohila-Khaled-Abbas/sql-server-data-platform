@@ -29,7 +29,7 @@ TABLE WITHOUT ID
   length(filter(rows, (r) => r.status = "in-progress")) AS "🔄",
   length(filter(rows, (r) => r.status = "planned" OR !r.status)) AS "⏳",
   round((length(filter(rows, (r) => r.status = "completed")) / length(rows)) * 100) + "%" AS "%"
-FROM "video-notes"
+FROM "01 - COURSE"
 GROUP BY file.folder
 SORT file.folder ASC
 ```
@@ -43,7 +43,7 @@ TABLE WITHOUT ID
   file.link AS "Lesson",
   choice(status = "completed", "✅", choice(status = "in-progress", "🔄", "⏳")) AS "Status",
   chapter AS "Chapter"
-FROM "video-notes"
+FROM "01 - COURSE"
 SORT file.name ASC
 ```
 
@@ -53,7 +53,7 @@ SORT file.name ASC
 
 ```dataview
 TASK
-FROM "video-notes"
+FROM "01 - COURSE"
 WHERE !completed
 GROUP BY file.link
 LIMIT 30

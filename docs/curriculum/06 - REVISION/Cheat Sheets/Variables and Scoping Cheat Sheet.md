@@ -1,0 +1,27 @@
+---
+type: cheat-sheet
+topic: "Variables and Scoping"
+tags:
+  - course/sql-server
+  - type/cheat-sheet
+  - revision
+---
+
+# Variables and Scoping — Engineering Cheat Sheet
+
+## 🎯 Quick Syntax Reference
+```sql
+-- Rapid reference syntax for Variables and Scoping
+```
+
+## ⚡ High-Frequency Patterns
+- Key Pattern 1: Always verify transaction state with `@@TRANCOUNT`.
+- Key Pattern 2: Eliminate bookmark lookups using `INCLUDE` on non-clustered indexes.
+- Key Pattern 3: Use `SET NOCOUNT ON` in all procedural routines.
+
+## ⚠️ Critical Pitfalls to Avoid
+- Avoid non-SARGable expressions in WHERE clauses (`WHERE YEAR(OrderDate) = 2026`).
+- Avoid multi-statement table-valued functions in performance-critical queries.
+
+## 🔗 Deep-Dive Concepts
+- Concept Note: [[Variables and Scoping]]

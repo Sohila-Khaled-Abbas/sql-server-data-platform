@@ -1,0 +1,75 @@
+/*
+  second-brain.css
+  Obsidian Visual System for SQL Server Data Platform Second Brain
+  Design: Deep charcoal background, restrained Microsoft SQL crimson red (#CC292B),
+  clean typography, polished Dataview tables, and status pills.
+*/
+
+:root {
+  --sql-red: #CC292B;
+  --sql-red-glow: rgba(204, 41, 43, 0.25);
+  --sql-dark-bg: #111216;
+  --sql-card-bg: #181920;
+  --sql-border: rgba(255, 255, 255, 0.08);
+  --sql-cyan: #38bdf8;
+  --sql-green: #10b981;
+  --sql-purple: #8b5cf6;
+  --sql-amber: #f59e0b;
+}
+
+/* Callout Enhancement */
+.callout[data-callout="abstract"] {
+  border-left-color: var(--sql-cyan) !important;
+}
+
+.callout[data-callout="example"] {
+  border-left-color: var(--sql-green) !important;
+  background-color: rgba(16, 185, 129, 0.04) !important;
+}
+
+.callout[data-callout="warning"] {
+  border-left-color: var(--sql-amber) !important;
+  background-color: rgba(245, 158, 11, 0.04) !important;
+}
+
+/* Dataview Table Polish */
+.dataview.table-view-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--sql-border);
+}
+
+.dataview.table-view-table thead th {
+  background-color: rgba(255, 255, 255, 0.04);
+  font-family: var(--font-heading, sans-serif);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #fff;
+  border-bottom: 2px solid var(--sql-red);
+  padding: 8px 12px;
+}
+
+.dataview.table-view-table tbody td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--sql-border);
+  font-size: 0.88rem;
+}
+
+/* Status Badges */
+.status-badge-mastered {
+  color: var(--sql-green);
+  font-weight: 600;
+}
+
+.status-badge-practiced {
+  color: var(--sql-cyan);
+  font-weight: 600;
+}
+
+.status-badge-remaining {
+  color: var(--sql-amber);
+  font-weight: 600;
+}
