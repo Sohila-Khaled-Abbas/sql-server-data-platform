@@ -692,7 +692,7 @@ export const CURRICULUM_CHAPTERS = [
     color: '#38bdf8',
     description: 'Physical storage layout, 8 KB data pages, 64 KB extents, multi-filegroups (PRIMARY, DATA_FG, INDEX_FG), declarative constraints, B-Tree indexes, and database snapshots.',
     keyTopics: ['MDF / LDF / NDF Physical Layout', 'Declarative Constraints (PK/FK/CHECK/DEFAULT)', 'Clustered vs Non-Clustered Indexes', 'Backup Chains & Agent Jobs', 'NTFS Sparse Database Snapshots'],
-    githubReadme: 'docs/curriculum/chapters/ch01-readme.md',
+    githubReadme: 'docs/curriculum/01%20-%20COURSE/CH01%20-%20Database%20Creation%20and%20Management/README.md',
     platformAnchor: '#architecture',
     codeFolder: 'src/01_storage_and_schema/'
   },
@@ -704,7 +704,7 @@ export const CURRICULUM_CHAPTERS = [
     color: '#10b981',
     description: 'Variable scoping, control-of-flow conditional logic, scalar and table-valued functions (MSTVFs vs Inline), system databases, script batches, and ACID transaction isolation.',
     keyTopics: ['Local & Global Variables', 'IF...ELSE & WHILE Iteration', 'Scalar vs Inline vs Multi-Statement TVFs', 'System Databases (master, msdb, tempdb, model)', 'Transactions, Locks & Isolation Levels'],
-    githubReadme: 'docs/curriculum/chapters/ch02-readme.md',
+    githubReadme: 'docs/curriculum/01%20-%20COURSE/CH02%20-%20SQL%20Programming%20Essentials/README.md',
     platformAnchor: '#sql-engineering',
     codeFolder: 'src/03_programmability_and_elt/'
   },
@@ -716,7 +716,7 @@ export const CURRICULUM_CHAPTERS = [
     color: '#8b5cf6',
     description: 'Schema-bound indexed views, sliding window horizontal partitioning, FOR XML (RAW, AUTO, PATH) shredding, hierarchical CTEs, sequences, TVPs, and DR architectures.',
     keyTopics: ['Standard & Indexed Materialized Views', 'RANGE RIGHT Table Partitioning Schemes', 'XML Generation & XQuery Shredding', 'Recursive Common Table Expressions (CTEs)', 'Log Shipping vs Database Mirroring'],
-    githubReadme: 'docs/curriculum/chapters/ch03-readme.md',
+    githubReadme: 'docs/curriculum/01%20-%20COURSE/CH03%20-%20Advanced%20Query%20Techniques%20and%20High%20Availability/README.md',
     platformAnchor: '#data-flow',
     codeFolder: 'src/02_indexing_and_performance/'
   },
@@ -728,7 +728,7 @@ export const CURRICULUM_CHAPTERS = [
     color: '#f59e0b',
     description: 'Enterprise stored procedures with output parameters, DML & DDL event triggers, inserted/deleted pseudo-tables, audit logging, cursors, C# SQL CLR extensions, and PowerShell SMO.',
     keyTopics: ['Parameterized Procedures & Dynamic SQL', 'DML & Server/Database DDL Triggers', 'OUTPUT Clause Change Tracking', 'Cursor Workflows vs Set-Based Processing', 'C# SQL CLR Assemblies & PowerShell SMO'],
-    githubReadme: 'docs/curriculum/chapters/ch04-readme.md',
+    githubReadme: 'docs/curriculum/01%20-%20COURSE/CH04%20-%20Procedures,%20Triggers,%20and%20SQL%20Automation/README.md',
     platformAnchor: '#deep-dive',
     codeFolder: 'src/04_governance_and_audit/'
   },
@@ -740,7 +740,7 @@ export const CURRICULUM_CHAPTERS = [
     color: '#ec4899',
     description: 'Enterprise reporting with SSRS, matrix aggregation, drill-down actions, OLTP vs OLAP architecture, Kimball star schema dimensional modeling, and capstone platform implementation.',
     keyTopics: ['SSRS Installation & Configuration', 'Interactive Sorting & Matrix Grouping', 'RDLC Custom Report Generation', 'OLTP 3NF vs OLAP Dimensional Marts', 'Kimball Star Schema (DimDate, FactSales, SCD2)'],
-    githubReadme: 'docs/curriculum/chapters/ch05-readme.md',
+    githubReadme: 'docs/curriculum/01%20-%20COURSE/CH05%20-%20Reporting%20and%20Data%20Warehousing/README.md',
     platformAnchor: '#database-design',
     codeFolder: 'src/07_warehousing_and_reporting/'
   }
@@ -751,10 +751,10 @@ export const OBSIDIAN_VAULT_METRICS = {
   totalChapters: 5,
   capstoneProjects: 1,
   vaultPath: 'docs/curriculum',
-  theme: 'Catppuccin Mocha',
-  keyPlugins: ['Dataview', 'Obsidian Git', 'Tasks', 'Admonition', 'Checklist', 'Table Editor'],
-  studyPlanPath: 'docs/curriculum/8-WEEK-STUDY-PLAN.md',
-  trackerPath: 'docs/curriculum/LEARNING_TRACKER.md',
-  videoIndexPath: 'docs/curriculum/VIDEO_INDEX.md'
+  theme: 'Dark Charcoal & SQL-Red (second-brain.css)',
+  keyPlugins: ['Dataview', 'Tasks', 'Omnisearch', 'Smart Connections', 'Admonition', 'Table Editor'],
+  studyPlanPath: 'docs/curriculum/00%20-%20HOME/Learning%20Roadmap.md',
+  trackerPath: 'docs/curriculum/00%20-%20HOME/Course%20Dashboard.md',
+  videoIndexPath: 'docs/curriculum/01%20-%20COURSE/Course%20Index.md'
 };
 

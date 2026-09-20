@@ -3,18 +3,16 @@ type: video
 course: SQL Server Data Platform
 chapter: CH01
 lesson_id: CH01_VID05
-title: "Integrity constraints"
-status: not-started
+title: Integrity constraints
+status: mastered
 difficulty: medium
 confidence: 0
-practice: false
-implemented: false
-explained: false
+practice: true
+implemented: true
+explained: true
 estimated_minutes: 20
-source: "https://maharatech.gov.eg/mod/hvp/view.php?id=17524"
-code_reference: "src/02_data_integrity_and_ddl/01_declarative_constraints.sql"
-last_reviewed: 
-next_review: 
+source: https://maharatech.gov.eg/mod/hvp/view.php?id=17524
+code_reference: src/02_data_integrity_and_ddl/01_declarative_constraints.sql
 topics:
   - storage-physical-architecture
   - integrity-constraints
@@ -79,11 +77,11 @@ SELECT
 - **What dependencies does it create?** Requires explicit schema management, index maintenance jobs, transaction log capacity planning, and deployment scripting coordination.
 
 ## ✅ What I Should Be Able to Do
-- [ ] Explain the underlying architectural concept of **Integrity constraints** to a peer without referencing notes.
-- [ ] Reproduce the basic T-SQL implementation in SQL Server Management Studio (SSMS) or Azure Data Studio.
-- [ ] Modify the implementation to handle edge conditions, NULL inputs, and high-concurrency workloads.
-- [ ] Explain when this feature is the appropriate architectural tool versus when an alternative pattern should be selected.
-- [ ] Identify performance bottlenecks, wait statistics, and storage costs associated with this feature.
+- [x] Explain the underlying architectural concept of **Integrity constraints** to a peer without referencing notes. ✅ 2026-09-20
+- [x] Reproduce the basic T-SQL implementation in SQL Server Management Studio (SSMS) or Azure Data Studio. ✅ 2026-09-20
+- [x] Modify the implementation to handle edge conditions, NULL inputs, and high-concurrency workloads. ✅ 2026-09-20
+- [x] Explain when this feature is the appropriate architectural tool versus when an alternative pattern should be selected. ✅ 2026-09-20
+- [x] Identify performance bottlenecks, wait statistics, and storage costs associated with this feature. ✅ 2026-09-20
 
 ## 🧪 Hands-On Lab
 Write a T-SQL verification script in your local sandbox:
@@ -138,8 +136,8 @@ You are asked by a senior data architect to evaluate whether **Integrity constra
 3. How would you test this implementation in an automated CI/CD pipeline running in Docker?
 
 ## 🔖 Status
-- [ ] Watched
-- [ ] Reproduced
-- [ ] Modified
-- [ ] Explained from memory
-- [ ] Reviewed
+- [x] Watched ✅ 2026-09-20
+- [x] Reproduced ✅ 2026-09-20
+- [x] Modified ✅ 2026-09-20
+- [x] Explained from memory ✅ 2026-09-20
+- [x] Reviewed ✅ 2026-09-20

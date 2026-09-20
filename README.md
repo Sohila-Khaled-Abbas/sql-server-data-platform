@@ -320,15 +320,22 @@ sql-server-data-platform/
 │   ├── ch01-case-study-erd-and-implementation.md # Chapter 1 Company ERD & relational breakdown
 │   ├── ch01-vid06-constraints-rules-defaults-live.md # Live SQL Server 2022 telemetry for rules & defaults
 │   ├── course-syllabus-mapping.md      # Full syllabus to platform competency mapping
-│   ├── curriculum/                     # Complete 102-video course companion, notes & trackers
-│   │   ├── README.md                   # Curriculum guide and production mapping
+│   ├── curriculum/                     # Enterprise Obsidian Second Brain / PKM Vault (102 Lessons)
+│   │   ├── 00 - HOME/                  # Central launchpad, dynamic dashboards, roadmap, weekly review
+│   │   ├── 01 - COURSE/                # 102 structured video notes across CH01-CH05 + Final Project + Audit
+│   │   ├── 02 - CONCEPTS/              # 33 atomic concept notes across 10 architectural domains
+│   │   ├── 03 - SQL PATTERNS/          # 18 production T-SQL cookbook notes & best practices
+│   │   ├── 04 - LAB/                   # Assignments 01-05, storage architecture, and Kimball bus matrix
+│   │   ├── 05 - PROJECTS/              # 5 Chapter mini-projects + 11-part final project suite + case study
+│   │   ├── 06 - REVISION/              # 20 syntax cheat sheets, flashcards, interview guide, mistake journal
+│   │   ├── 07 - RESOURCES/             # SQL Server 2022 docs, MaharaTech resources, DBRE bibliography
+│   │   ├── 08 - TEMPLATES/             # 7 standardized templates for notes, concepts, and patterns
+│   │   ├── 99 - ATTACHMENTS/           # Visual diagrams, Excalidraw files, and media
 │   │   ├── 8-WEEK-STUDY-PLAN.md        # 8-week intensive study milestone tracker
 │   │   ├── LEARNING_TRACKER.md         # Interactive 102-lesson progress checklist
 │   │   ├── MENTOR_WORKFLOW.md          # 4-stage engineering mastery workflow
 │   │   ├── STUDY_PLAN.md               # 6-phase data engineering roadmap
-│   │   ├── VIDEO_INDEX.md              # 102 Mahara-Tech official video catalog with deep links
-│   │   ├── chapters/                   # CH01-CH05 chapter mastery overviews
-│   │   └── video-notes/                # All 102 individual video study notes (CH01-CH05)
+│   │   └── VIDEO_INDEX.md              # 102 MaharaTech official video catalog with deep links
 │   ├── data-dictionary.md              # Complete data dictionary for OLTP & OLAP schemas
 │   ├── db2-integrity-constraints-live.md # CH01_VID05 Live DB2 Integrity Constraints telemetry
 │   ├── dimensional-model.md            # Kimball star schema bus matrix & grain definitions
@@ -437,22 +444,39 @@ Explore our deep-dive handbooks located in [`/docs`](docs/):
 
 ## 🧠 Obsidian Second Brain & PKM Vault Integration
 
-This repository includes a fully configured, production-grade **Personal Knowledge Management (PKM) Second Brain** located at [`docs/curriculum/`](docs/curriculum/). It is ready to open directly in **[Obsidian](https://obsidian.md/)** with zero friction:
+This repository includes an enterprise-grade, fully configured **Personal Knowledge Management (PKM) Second Brain** located at [`docs/curriculum/`](docs/curriculum/). It is ready to open directly in **[Obsidian](https://obsidian.md/)** with zero friction:
 
 ### 🚀 Opening the Vault in Obsidian
 1. Download and launch **Obsidian**.
 2. Click **"Open folder as vault"**.
 3. Select `docs/curriculum/` (or the repository root folder).
-4. All 60+ pre-installed plugins, themes, and CSS snippets will automatically load!
+4. All 60+ pre-installed plugins, Dataview queries, and the custom SQL-Red theme snippet (`second-brain.css`) will automatically load!
 
-### ⚡ Included Second Brain Capabilities
-* 📊 **Dynamic Dataview Dashboards:** Live aggregation tables in every chapter guide that automatically compute lesson progress, pending tasks, and production script links.
-* 🤖 **Smart Connections AI:** In-vault vector embeddings and neural search that let you ask questions and chat with your database notes.
-* 🔍 **Omnisearch:** Ultra-fast fuzzy and full-text indexation across all 102 lesson modules and production code references.
-* 📋 **TaskNotes & Obsidian Tasks:** Unified productivity system featuring integrated agendas, kanban boards, and pomodoro analytics.
-* 🎨 **Obsidian Nord & Catppuccin Themes:** High-contrast, dark-mode styling with `Inter` typography, custom property icons, and Callout admonitions.
-* 🔗 **Bidirectional Production Code Linking:** Every note contains direct links to its corresponding production script in [`src/`](src/), enabling seamless theory-to-implementation pairing.
-* 🌐 **Direct Online Platform Synergy:** Seamlessly jumps to the live [OmniFlow Interactive Web Studio](https://sohila-khaled-abbas.github.io/sql-server-data-platform/) to run T-SQL code in your browser with zero local setup.
+### 📂 10-Folder Enterprise PKM Architecture
+
+```
+docs/curriculum/
+├── 00 - HOME/        # Central Launchpad, Dynamic Course Dashboard, Learning Roadmap, Weekly Reviews
+├── 01 - COURSE/      # 102 Structured Video Notes across CH01–CH05 + Final Project + Discrepancy Audit
+├── 02 - CONCEPTS/    # 33 Atomic Concept Notes across 10 Architectural Domains (Internals, ACID, B-Trees, etc.)
+├── 03 - SQL PATTERNS/# 18 Production T-SQL Pattern Cookbook Notes (Inline TVFs, Indexed Views, XML, etc.)
+├── 04 - LAB/         # Assignments 01–05, Physical Storage Engine Diagrams, Kimball Bus Matrix Models
+├── 05 - PROJECTS/    # 5 Chapter Mini Projects + 11-Part Capstone Project Suite + Portfolio Case Study
+├── 06 - REVISION/    # 20 Fast-Reference Cheat Sheets, Spaced Repetition Flashcards, Interview Handbook
+├── 07 - RESOURCES/   # Microsoft SQL Server 2022 Official Docs, MaharaTech Resources, DBRE Bibliography
+├── 08 - TEMPLATES/   # 7 Standardized Obsidian Templates (Video Note, Concept, Pattern, Review, etc.)
+└── 99 - ATTACHMENTS/ # Diagrams, Mermaid Visuals, and Supporting Media Assets
+```
+
+### 💎 Key Second Brain Capabilities
+
+* 📋 **Standardized 17-Section Video Note Blueprint:** Every single one of the 102 lesson notes includes Bloom-taxonomy Learning Goals, Core Intuition, Deep Internals, SQL Syntax, runnable Mentor Examples with line-by-line breakdown, Data Engineering Perspectives, Abilities Checklist, Hands-On Labs, Challenges, Mentor Challenges (with Hint & Expected Evidence), Common Mistakes, Production Considerations, Legacy/Version Awareness (`CREATE RULE`, Mirroring, Cursors), Related Concepts wikilinks, Interview Questions, and Knowledge Checks.
+* 🧠 **Atomic Concept Graph:** 33 standalone concept notes covering Storage Internals (Pages/Extents), Query Optimization (B-Trees, Covering Indexes), Concurrency (ACID, Isolation Levels), and Dimensional Warehousing (Facts, Dimensions, SCD Type 2).
+* 🍳 **Production T-SQL Pattern Cookbook:** 18 drop-in T-SQL recipes covering TVP batch streaming, recursive CTE hierarchies, dynamic SQL injection defense (`sp_executesql`), safe cursor iteration, and atomic SCD Type 2 dimension merges.
+* 📊 **Dynamic Dataview Dashboards:** Live aggregation tables in [`Course Dashboard.md`](docs/curriculum/00%20-%20HOME/Course%20Dashboard.md) and [`Weekly Review.md`](docs/curriculum/00%20-%20HOME/Weekly%20Review.md) that automatically compute lesson progress, pending exercises, and spaced repetition schedules.
+* 🎯 **Comprehensive Revision Suite:** 20 quick-reference syntax cheat sheets, 50+ spaced repetition flashcards, a structured DBRE technical interview handbook, and a production mistake post-mortem journal.
+* 🎨 **Curated Dark Charcoal & SQL-Red Theme:** Customized via [`.obsidian/snippets/second-brain.css`](docs/curriculum/.obsidian/snippets/second-brain.css) featuring a modern charcoal canvas (`#16181D`), elevated panel cards (`#1E222B`), and Microsoft SQL Red accents (`#CC292B`).
+* 🔗 **Bidirectional Platform Synergy:** Deeply hyperlinked with the repository's production code in [`src/`](src/) and the live [OmniFlow Interactive Web Studio](https://sohila-khaled-abbas.github.io/sql-server-data-platform/).
 
 ---
 

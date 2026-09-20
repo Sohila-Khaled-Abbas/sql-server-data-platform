@@ -3,18 +3,16 @@ type: video
 course: SQL Server Data Platform
 chapter: CH01
 lesson_id: CH01_VID02
-title: "Create Database Using Wizard"
-status: not-started
+title: Create Database Using Wizard
+status: mastered
 difficulty: easy
 confidence: 0
-practice: false
-implemented: false
-explained: false
+practice: true
+implemented: true
+explained: true
 estimated_minutes: 10
-source: "https://maharatech.gov.eg/mod/hvp/view.php?id=17521"
-code_reference: "src/01_storage_and_schema/01_filegroups_and_files.sql"
-last_reviewed: 
-next_review: 
+source: https://maharatech.gov.eg/mod/hvp/view.php?id=17521
+code_reference: src/01_storage_and_schema/01_filegroups_and_files.sql
 topics:
   - storage-physical-architecture
   - create-database-using-wizard
@@ -79,16 +77,16 @@ SELECT
 - **What dependencies does it create?** Requires explicit schema management, index maintenance jobs, transaction log capacity planning, and deployment scripting coordination.
 
 ## ✅ What I Should Be Able to Do
-- [ ] Explain the underlying architectural concept of **Create Database Using Wizard** to a peer without referencing notes.
-- [ ] Reproduce the basic T-SQL implementation in SQL Server Management Studio (SSMS) or Azure Data Studio.
-- [ ] Modify the implementation to handle edge conditions, NULL inputs, and high-concurrency workloads.
-- [ ] Explain when this feature is the appropriate architectural tool versus when an alternative pattern should be selected.
-- [ ] Identify performance bottlenecks, wait statistics, and storage costs associated with this feature.
+- [x] Explain the underlying architectural concept of **Create Database Using Wizard** to a peer without referencing notes. ✅ 2026-09-20
+- [x] Reproduce the basic T-SQL implementation in SQL Server Management Studio (SSMS) or Azure Data Studio. ✅ 2026-09-20
+- [x] Modify the implementation to handle edge conditions, NULL inputs, and high-concurrency workloads. ✅ 2026-09-20
+- [x] Explain when this feature is the appropriate architectural tool versus when an alternative pattern should be selected. ✅ 2026-09-20
+- [x] Identify performance bottlenecks, wait statistics, and storage costs associated with this feature. ✅ 2026-09-20
 
 ## 🧪 Hands-On Lab
 Write a T-SQL verification script in your local sandbox:
 1. Connect to the local or containerized SQL Server 2022 instance.
-2. Formulate a test scenario implementing **Create Database Using Wizard** against `OmniFlowDB` or `tempdb`.
+2. Formulate a test scenario implementing **Create Database Using Wizard** against `OmniFlowDB` or `tempdb`
 3. Assert that the operation executes with zero errors and leaves the transaction state clean.
 4. Query dynamic management views (DMVs) such as `sys.dm_exec_requests` or `sys.dm_db_index_physical_stats` to verify engine state.
 
@@ -138,8 +136,8 @@ You are asked by a senior data architect to evaluate whether **Create Database U
 3. How would you test this implementation in an automated CI/CD pipeline running in Docker?
 
 ## 🔖 Status
-- [ ] Watched
-- [ ] Reproduced
-- [ ] Modified
-- [ ] Explained from memory
-- [ ] Reviewed
+- [x] Watched ✅ 2026-09-20
+- [x] Reproduced ✅ 2026-09-20
+- [x] Modified ✅ 2026-09-20
+- [x] Explained from memory ✅ 2026-09-20
+- [x] Reviewed ✅ 2026-09-20

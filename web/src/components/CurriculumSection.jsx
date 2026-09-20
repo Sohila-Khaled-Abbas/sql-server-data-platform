@@ -56,7 +56,7 @@ export default function CurriculumSection() {
           </div>
           <div className="curriculum-metric-divider" />
           <div className="curriculum-metric-item">
-            <div className="metric-val">Catppuccin</div>
+            <div className="metric-val">SQL-Red</div>
             <div className="metric-lbl">Obsidian PKM Theme</div>
           </div>
         </div>
@@ -183,23 +183,23 @@ export default function CurriculumSection() {
             </a>
 
             <a
-              href={`${REPO_METADATA.repoUrl}/blob/master/docs/curriculum/LEARNING_TRACKER.md`}
+              href={`${REPO_METADATA.repoUrl}/blob/master/${OBSIDIAN_VAULT_METRICS.trackerPath}`}
               target="_blank"
               rel="noopener noreferrer"
               className="btn btn-secondary"
             >
               <CheckSquare size={16} />
-              <span>Interactive Learning Tracker</span>
+              <span>Live Course Dashboard</span>
             </a>
 
             <a
-              href={`${REPO_METADATA.repoUrl}/blob/master/docs/curriculum/8-WEEK-STUDY-PLAN.md`}
+              href={`${REPO_METADATA.repoUrl}/blob/master/${OBSIDIAN_VAULT_METRICS.studyPlanPath}`}
               target="_blank"
               rel="noopener noreferrer"
               className="btn btn-secondary"
             >
               <Calendar size={16} />
-              <span>8-Week DBRE Study Plan</span>
+              <span>DBRE Learning Roadmap</span>
             </a>
           </div>
         </div>

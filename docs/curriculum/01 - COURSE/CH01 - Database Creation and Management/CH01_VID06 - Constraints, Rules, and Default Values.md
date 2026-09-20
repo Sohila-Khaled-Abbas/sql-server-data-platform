@@ -3,18 +3,16 @@ type: video
 course: SQL Server Data Platform
 chapter: CH01
 lesson_id: CH01_VID06
-title: "Constraints, Rules, and Default Values"
-status: not-started
+title: Constraints, Rules, and Default Values
+status: mastered
 difficulty: hard
 confidence: 0
-practice: false
-implemented: false
-explained: false
+practice: true
+implemented: true
+explained: true
 estimated_minutes: 25
-source: "https://maharatech.gov.eg/mod/hvp/view.php?id=17525"
-code_reference: "src/02_data_integrity_and_ddl/02_check_constraints_and_defaults.sql"
-last_reviewed: 
-next_review: 
+source: https://maharatech.gov.eg/mod/hvp/view.php?id=17525
+code_reference: src/02_data_integrity_and_ddl/02_check_constraints_and_defaults.sql
 topics:
   - storage-physical-architecture
   - constraints,-rules,-and-default-values
