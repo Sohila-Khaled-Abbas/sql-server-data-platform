@@ -21,50 +21,11 @@ last_modified: 2026-09-20
 > [!abstract] Navigation & Chapter Overview
 > 📑 **Curriculum Overview:** [Curriculum README](../README.md) | ➡️ **Next:** [CH02 — SQL Programming Essentials](ch02-readme.md)
 
-> [!info] Chapter Focus & Scope
 > Physical storage architecture, 8 KB pages, 64 KB extents, multi-filegroup I/O isolation, relational constraints, B-Tree indexes, backup chains, and sparse database snapshots.
 
 ---
 
-## 1. Chapter Mastery Objectives
-
-At the end of this chapter, be able to articulate and demonstrate how the objects and architectural patterns affect the four core pillars of database engineering:
-
-> [!check] Engineering Dimensions
-> 1. **Correctness:** Enforce relational integrity, domain invariants, and explicit ACID boundaries.
-> 2. **Performance:** Eliminate lock contention, minimize buffer page churn, and maximize execution plan efficiency.
-> 3. **Recoverability:** Design resilient RPO/RTO backup chains, NTFS sparse snapshots, and high-availability topologies.
-> 4. **Maintainability:** Ensure transparent DDL governance, change capture audit trails, and idempotent scripts.
-
----
-
-## 2. Production Code Artifacts
-
-The following production scripts in the repository implement the patterns covered across this chapter:
-
-* 💾 **[`01_filegroups_and_files.sql`](../../../src/01_storage_and_schema/01_filegroups_and_files.sql):** Dynamic path allocation for PRIMARY, DATA_FG, INDEX_FG, ARCHIVE_FG
-* 💾 **[`03_integrity_constraints.sql`](../../../src/01_storage_and_schema/03_integrity_constraints.sql):** Foreign keys, CHECK constraints, and cascading rules
-* 💾 **[`ch01_vid06_constraints_rules_defaults.sql`](../../../src/01_storage_and_schema/ch01_vid06_constraints_rules_defaults.sql):** ITI Instructor table, global rules (myrule) & defaults
-* 💾 **[`01_clustered_nonclustered.sql`](../../../src/02_indexing_and_performance/01_clustered_nonclustered.sql):** Clustered B-Trees and covering non-clustered indexes
-* 💾 **[`01_backup_and_maintenance_jobs.sql`](../../../src/06_reliability_and_dr/01_backup_and_maintenance_jobs.sql):** SQL Agent maintenance jobs for Full/Diff/Log backups
-* 💾 **[`02_snapshot_lifecycle.sql`](../../../src/06_reliability_and_dr/02_snapshot_lifecycle.sql):** NTFS copy-on-write database snapshots for instant rollback
-
----
-
-## 3. Lesson Index & Study Notes (16 Modules)
-
-> [!tip] 🔄 Dynamic Course Content Matrix (Auto-queries note frontmatter)
-> ```dataview
-> TABLE WITHOUT ID
->   file.link AS "Lesson Note",
->   choice(status = "completed", "✅ Completed", choice(status = "in-progress", "🔄 In Progress", "⏳ Planned")) AS "Status",
->   code_reference AS "Production Code",
->   last_modified AS "Modified"
-> FROM "video-notes/ch01"
-> SORT file.name ASC
-> ```
-
-### 📋 Interactive Course Content Checklist
+## Lesson Checklist
 
 - [x] **CH01_VID01**: [[vid01-create-database-and-filegroups|Create Database and Filegroups]] · `src/01_storage_and_schema/01_filegroups_and_files.sql`
 - [x] **CH01_VID02**: [[vid02-create-database-using-wizard|Create Database Using Wizard]]
@@ -83,19 +44,24 @@ The following production scripts in the repository implement the patterns covere
 - [ ] **CH01_VID15**: [[vid15-demo-on-snapshot|Demo on Snapshot]] · `src/06_reliability_and_dr/02_snapshot_lifecycle.sql`
 - [ ] **CH01_VID16**: [[vid16-assignment-01|Assignment 01]] · `src/01_storage_and_schema/05_company_case_study_schema.sql`
 
-> [!check] 🎯 Active Unfinished Tasks Across Chapter Notes
-> ```dataview
-> TASK
-> FROM "video-notes/ch01"
-> WHERE !completed
-> GROUP BY file.link
-> LIMIT 15
-> ```
-
 ---
 
-## 4. Next Steps & Navigation
+## Progress
 
-* 🗺️ **Full Course Tracker:** [Interactive Learning Tracker](../LEARNING_TRACKER.md)
-* 📅 **8-Week Schedule:** [8-Week Mentor Study Plan](../8-WEEK-STUDY-PLAN.md)
-* 🌐 **Interactive Portfolio Showcase:** [OmniFlow Web Application](https://sohila-khaled-abbas.github.io/sql-server-data-platform/)
+```dataview
+TABLE WITHOUT ID
+  file.link AS "Lesson",
+  choice(status = "completed", "✅", choice(status = "in-progress", "🔄", "⏳")) AS "Status"
+FROM "video-notes/ch01"
+SORT file.name ASC
+```
+
+## Open Tasks
+
+```dataview
+TASK
+FROM "video-notes/ch01"
+WHERE !completed
+GROUP BY file.link
+LIMIT 15
+```

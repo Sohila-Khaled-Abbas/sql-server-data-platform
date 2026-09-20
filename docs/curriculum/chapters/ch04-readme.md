@@ -21,50 +21,11 @@ last_modified: 2026-09-19
 > [!abstract] Navigation & Chapter Overview
 > ⬅️ **Previous:** [CH03 — Advanced Query Techniques and High Availability](ch03-readme.md) | 📑 **Curriculum Overview:** [Curriculum README](../README.md) | ➡️ **Next:** [CH05 — Reporting and Data Warehousing](ch05-readme.md)
 
-> [!info] Chapter Focus & Scope
 > Database-side logic and administration automation: transactional stored procedures, OUTPUT clauses, audit triggers (inserted/deleted), server DDL triggers with EVENTDATA(), C# SQL CLR assemblies, and PowerShell SMO scripting.
 
 ---
 
-## 1. Chapter Mastery Objectives
-
-At the end of this chapter, be able to articulate and demonstrate how the objects and architectural patterns affect the four core pillars of database engineering:
-
-> [!check] Engineering Dimensions
-> 1. **Correctness:** Enforce relational integrity, domain invariants, and explicit ACID boundaries.
-> 2. **Performance:** Eliminate lock contention, minimize buffer page churn, and maximize execution plan efficiency.
-> 3. **Recoverability:** Design resilient RPO/RTO backup chains, NTFS sparse snapshots, and high-availability topologies.
-> 4. **Maintainability:** Ensure transparent DDL governance, change capture audit trails, and idempotent scripts.
-
----
-
-## 2. Production Code Artifacts
-
-The following production scripts in the repository implement the patterns covered across this chapter:
-
-* 💾 **[`03_stored_procedures_etl.sql`](../../../src/03_programmability_and_elt/03_stored_procedures_etl.sql):** Idempotent transactional stored procedures with OUTPUT audit
-* 💾 **[`01_audit_change_capture_triggers.sql`](../../../src/04_governance_and_audit/01_audit_change_capture_triggers.sql):** Row-level change capture audit using virtual inserted/deleted tables
-* 💾 **[`02_ddl_and_server_triggers.sql`](../../../src/04_governance_and_audit/02_ddl_and_server_triggers.sql):** DDL modification defense and schema logging via EVENTDATA()
-* 💾 **[`03_dynamic_sql_guardrails.sql`](../../../src/04_governance_and_audit/03_dynamic_sql_guardrails.sql):** SQL injection defense with sp_executesql and QUOTENAME
-* 💾 **[`SqlClrExtensions.cs`](../../../src/05_automation_and_smo/clr/SqlClrExtensions.cs):** Compiled C# CLR assembly for SHA-256 cryptographic hashing
-* 💾 **[`BackupDatabase.ps1`](../../../src/05_automation_and_smo/smo_scripts/BackupDatabase.ps1):** Automated backup orchestration and verification via PowerShell SMO
-
----
-
-## 3. Lesson Index & Study Notes (27 Modules)
-
-> [!tip] 🔄 Dynamic Course Content Matrix (Auto-queries note frontmatter)
-> ```dataview
-> TABLE WITHOUT ID
->   file.link AS "Lesson Note",
->   choice(status = "completed", "✅ Completed", choice(status = "in-progress", "🔄 In Progress", "⏳ Planned")) AS "Status",
->   code_reference AS "Production Code",
->   last_modified AS "Modified"
-> FROM "video-notes/ch04"
-> SORT file.name ASC
-> ```
-
-### 📋 Interactive Course Content Checklist
+## Lesson Checklist
 
 - [ ] **CH04_VID01**: [[vid01-overview-of-stored-procedure|Overview of Stored Procedures]] · `src/03_programmability_and_elt/03_stored_procedures_etl.sql`
 - [ ] **CH04_VID02**: [[vid02-advantages-of-stored-procedures|Advantages of Stored Procedures]] · `src/03_programmability_and_elt/03_stored_procedures_etl.sql`
@@ -94,19 +55,24 @@ The following production scripts in the repository implement the patterns covere
 - [ ] **CH04_VID26**: [[vid26-create-backup-database-programmatically-with-smo-through-app|Programmatic DB Creation & Backup via SMO]] · `src/05_automation_and_smo/`
 - [ ] **CH04_VID27**: [[vid27-assignment-04|Assignment 04: Procedural ETL, CLR & Automation]]
 
-> [!check] 🎯 Active Unfinished Tasks Across Chapter Notes
-> ```dataview
-> TASK
-> FROM "video-notes/ch04"
-> WHERE !completed
-> GROUP BY file.link
-> LIMIT 15
-> ```
-
 ---
 
-## 4. Next Steps & Navigation
+## Progress
 
-* 🗺️ **Full Course Tracker:** [Interactive Learning Tracker](../LEARNING_TRACKER.md)
-* 📅 **8-Week Schedule:** [8-Week Mentor Study Plan](../8-WEEK-STUDY-PLAN.md)
-* 🌐 **Interactive Portfolio Showcase:** [OmniFlow Web Application](https://sohila-khaled-abbas.github.io/sql-server-data-platform/)
+```dataview
+TABLE WITHOUT ID
+  file.link AS "Lesson",
+  choice(status = "completed", "✅", choice(status = "in-progress", "🔄", "⏳")) AS "Status"
+FROM "video-notes/ch04"
+SORT file.name ASC
+```
+
+## Open Tasks
+
+```dataview
+TASK
+FROM "video-notes/ch04"
+WHERE !completed
+GROUP BY file.link
+LIMIT 15
+```

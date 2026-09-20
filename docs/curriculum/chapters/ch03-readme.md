@@ -21,50 +21,11 @@ last_modified: 2026-09-19
 > [!abstract] Navigation & Chapter Overview
 > ⬅️ **Previous:** [CH02 — SQL Programming Essentials](ch02-readme.md) | 📑 **Curriculum Overview:** [Curriculum README](../README.md) | ➡️ **Next:** [CH04 — Procedures, Triggers, and SQL Automation](ch04-readme.md)
 
-> [!info] Chapter Focus & Scope
 > High-throughput data access and disaster recovery: standard and indexed views with SCHEMABINDING, horizontal table partitioning, XML shredding (nodes/value), recursive CTEs, sequences, TVPs, and Log Shipping / Mirroring.
 
 ---
 
-## 1. Chapter Mastery Objectives
-
-At the end of this chapter, be able to articulate and demonstrate how the objects and architectural patterns affect the four core pillars of database engineering:
-
-> [!check] Engineering Dimensions
-> 1. **Correctness:** Enforce relational integrity, domain invariants, and explicit ACID boundaries.
-> 2. **Performance:** Eliminate lock contention, minimize buffer page churn, and maximize execution plan efficiency.
-> 3. **Recoverability:** Design resilient RPO/RTO backup chains, NTFS sparse snapshots, and high-availability topologies.
-> 4. **Maintainability:** Ensure transparent DDL governance, change capture audit trails, and idempotent scripts.
-
----
-
-## 2. Production Code Artifacts
-
-The following production scripts in the repository implement the patterns covered across this chapter:
-
-* 💾 **[`02_indexed_views.sql`](../../../src/02_indexing_and_performance/02_indexed_views.sql):** Materialized pre-aggregated indexed views with SCHEMABINDING
-* 💾 **[`04_partitioning_scheme.sql`](../../../src/01_storage_and_schema/04_partitioning_scheme.sql):** RANGE RIGHT date partition functions and zero-IO partition switching
-* 💾 **[`01_tvps_and_bulk_ingestion.sql`](../../../src/03_programmability_and_elt/01_tvps_and_bulk_ingestion.sql):** High-performance streaming ingestion via User-Defined Table Types
-* 💾 **[`02_xml_shredding_and_generation.sql`](../../../src/03_programmability_and_elt/02_xml_shredding_and_generation.sql):** XQuery XML parsing and nested relational payload generation
-* 💾 **[`04_hierarchical_data_and_ctes.sql`](../../../src/03_programmability_and_elt/04_hierarchical_data_and_ctes.sql):** Recursive CTEs for organizational hierarchy resolution
-* 💾 **[`log_shipping_and_ag_guide.md`](../../../src/06_reliability_and_dr/03_high_availability_docs/log_shipping_and_ag_guide.md):** Log shipping runbook and modern Always On Availability Group transition
-
----
-
-## 3. Lesson Index & Study Notes (23 Modules)
-
-> [!tip] 🔄 Dynamic Course Content Matrix (Auto-queries note frontmatter)
-> ```dataview
-> TABLE WITHOUT ID
->   file.link AS "Lesson Note",
->   choice(status = "completed", "✅ Completed", choice(status = "in-progress", "🔄 In Progress", "⏳ Planned")) AS "Status",
->   code_reference AS "Production Code",
->   last_modified AS "Modified"
-> FROM "video-notes/ch03"
-> SORT file.name ASC
-> ```
-
-### 📋 Interactive Course Content Checklist
+## Lesson Checklist
 
 - [ ] **CH03_VID01**: [[vid01-overview-of-views|Overview of Views]] · `src/04_views_and_partitioning/01_materialized_indexed_views.sql`
 - [ ] **CH03_VID02**: [[vid02-types-of-views|Types of Views]] · `src/04_views_and_partitioning/01_materialized_indexed_views.sql`
@@ -90,19 +51,24 @@ The following production scripts in the repository implement the patterns covere
 - [ ] **CH03_VID22**: [[vid22-log-shipping-vs-mirroring|Log Shipping vs Mirroring vs Always On AGs]]
 - [ ] **CH03_VID23**: [[vid23-assignment-03|Assignment 03: High-Availability & Partitioning]]
 
-> [!check] 🎯 Active Unfinished Tasks Across Chapter Notes
-> ```dataview
-> TASK
-> FROM "video-notes/ch03"
-> WHERE !completed
-> GROUP BY file.link
-> LIMIT 15
-> ```
-
 ---
 
-## 4. Next Steps & Navigation
+## Progress
 
-* 🗺️ **Full Course Tracker:** [Interactive Learning Tracker](../LEARNING_TRACKER.md)
-* 📅 **8-Week Schedule:** [8-Week Mentor Study Plan](../8-WEEK-STUDY-PLAN.md)
-* 🌐 **Interactive Portfolio Showcase:** [OmniFlow Web Application](https://sohila-khaled-abbas.github.io/sql-server-data-platform/)
+```dataview
+TABLE WITHOUT ID
+  file.link AS "Lesson",
+  choice(status = "completed", "✅", choice(status = "in-progress", "🔄", "⏳")) AS "Status"
+FROM "video-notes/ch03"
+SORT file.name ASC
+```
+
+## Open Tasks
+
+```dataview
+TASK
+FROM "video-notes/ch03"
+WHERE !completed
+GROUP BY file.link
+LIMIT 15
+```

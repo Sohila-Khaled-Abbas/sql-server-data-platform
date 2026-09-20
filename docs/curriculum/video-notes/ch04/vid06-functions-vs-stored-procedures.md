@@ -24,27 +24,19 @@ last_modified: 2026-09-19
 > ⬅️ **Previous:** [CH04_VID05 — Stored Procedure with Parameters and Return Values](vid05-stored-procedure-with-parameters-and-return-values.md) | 📑 **Index:** [102 Video Index](../../VIDEO_INDEX.md) | ➡️ **Next:** [CH04_VID07 — Dynamic Query in Stored Procedure](vid07-dynamic-query-in-stored-procedure.md)  
 > 📌 **Chapter:** [CH04 — Procedures, Triggers, and SQL Automation](../../chapters/ch04-readme.md) · **Official Lesson:** [MaharaTech 17583](https://maharatech.gov.eg/mod/hvp/view.php?id=17583)
 
-## 🎯 Engineering Mastery Checklist
-- [ ] 📺 **Architectural Concept** · Core engine mechanics, internals, and storage allocation
-- [ ] 💻 **Hands-On Execution** · Script executed and validated against SQL Server 2022 / SSMS
-- [ ] 🧪 **Edge Case & Stress Testing** · Tested boundary limits, error traps (`XACT_ABORT`), and constraints
-- [ ] 🚀 **Production Code Verified** · Documented implementation tracked in `src/03_programmability_and_elt/05_scalar_vs_table_functions.sql`
+## Progress
+- [ ] Watched
+- [ ] Reproduced in SSMS
+- [ ] Tested edge cases
+- [ ] Documented
 
 ---
 
-## 1. Learning Objectives & Architectural Focus
+## Key Concept
 
-By the end of this lesson, I should be able to explain the core idea behind **Functions vs Stored Procedures**, write/reproduce a small working example, and describe when the feature is useful in a real SQL Server data platform.
-
-> [!info] Architectural Principle
 > Stored procedures package database-side operations, can accept parameters, and are useful for reusable application/data-access workflows.
 
-> [!tip] 2026 Data Engineering & DBRE Lens
-> While watching, note which steps are product-specific UI actions versus durable SQL/database-engineering concepts. Your GitHub notes should preserve the latter.
-
----
-
-## 2. Production T-SQL Implementation Pattern
+## SQL Pattern
 
 ```sql
 CREATE OR ALTER PROCEDURE dbo.usp_GetCustomerSales
@@ -59,63 +51,11 @@ BEGIN
 END;
 ```
 
----
+## Notes
 
-## 3. Production Engineering Evaluation Matrix
+<!-- Write your observations, gotchas, and edge cases here -->
 
-| Dimension | Critical Engineering Evaluation |
-| :--- | :--- |
-| **Correctness** | What data invariant, operational behavior, or ACID guarantee does it enforce? |
-| **Performance** | How does this affect I/O operations, page allocation, buffer cache, CPU, or lock contention? |
-| **Operations** | How does this behave under disaster recovery, failover, backup chains, and migration? |
-| **Maintainability** | Can another engineer easily diagnose, extend, or alter this object without breaking dependent callers? |
+## Links
 
----
-
-## 4. Hands-on Reproduction & Edge Case Drill
-
-Rebuild the core pattern from memory in SSMS or Docker container. Test boundary conditions, edge cases, and failure modes.
-
-```sql
--- Hands-on Verification & Edge Case Drill
-CREATE OR ALTER PROCEDURE dbo.usp_GetCustomerSales
-    @CustomerID int
-AS
-BEGIN
-    SET NOCOUNT ON;
-    SELECT CustomerID, SUM(Amount) AS Sales
-    FROM dbo.Sales
-    WHERE CustomerID = @CustomerID
-    GROUP BY CustomerID;
-END;
-```
-
----
-
-## 5. Architectural Synthesis & Mentor Checkpoint
-
-> [!question] Senior DBRE / Architect Challenge
-> **Explain without SQL:** What problem would this feature solve in a production data platform, and what would you use instead when the feature is the wrong tool?
-
-*My Engineering Synthesis:*
-<!-- Document your synthesized mental model, architectural trade-offs, and operational lessons here -->
-
----
-
-## 6. Observation & SSMS Notes
-
-- **Key demonstration observed:**
-- **Important SSMS / Engine setting:**
-- **Critical syntax nuance:**
-- **Failure mode or trap avoided:**
-- **Research item for deeper inquiry:**
-
----
-
-## 7. Evidence & Production Artifact Links
-
-* 🔗 **Official Course Module:** [MaharaTech Lesson 17583](https://maharatech.gov.eg/mod/hvp/view.php?id=17583)
-* 💾 **Production Script:** [`src/03_programmability_and_elt/05_scalar_vs_table_functions.sql`](../../../../src/03_programmability_and_elt/05_scalar_vs_table_functions.sql)
-* 📖 **Chapter Mastery Guide:** [CH04 — Procedures, Triggers, and SQL Automation](../../chapters/ch04-readme.md)
-* 🗺️ **Curriculum Tracker:** [Interactive Learning Tracker](../../LEARNING_TRACKER.md)
-* 🚀 **Interactive Showcase:** [OmniFlow Platform Web App](https://sohila-khaled-abbas.github.io/sql-server-data-platform/)
+- [MaharaTech](https://maharatech.gov.eg/mod/hvp/view.php?id=17583)
+- `src/03_programmability_and_elt/05_scalar_vs_table_functions.sql`

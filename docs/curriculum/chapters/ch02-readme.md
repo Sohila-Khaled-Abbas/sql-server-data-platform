@@ -21,47 +21,11 @@ last_modified: 2026-09-19
 > [!abstract] Navigation & Chapter Overview
 > ⬅️ **Previous:** [CH01 — Database Creation and Management](ch01-readme.md) | 📑 **Curriculum Overview:** [Curriculum README](../README.md) | ➡️ **Next:** [CH03 — Advanced Query Techniques and High Availability](ch03-readme.md)
 
-> [!info] Chapter Focus & Scope
 > Procedural T-SQL without row-by-row anti-patterns: variable scoping, control flow, functions (Scalar vs Inline TVF vs MSTVF), system databases, temporary tables, batches, and ACID transaction boundaries.
 
 ---
 
-## 1. Chapter Mastery Objectives
-
-At the end of this chapter, be able to articulate and demonstrate how the objects and architectural patterns affect the four core pillars of database engineering:
-
-> [!check] Engineering Dimensions
-> 1. **Correctness:** Enforce relational integrity, domain invariants, and explicit ACID boundaries.
-> 2. **Performance:** Eliminate lock contention, minimize buffer page churn, and maximize execution plan efficiency.
-> 3. **Recoverability:** Design resilient RPO/RTO backup chains, NTFS sparse snapshots, and high-availability topologies.
-> 4. **Maintainability:** Ensure transparent DDL governance, change capture audit trails, and idempotent scripts.
-
----
-
-## 2. Production Code Artifacts
-
-The following production scripts in the repository implement the patterns covered across this chapter:
-
-* 💾 **[`05_scalar_vs_table_functions.sql`](../../../src/03_programmability_and_elt/05_scalar_vs_table_functions.sql):** Execution plan benchmark: Scalar UDF inlining vs iTVFs vs MSTVFs
-* 💾 **[`03_stored_procedures_etl.sql`](../../../src/03_programmability_and_elt/03_stored_procedures_etl.sql):** Transactional procedural pipelines with XACT_ABORT and TRY...CATCH
-* 💾 **[`03_execution_plan_analysis.sql`](../../../src/02_indexing_and_performance/03_execution_plan_analysis.sql):** Set-based execution plans vs RBAR procedural cursor bottlenecks
-
----
-
-## 3. Lesson Index & Study Notes (15 Modules)
-
-> [!tip] 🔄 Dynamic Course Content Matrix (Auto-queries note frontmatter)
-> ```dataview
-> TABLE WITHOUT ID
->   file.link AS "Lesson Note",
->   choice(status = "completed", "✅ Completed", choice(status = "in-progress", "🔄 In Progress", "⏳ Planned")) AS "Status",
->   code_reference AS "Production Code",
->   last_modified AS "Modified"
-> FROM "video-notes/ch02"
-> SORT file.name ASC
-> ```
-
-### 📋 Interactive Course Content Checklist
+## Lesson Checklist
 
 - [ ] **CH02_VID01**: [[vid01-variables|Variables]] · `src/03_programmability_and_elt/01_user_defined_functions.sql`
 - [ ] **CH02_VID02**: [[vid02-local-variables|Local Variables]] · `src/03_programmability_and_elt/01_user_defined_functions.sql`
@@ -79,19 +43,24 @@ The following production scripts in the repository implement the patterns covere
 - [ ] **CH02_VID14**: [[vid14-demo-on-transactions|Demo on Transactions & Rollbacks]] · `src/03_programmability_and_elt/03_stored_procedures_etl.sql`
 - [ ] **CH02_VID15**: [[vid15-assignment-02|Assignment 02: Transactional Pipeline Engineering]]
 
-> [!check] 🎯 Active Unfinished Tasks Across Chapter Notes
-> ```dataview
-> TASK
-> FROM "video-notes/ch02"
-> WHERE !completed
-> GROUP BY file.link
-> LIMIT 15
-> ```
-
 ---
 
-## 4. Next Steps & Navigation
+## Progress
 
-* 🗺️ **Full Course Tracker:** [Interactive Learning Tracker](../LEARNING_TRACKER.md)
-* 📅 **8-Week Schedule:** [8-Week Mentor Study Plan](../8-WEEK-STUDY-PLAN.md)
-* 🌐 **Interactive Portfolio Showcase:** [OmniFlow Web Application](https://sohila-khaled-abbas.github.io/sql-server-data-platform/)
+```dataview
+TABLE WITHOUT ID
+  file.link AS "Lesson",
+  choice(status = "completed", "✅", choice(status = "in-progress", "🔄", "⏳")) AS "Status"
+FROM "video-notes/ch02"
+SORT file.name ASC
+```
+
+## Open Tasks
+
+```dataview
+TASK
+FROM "video-notes/ch02"
+WHERE !completed
+GROUP BY file.link
+LIMIT 15
+```

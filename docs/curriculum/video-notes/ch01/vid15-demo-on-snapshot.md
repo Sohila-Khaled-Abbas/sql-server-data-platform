@@ -24,29 +24,19 @@ last_modified: 2026-09-19
 > ⬅️ **Previous:** [CH01_VID14 — Snapshot DB](vid14-snapshot-db.md) | 📑 **Index:** [102 Video Index](../../VIDEO_INDEX.md) | ➡️ **Next:** [CH01_VID16 — Assignment 01](vid16-assignment-01.md)  
 > 📌 **Chapter:** [CH01 — Database Creation and Management](../../chapters/ch01-readme.md) · **Official Lesson:** [MaharaTech 17534](https://maharatech.gov.eg/mod/hvp/view.php?id=17534)
 
-## 🎯 Engineering Mastery Checklist
-- [ ] 📺 **Architectural Concept** · Core engine mechanics, internals, and storage allocation
-- [ ] 💻 **Hands-On Execution** · Script executed and validated against SQL Server 2022 / SSMS
-- [ ] 🧪 **Edge Case & Stress Testing** · Tested boundary limits, error traps (`XACT_ABORT`), and constraints
-- [ ] 🚀 **Production Code Verified** · Documented implementation tracked in `src/06_reliability_and_dr/02_snapshot_lifecycle.sql`
+## Progress
+- [ ] Watched
+- [ ] Reproduced in SSMS
+- [ ] Tested edge cases
+- [ ] Documented
 
 ---
 
-## 1. Learning Objectives & Architectural Focus
+## Key Concept
 
-By the end of this lesson, I should be able to explain the core idea behind **Demo on Snapshot**, write/reproduce a small working example, and describe when the feature is useful in a real SQL Server data platform.
-
-> [!info] Architectural Principle
 > A database snapshot is read-only and transactionally consistent at creation time; it is useful for point-in-time read access but does not replace backups.
 
-**2026 lens:** A database snapshot is a read-only, transactionally consistent view at creation time on the same SQL Server instance. It does not replace regular backups. [Microsoft Learn: Database Snapshots](https://learn.microsoft.com/en-us/sql/relational-databases/databases/database-snapshots-sql-server?view=sql-server-ver17)
-
-> [!tip] 2026 Data Engineering & DBRE Lens
-> Distinguish transient UI actions from durable database engineering invariants. Ensure all schema definitions in CH01_VID15 are captured in declarative T-SQL scripts rather than unrepeatable SSMS clicks.
-
----
-
-## 2. Production T-SQL Implementation Pattern
+## SQL Pattern
 
 ```sql
 CREATE DATABASE SalesDB_Snapshot
@@ -54,56 +44,11 @@ ON (NAME = SalesDB_Data, FILENAME = 'D:\Snapshots\SalesDB.ss')
 AS SNAPSHOT OF SalesDB;
 ```
 
----
+## Notes
 
-## 3. Production Engineering Evaluation Matrix
+<!-- Write your observations, gotchas, and edge cases here -->
 
-| Dimension | Critical Engineering Evaluation |
-| :--- | :--- |
-| **Correctness** | What data invariant, operational behavior, or ACID guarantee does it enforce? |
-| **Performance** | How does this affect I/O operations, page allocation, buffer cache, CPU, or lock contention? |
-| **Operations** | How does this behave under disaster recovery, failover, backup chains, and migration? |
-| **Maintainability** | Can another engineer easily diagnose, extend, or alter this object without breaking dependent callers? |
+## Links
 
----
-
-## 4. Hands-on Reproduction & Edge Case Drill
-
-Rebuild the core pattern from memory in SSMS or Docker container. Test boundary conditions, edge cases, and failure modes.
-
-```sql
--- Hands-on Verification & Edge Case Drill
-CREATE DATABASE SalesDB_Snapshot
-ON (NAME = SalesDB_Data, FILENAME = 'D:\Snapshots\SalesDB.ss')
-AS SNAPSHOT OF SalesDB;
-```
-
----
-
-## 5. Architectural Synthesis & Mentor Checkpoint
-
-> [!question] Senior DBRE / Architect Challenge
-> **Explain without SQL:** What problem would this feature solve in a production data platform, and what would you use instead when the feature is the wrong tool?
-
-*My Engineering Synthesis:*
-<!-- Document your synthesized mental model, architectural trade-offs, and operational lessons here -->
-
----
-
-## 6. Observation & SSMS Notes
-
-- **Key demonstration observed:**
-- **Important SSMS / Engine setting:**
-- **Critical syntax nuance:**
-- **Failure mode or trap avoided:**
-- **Research item for deeper inquiry:**
-
----
-
-## 7. Evidence & Production Artifact Links
-
-* 🔗 **Official Course Module:** [MaharaTech Lesson 17534](https://maharatech.gov.eg/mod/hvp/view.php?id=17534)
-* 💾 **Production Script:** [`src/06_reliability_and_dr/02_snapshot_lifecycle.sql`](../../../../src/06_reliability_and_dr/02_snapshot_lifecycle.sql)
-* 📖 **Chapter Mastery Guide:** [CH01 — Database Creation and Management](../../chapters/ch01-readme.md)
-* 🗺️ **Curriculum Tracker:** [Interactive Learning Tracker](../../LEARNING_TRACKER.md)
-* 🚀 **Interactive Showcase:** [OmniFlow Platform Web App](https://sohila-khaled-abbas.github.io/sql-server-data-platform/)
+- [MaharaTech](https://maharatech.gov.eg/mod/hvp/view.php?id=17534)
+- `src/06_reliability_and_dr/02_snapshot_lifecycle.sql`
