@@ -23,6 +23,7 @@
 <br />
 
 **[🌐 Launch Interactive Web App](https://sohila-khaled-abbas.github.io/sql-server-data-platform/)** •
+**[🧠 Obsidian Second Brain](#-obsidian-second-brain--pkm-vault-integration)** •
 **[✨ Platform Highlights](#-key-platform-pillars)** •
 **[🏛️ System Architecture](#%EF%B8%8F-architecture-overview)** •
 **[🗺️ Syllabus & Competency Matrix](#%EF%B8%8F-syllabus-to-dbre-competency-mapping)** •
@@ -414,6 +415,14 @@ sql-server-data-platform/
 
 Explore our deep-dive handbooks located in [`/docs`](docs/):
 
+### 🎓 Curriculum & Learning Companion (102 Video Modules)
+* 🧠 **[Obsidian Second Brain Study Hub](docs/curriculum/README.md)**: Master Map of Content (MOC) with dynamic Dataview dashboards and live video notes.
+* 🗺️ **[Interactive 102-Lesson Learning Tracker](docs/curriculum/LEARNING_TRACKER.md)**: Four-stage engineering checklist (*Watched*, *Reproduced*, *Modified*, *Explained*).
+* 📅 **[8-Week DBRE Sprint Study Plan](docs/curriculum/8-WEEK-STUDY-PLAN.md)**: Structured weekly curriculum path from storage internals to dimensional star schemas.
+* 📑 **[102 Video Notes Catalog](docs/curriculum/VIDEO_INDEX.md)**: Direct index to every official lecture and corresponding code module.
+* 🛡️ **[The Mentor Workflow Handbook](docs/curriculum/MENTOR_WORKFLOW.md)**: 4-stage engineering mastery framework.
+
+### 📖 Technical Reference Handbooks
 * 📖 **[Learning Guidance & DBRE Deep-Dive](docs/learning-guidance.md)**: 5-Phase career progression roadmap, essential concepts, and 25+ real-world DBRE interview scenarios.
 * ⚡ **[Performance Tuning Handbook](docs/performance-tuning-handbook.md)**: Query optimizer internals, SARGability rules, indexing strategies, and wait statistics analysis.
 * 🛡️ **[Disaster Recovery Runbook](docs/disaster-recovery-runbook.md)**: RPO/RTO calculations, VLF optimization, non-blocking snapshots, and log shipping runbooks.
@@ -423,6 +432,27 @@ Explore our deep-dive handbooks located in [`/docs`](docs/):
 * 📊 **[Data Dictionary](docs/data-dictionary.md)**: Full metadata specification for all transactional and dimensional schemas.
 * ⭐ **[Dimensional Model Bus Matrix](docs/dimensional-model.md)**: Kimball star schema grain definitions, conformed dimensions, and additive facts.
 * 🗺️ **[Full Course Syllabus Mapping](docs/course-syllabus-mapping.md)**: Video-by-video curriculum alignment with corresponding code modules.
+
+---
+
+## 🧠 Obsidian Second Brain & PKM Vault Integration
+
+This repository includes a fully configured, production-grade **Personal Knowledge Management (PKM) Second Brain** located at [`docs/curriculum/`](docs/curriculum/). It is ready to open directly in **[Obsidian](https://obsidian.md/)** with zero friction:
+
+### 🚀 Opening the Vault in Obsidian
+1. Download and launch **Obsidian**.
+2. Click **"Open folder as vault"**.
+3. Select `docs/curriculum/` (or the repository root folder).
+4. All 60+ pre-installed plugins, themes, and CSS snippets will automatically load!
+
+### ⚡ Included Second Brain Capabilities
+* 📊 **Dynamic Dataview Dashboards:** Live aggregation tables in every chapter guide that automatically compute lesson progress, pending tasks, and production script links.
+* 🤖 **Smart Connections AI:** In-vault vector embeddings and neural search that let you ask questions and chat with your database notes.
+* 🔍 **Omnisearch:** Ultra-fast fuzzy and full-text indexation across all 102 lesson modules and production code references.
+* 📋 **TaskNotes & Obsidian Tasks:** Unified productivity system featuring integrated agendas, kanban boards, and pomodoro analytics.
+* 🎨 **Obsidian Nord & Catppuccin Themes:** High-contrast, dark-mode styling with `Inter` typography, custom property icons, and Callout admonitions.
+* 🔗 **Bidirectional Production Code Linking:** Every note contains direct links to its corresponding production script in [`src/`](src/), enabling seamless theory-to-implementation pairing.
+* 🌐 **Direct Online Platform Synergy:** Seamlessly jumps to the live [OmniFlow Interactive Web Studio](https://sohila-khaled-abbas.github.io/sql-server-data-platform/) to run T-SQL code in your browser with zero local setup.
 
 ---
 

@@ -76,24 +76,58 @@ flowchart TD
 
 ---
 
-## 3. Obsidian Vault Features
+## 3. Obsidian Second Brain Live Dashboards & Queries
 
-This directory is engineered to function as an advanced, interconnected **Personal Knowledge Management (PKM)** vault inside **Obsidian**:
+> [!tip] Obsidian Second Brain Dynamic Telemetry
+> If viewing this vault inside Obsidian with **Dataview** enabled, these dynamic dashboards query and calculate curriculum completion metrics in real time:
 
-> [!tip] Obsidian Power Features Built-in
-> * **Interactive Properties (YAML Frontmatter):** Every file includes standardized YAML properties (`tags`, `chapter`, `lesson`, `status`, `course_url`, `code_reference`) supported natively by Obsidian 1.4+.
-> * **Callout Boxes:** Uses standard Obsidian callouts (`[!abstract]`, `[!todo]`, `[!info]`, `[!tip]`, `[!check]`, `[!question]`) for visual hierarchy.
-> * **Linear Breadcrumbs:** Every lesson note includes one-click sequential navigation (`⬅️ Previous`, `📑 Index`, `➡️ Next`) for structured linear reading.
-> * **Bidirectional Cross-References:** Direct links connecting study notes, chapter hubs, and real production scripts in `src/`.
-> * **Mermaid Diagrams:** Architectural flowcharts and execution pipelines render natively in Obsidian preview mode.
+### 📊 Curriculum Chapter Progress Matrix
+```dataview
+TABLE length(rows) AS "Total Lessons", 
+      length(filter(rows, (r) => r.status = "completed")) AS "Completed ✅", 
+      length(filter(rows, (r) => r.status = "in-progress")) AS "In Progress ⏳", 
+      length(filter(rows, (r) => r.status = "planned" OR !r.status)) AS "Planned 📋"
+FROM "video-notes"
+GROUP BY chapter
+```
+
+### ⚡ Active Focus & In-Progress Lessons
+```dataview
+TABLE chapter AS "Chapter", code_reference AS "Production Implementation", last_modified AS "Last Revised"
+FROM "video-notes"
+WHERE status = "in-progress"
+SORT last_modified DESC
+```
+
+### 📋 Pending Action Items & Next Tasks
+```dataview
+TASK
+WHERE !completed AND contains(file.path, "video-notes")
+GROUP BY file.link
+LIMIT 15
+```
 
 ---
 
-## 4. Key Curriculum Documents
+## 4. Obsidian Second Brain Ecosystem & Plugins
 
+This vault is fully configured with an enterprise-grade **Personal Knowledge Management (PKM) / Second Brain** architecture, loaded with 60+ pre-installed plugins, themes, and CSS snippets:
+
+> [!check] Pre-Configured Second Brain Capabilities
+> * 🔍 **Semantic & Neural Search:** **Omnisearch** (full-text indexation) & **Smart Connections** (local vector embeddings & AI chat over your database notes).
+> * 📊 **Dynamic Data Engine:** **Dataview** & **Obsidian Charts View** for SQL-like metadata queries across all frontmatter properties.
+> * 🗂️ **Task & Productivity Hub:** **TaskNotes** (with integrated Agenda, Calendar, Kanban, Pomodoro stats, and Bases), **Obsidian Tasks**, and **FlowTask**.
+> * 📝 **Rich Writing & Linting:** **Obsidian Linter** (automated markdown standardizer), **Editing Toolbar**, **Table Editor**, **Admonition Callouts**, and **Templater**.
+> * 🎨 **Aesthetics & Visual Identity:** Curated themes (**Obsidian Nord**, **Catppuccin**, **Obsidianite**), **Pretty Properties**, **Iconic**, **Shard Icons**, and **Metadata Icon Auto-Gen**.
+> * 🖼️ **Visual Architecture & ERDs:** **Obsidian Excalidraw**, **Extended Graph**, and **Folders2Graph** for spatial relationship modeling.
+
+---
+
+## 5. Key Curriculum Documents & Live Showcase
+
+* 🌐 **[Launch OmniFlow Live Web Studio](https://sohila-khaled-abbas.github.io/sql-server-data-platform/):** Interactive in-browser WASM T-SQL sandbox, ERD visualizer, and curriculum lesson navigator.
 * 🗺️ **[Interactive Learning Tracker](LEARNING_TRACKER.md):** 102-lesson checklist tracking *Watched*, *Reproduced*, *Modified*, and *Explained*.
 * 📑 **[102 Video Notes Index](VIDEO_INDEX.md):** Complete catalog with direct links to official MaharaTech lectures.
 * 📅 **[8-Week Study Plan](8-WEEK-STUDY-PLAN.md):** Weekly sprint breakdown with milestone deliverables and checkpoints.
 * 🛡️ **[The Mentor Workflow](MENTOR_WORKFLOW.md):** 4-stage engineering mastery framework.
 * 🏗️ **[Capstone Project Brief](projects/final-project-brief.md):** Comprehensive data platform architecture requirements.
-* 🌐 **[Interactive Web Portfolio](https://sohila-khaled-abbas.github.io/sql-server-data-platform/):** Live web showcase exploring schemas, scripts, and ERD diagrams.

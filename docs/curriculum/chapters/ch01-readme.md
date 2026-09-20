@@ -13,7 +13,7 @@ tags:
 chapter: "CH01"
 total_lessons: 16
 date_created: 2026-09-19
-last_modified: 2026-09-19
+last_modified: 2026-09-20
 ---
 
 # CH01 — Database Creation and Management
@@ -53,24 +53,43 @@ The following production scripts in the repository implement the patterns covere
 
 ## 3. Lesson Index & Study Notes (16 Modules)
 
-| Lesson Code | Topic & Study Note | Status | Note Link |
-| :--- | :--- | :---: | :--- |
-| `CH01_VID01` | [Create Database and Filegroups](../video-notes/ch01/vid01-create-database-and-filegroups.md) | ☐ | [note](../video-notes/ch01/vid01-create-database-and-filegroups.md) |
-| `CH01_VID02` | [Create Database Using Wizard](../video-notes/ch01/vid02-create-database-using-wizard.md) | ☐ | [note](../video-notes/ch01/vid02-create-database-using-wizard.md) |
-| `CH01_VID03` | [Create Database Using Code](../video-notes/ch01/vid03-create-database-using-code.md) | ☐ | [note](../video-notes/ch01/vid03-create-database-using-code.md) |
-| `CH01_VID04` | [Database Integrity](../video-notes/ch01/vid04-database-integrity.md) | ☐ | [note](../video-notes/ch01/vid04-database-integrity.md) |
-| `CH01_VID05` | [Integrity constraints](../video-notes/ch01/vid05-integrity-constraints.md) | ☐ | [note](../video-notes/ch01/vid05-integrity-constraints.md) |
-| `CH01_VID06` | [Constraints, Rules, and Default Values](../video-notes/ch01/vid06-constraints-rules-and-default-values.md) | ☐ | [note](../video-notes/ch01/vid06-constraints-rules-and-default-values.md) |
-| `CH01_VID07` | [Creating a Custom Data Type](../video-notes/ch01/vid07-creating-a-custom-data-type.md) | ☐ | [note](../video-notes/ch01/vid07-creating-a-custom-data-type.md) |
-| `CH01_VID08` | [Clustered Index](../video-notes/ch01/vid08-clustered-index.md) | ☐ | [note](../video-notes/ch01/vid08-clustered-index.md) |
-| `CH01_VID09` | [Non-Clustered Index](../video-notes/ch01/vid09-non-clustered-index.md) | ☐ | [note](../video-notes/ch01/vid09-non-clustered-index.md) |
-| `CH01_VID10` | [Demo on Index](../video-notes/ch01/vid10-demo-on-index.md) | ☐ | [note](../video-notes/ch01/vid10-demo-on-index.md) |
-| `CH01_VID11` | [Types of Backup](../video-notes/ch01/vid11-types-of-backup.md) | ☐ | [note](../video-notes/ch01/vid11-types-of-backup.md) |
-| `CH01_VID12` | [Backup Database Using Wizard](../video-notes/ch01/vid12-backup-database-using-wizard.md) | ☐ | [note](../video-notes/ch01/vid12-backup-database-using-wizard.md) |
-| `CH01_VID13` | [Backup & SQL server agent jobs](../video-notes/ch01/vid13-backup-sql-server-agent-jobs.md) | ☐ | [note](../video-notes/ch01/vid13-backup-sql-server-agent-jobs.md) |
-| `CH01_VID14` | [Snapshot DB](../video-notes/ch01/vid14-snapshot-db.md) | ☐ | [note](../video-notes/ch01/vid14-snapshot-db.md) |
-| `CH01_VID15` | [Demo on Snapshot](../video-notes/ch01/vid15-demo-on-snapshot.md) | ☐ | [note](../video-notes/ch01/vid15-demo-on-snapshot.md) |
-| `CH01_VID16` | [Assignment 01](../video-notes/ch01/vid16-assignment-01.md) | ☐ | [note](../video-notes/ch01/vid16-assignment-01.md) |
+> [!tip] 🔄 Dynamic Course Content Matrix (Auto-queries note frontmatter)
+> ```dataview
+> TABLE WITHOUT ID
+>   file.link AS "Lesson Note",
+>   choice(status = "completed", "✅ Completed", choice(status = "in-progress", "🔄 In Progress", "⏳ Planned")) AS "Status",
+>   code_reference AS "Production Code",
+>   last_modified AS "Modified"
+> FROM "video-notes/ch01"
+> SORT file.name ASC
+> ```
+
+### 📋 Interactive Course Content Checklist
+
+> [!todo] Clickable Lesson Progress Checklist (Updates in real-time)
+> - [ ] **CH01_VID01**: [[vid01-create-database-and-filegroups|Create Database and Filegroups]] · `src/01_storage_and_schema/01_filegroups_and_files.sql`
+> - [ ] **CH01_VID02**: [[vid02-create-database-using-wizard|Create Database Using Wizard]]
+> - [ ] **CH01_VID03**: [[vid03-create-database-using-code|Create Database Using Code]] · `src/01_storage_and_schema/01_filegroups_and_files.sql`
+> - [ ] **CH01_VID04**: [[vid04-database-integrity|Database Integrity]] · `src/02_data_integrity_and_ddl/01_declarative_constraints.sql`
+> - [ ] **CH01_VID05**: [[vid05-integrity-constraints|Integrity constraints]] · `src/02_data_integrity_and_ddl/01_declarative_constraints.sql`
+> - [ ] **CH01_VID06**: [[vid06-constraints-rules-and-default-values|Constraints, Rules, and Default Values]] · `src/02_data_integrity_and_ddl/02_check_constraints_and_defaults.sql`
+> - [ ] **CH01_VID07**: [[vid07-creating-a-custom-data-type|Creating a Custom Data Type]] · `src/01_storage_and_schema/04_user_defined_types.sql`
+> - [ ] **CH01_VID08**: [[vid08-clustered-index|Clustered Index]] · `src/05_indexing_and_performance/01_clustered_indexes.sql`
+> - [ ] **CH01_VID09**: [[vid09-non-clustered-index|Non-Clustered Index]] · `src/05_indexing_and_performance/02_nonclustered_indexes.sql`
+> - [ ] **CH01_VID10**: [[vid10-demo-on-index|Demo on Index]] · `src/05_indexing_and_performance/03_index_maintenance.sql`
+> - [ ] **CH01_VID11**: [[vid11-types-of-backup|Types of Backup]] · `src/06_reliability_and_dr/01_backup_and_maintenance_jobs.sql`
+> - [ ] **CH01_VID12**: [[vid12-backup-database-using-wizard|Backup Database Using Wizard]] · `src/06_reliability_and_dr/01_backup_and_maintenance_jobs.sql`
+> - [ ] **CH01_VID13**: [[vid13-backup-sql-server-agent-jobs|Backup & SQL server agent jobs]] · `src/06_reliability_and_dr/01_backup_and_maintenance_jobs.sql`
+> - [ ] **CH01_VID14**: [[vid14-snapshot-db|Snapshot DB]] · `src/06_reliability_and_dr/02_snapshot_lifecycle.sql`
+> - [ ] **CH01_VID15**: [[vid15-demo-on-snapshot|Demo on Snapshot]] · `src/06_reliability_and_dr/02_snapshot_lifecycle.sql`
+> - [ ] **CH01_VID16**: [[vid16-assignment-01|Assignment 01]] · `src/01_storage_and_schema/05_company_case_study_schema.sql`
+
+> [!check] 🎯 Active Unfinished Tasks Across Chapter Notes
+> ```dataview
+> TASK
+> FROM "video-notes/ch01"
+> WHERE !completed
+> ```
 
 ---
 

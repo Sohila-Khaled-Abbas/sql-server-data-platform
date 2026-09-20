@@ -1,0 +1,26 @@
+{
+  "rules": [
+    {
+      "field": "status",
+      "value": "completed",
+      "icon": "check-circle-2",
+      "color": "#10b981",
+      "caseSensitive": false
+    },
+    {
+      "field": "status",
+      "value": "in-progress",
+      "icon": "clock",
+      "color": "#f59e0b",
+      "caseSensitive": false
+    },
+    {
+      "field": "status",
+      "value": "planned",
+      "icon": "circle",
+      "color": "#64748b",
+      "caseSensitive": false
+    }
+  ],
+  "iconStroke": 2
+}

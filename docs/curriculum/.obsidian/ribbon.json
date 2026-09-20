@@ -1,0 +1,34 @@
+{
+  "ribbonCommands": [
+    {
+      "id": "global-search:Open search",
+      "title": "Search",
+      "hidden": false
+    },
+    {
+      "id": "switcher:Open quick switcher",
+      "title": "Open quick switcher",
+      "hidden": false
+    },
+    {
+      "id": "graph:Open graph view",
+      "title": "Open graph view",
+      "hidden": false
+    },
+    {
+      "id": "canvas:Create new canvas",
+      "title": "Create new canvas",
+      "hidden": false
+    },
+    {
+      "id": "daily-notes",
+      "title": "Open today's daily note",
+      "hidden": false
+    },
+    {
+      "id": "command-palette:Open command palette",
+      "title": "Open command palette",
+      "hidden": false
+    }
+  ]
+}

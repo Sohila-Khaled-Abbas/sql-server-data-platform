@@ -1,0 +1,140 @@
+/* Immutable virtual status icon shown beside matching internal links. */
+
+.nsc-checkbox {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.05em;
+  height: 1.05em;
+  margin-right: 0.35em;
+  vertical-align: -0.18em;
+  line-height: 1;
+  cursor: default;
+  user-select: none;
+  color: var(--nsc-icon-color, inherit);
+}
+
+.nsc-checkbox .svg-icon,
+.nsc-checkbox svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  stroke-width: var(--nsc-icon-stroke);
+}
+
+/* --- Impostazioni: righe regola --- */
+/* spessore icone (globale) */
+.nsc-stroke-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0 4px;
+}
+.nsc-stroke-label { font-weight: 600; }
+.nsc-stroke-range { flex: 0 1 200px; }
+.nsc-stroke-val { font-size: 12px; opacity: 0.6; min-width: 2.5em; }
+
+.nsc-rules { margin-top: 8px; }
+
+.nsc-rule {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+  border-top: 1px solid var(--background-modifier-border);
+  flex-wrap: wrap;
+}
+
+.nsc-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 30px;
+  padding: 0;
+  color: var(--nsc-icon-color, currentColor);
+}
+
+.nsc-color { width: 34px; height: 28px; padding: 0; }
+.nsc-hex { width: 90px; }
+.nsc-field { width: 130px; }
+
+/* bottone colore nella riga: apre il color picker */
+.nsc-color-btn {
+  width: 34px;
+  height: 28px;
+  padding: 0;
+  border-radius: 4px;
+  border: 1px solid var(--background-modifier-border);
+  cursor: pointer;
+  box-shadow: none;
+  background-color: var(--nsc-swatch-color, transparent);
+}
+
+.nsc-value-wrap { display: inline-flex; align-items: center; gap: 6px; }
+.nsc-value { width: 150px; }
+
+.nsc-cics { display: inline-flex; }
+.nsc-cics-btn { padding: 2px 8px; }
+.nsc-cics-btn.is-active { background: var(--interactive-accent); color: var(--text-on-accent); }
+
+.nsc-help {
+  cursor: help;
+  opacity: 0.6;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+}
+
+.nsc-tools { display: inline-flex; gap: 2px; margin-left: auto; }
+.nsc-tool { padding: 2px 8px; }
+.nsc-add { margin-top: 14px; }
+
+/* --- Picker icone --- */
+.nsc-picker-search { width: 100%; margin-bottom: 8px; }
+.nsc-picker-note { font-size: 12px; opacity: 0.6; margin-bottom: 8px; }
+.nsc-picker-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(38px, 1fr));
+  gap: 4px;
+  max-height: 50vh;
+  overflow-y: auto;
+}
+.nsc-picker-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1 / 1;
+  padding: 0;
+}
+.nsc-picker-cell.is-active { outline: 2px solid var(--interactive-accent); }
+
+/* --- Picker colore (preset + personalizzato) --- */
+.nsc-swatches { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+.nsc-swatch {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border-radius: 6px;
+  border: 1px solid var(--background-modifier-border);
+  cursor: pointer;
+  box-shadow: none;
+  transition: transform 0.08s ease;
+  background-color: var(--nsc-swatch-color, transparent);
+}
+.nsc-swatch:hover { transform: scale(1.12); }
+.nsc-swatch.is-active { outline: 2px solid var(--interactive-accent); outline-offset: 1px; }
+
+.nsc-color-custom {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-top: 12px;
+  border-top: 1px solid var(--background-modifier-border);
+}
+.nsc-color-custom-label { font-size: 12px; opacity: 0.7; margin-right: auto; }

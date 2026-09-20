@@ -53,31 +53,50 @@ The following production scripts in the repository implement the patterns covere
 
 ## 3. Lesson Index & Study Notes (23 Modules)
 
-| Lesson Code | Topic & Study Note | Status | Note Link |
-| :--- | :--- | :---: | :--- |
-| `CH03_VID01` | [Overview of Views](../video-notes/ch03/vid01-overview-of-views.md) | ☐ | [note](../video-notes/ch03/vid01-overview-of-views.md) |
-| `CH03_VID02` | [Types of Views](../video-notes/ch03/vid02-types-of-views.md) | ☐ | [note](../video-notes/ch03/vid02-types-of-views.md) |
-| `CH03_VID03` | [Creating and using Views](../video-notes/ch03/vid03-creating-and-using-views.md) | ☐ | [note](../video-notes/ch03/vid03-creating-and-using-views.md) |
-| `CH03_VID04` | [DML Operations on Views](../video-notes/ch03/vid04-dml-operations-on-views.md) | ☐ | [note](../video-notes/ch03/vid04-dml-operations-on-views.md) |
-| `CH03_VID05` | [Indexed View](../video-notes/ch03/vid05-indexed-view.md) | ☐ | [note](../video-notes/ch03/vid05-indexed-view.md) |
-| `CH03_VID06` | [Partitioning](../video-notes/ch03/vid06-partitioning.md) | ☐ | [note](../video-notes/ch03/vid06-partitioning.md) |
-| `CH03_VID07` | [Harnessing the Power of XML](../video-notes/ch03/vid07-harnessing-the-power-of-xml.md) | ☐ | [note](../video-notes/ch03/vid07-harnessing-the-power-of-xml.md) |
-| `CH03_VID08` | [Use Raw and Auto Mode with For XML](../video-notes/ch03/vid08-use-raw-and-auto-mode-with-for-xml.md) | ☐ | [note](../video-notes/ch03/vid08-use-raw-and-auto-mode-with-for-xml.md) |
-| `CH03_VID09` | [Use Path Mode with For XML](../video-notes/ch03/vid09-use-path-mode-with-for-xml.md) | ☐ | [note](../video-notes/ch03/vid09-use-path-mode-with-for-xml.md) |
-| `CH03_VID10` | [Querying XML data](../video-notes/ch03/vid10-querying-xml-data.md) | ☐ | [note](../video-notes/ch03/vid10-querying-xml-data.md) |
-| `CH03_VID11` | [Hierarchical Data](../video-notes/ch03/vid11-hierarchical-data.md) | ☐ | [note](../video-notes/ch03/vid11-hierarchical-data.md) |
-| `CH03_VID12` | [CTE: Common Table Expression](../video-notes/ch03/vid12-cte-common-table-expression.md) | ☐ | [note](../video-notes/ch03/vid12-cte-common-table-expression.md) |
-| `CH03_VID13` | [Offset and Fetch keyword](../video-notes/ch03/vid13-offset-and-fetch-keyword.md) | ☐ | [note](../video-notes/ch03/vid13-offset-and-fetch-keyword.md) |
-| `CH03_VID14` | [Sequence](../video-notes/ch03/vid14-sequence.md) | ☐ | [note](../video-notes/ch03/vid14-sequence.md) |
-| `CH03_VID15` | [Table Valued Parameters](../video-notes/ch03/vid15-table-valued-parameters.md) | ☐ | [note](../video-notes/ch03/vid15-table-valued-parameters.md) |
-| `CH03_VID16` | [High Availability](../video-notes/ch03/vid16-high-availability.md) | ☐ | [note](../video-notes/ch03/vid16-high-availability.md) |
-| `CH03_VID17` | [Set Up Instances](../video-notes/ch03/vid17-set-up-instances.md) | ☐ | [note](../video-notes/ch03/vid17-set-up-instances.md) |
-| `CH03_VID18` | [DB Mirroring](../video-notes/ch03/vid18-db-mirroring.md) | ☐ | [note](../video-notes/ch03/vid18-db-mirroring.md) |
-| `CH03_VID19` | [Demo Database Mirroring](../video-notes/ch03/vid19-demo-database-mirroring.md) | ☐ | [note](../video-notes/ch03/vid19-demo-database-mirroring.md) |
-| `CH03_VID20` | [Overview of Ship Transaction Log](../video-notes/ch03/vid20-overview-of-ship-transaction-log.md) | ☐ | [note](../video-notes/ch03/vid20-overview-of-ship-transaction-log.md) |
-| `CH03_VID21` | [Steps to Configure SQL Server Log Shipping](../video-notes/ch03/vid21-steps-to-configure-sql-server-log-shipping.md) | ☐ | [note](../video-notes/ch03/vid21-steps-to-configure-sql-server-log-shipping.md) |
-| `CH03_VID22` | [Log Shipping vs Mirroring](../video-notes/ch03/vid22-log-shipping-vs-mirroring.md) | ☐ | [note](../video-notes/ch03/vid22-log-shipping-vs-mirroring.md) |
-| `CH03_VID23` | [Assignment 03](../video-notes/ch03/vid23-assignment-03.md) | ☐ | [note](../video-notes/ch03/vid23-assignment-03.md) |
+> [!tip] 🔄 Dynamic Course Content Matrix (Auto-queries note frontmatter)
+> ```dataview
+> TABLE WITHOUT ID
+>   file.link AS "Lesson Note",
+>   choice(status = "completed", "✅ Completed", choice(status = "in-progress", "🔄 In Progress", "⏳ Planned")) AS "Status",
+>   code_reference AS "Production Code",
+>   last_modified AS "Modified"
+> FROM "video-notes/ch03"
+> SORT file.name ASC
+> ```
+
+### 📋 Interactive Course Content Checklist
+
+> [!todo] Clickable Lesson Progress Checklist (Updates in real-time)
+> - [ ] **CH03_VID01**: [[vid01-overview-of-views|Overview of Views]] · `src/04_views_and_partitioning/01_materialized_indexed_views.sql`
+> - [ ] **CH03_VID02**: [[vid02-types-of-views|Types of Views]] · `src/04_views_and_partitioning/01_materialized_indexed_views.sql`
+> - [ ] **CH03_VID03**: [[vid03-creating-and-using-views|Creating and Using Views]] · `src/04_views_and_partitioning/01_materialized_indexed_views.sql`
+> - [ ] **CH03_VID04**: [[vid04-dml-operations-on-views|DML Operations on Views]] · `src/04_views_and_partitioning/01_materialized_indexed_views.sql`
+> - [ ] **CH03_VID05**: [[vid05-indexed-view|Schemabound Materialized Indexed Views]] · `src/04_views_and_partitioning/01_materialized_indexed_views.sql`
+> - [ ] **CH03_VID06**: [[vid06-partitioning|Partitioning & Sliding Windows]] · `src/04_views_and_partitioning/02_sliding_window_partitioning.sql`
+> - [ ] **CH03_VID07**: [[vid07-harnessing-the-power-of-xml|Harnessing the Power of XML in SQL]] · `src/03_programmability_and_elt/02_xml_and_json_processing.sql`
+> - [ ] **CH03_VID08**: [[vid08-use-raw-and-auto-mode-with-for-xml|Raw and Auto Mode with FOR XML]] · `src/03_programmability_and_elt/02_xml_and_json_processing.sql`
+> - [ ] **CH03_VID09**: [[vid09-use-path-mode-with-for-xml|Path Mode with FOR XML]] · `src/03_programmability_and_elt/02_xml_and_json_processing.sql`
+> - [ ] **CH03_VID10**: [[vid10-querying-xml-data|Querying XML Data using XQuery nodes() and value()]] · `src/03_programmability_and_elt/02_xml_and_json_processing.sql`
+> - [ ] **CH03_VID11**: [[vid11-hierarchical-data|Hierarchical Data Modeling]] · `src/03_programmability_and_elt/01_user_defined_functions.sql`
+> - [ ] **CH03_VID12**: [[vid12-cte-common-table-expression|Recursive Common Table Expressions (CTE)]] · `src/03_programmability_and_elt/01_user_defined_functions.sql`
+> - [ ] **CH03_VID13**: [[vid13-offset-and-fetch-keyword|OFFSET-FETCH Paging]] · `src/03_programmability_and_elt/01_user_defined_functions.sql`
+> - [ ] **CH03_VID14**: [[vid14-sequence|Sequences vs IDENTITY Generation]]
+> - [ ] **CH03_VID15**: [[vid15-table-valued-parameters|Table-Valued Parameters (TVP) High-Throughput Ingestion]] · `src/03_programmability_and_elt/03_stored_procedures_etl.sql`
+> - [ ] **CH03_VID16**: [[vid16-high-availability|High Availability Architecture Overview]]
+> - [ ] **CH03_VID17**: [[vid17-set-up-instances|Setting Up SQL Server Instances]]
+> - [ ] **CH03_VID18**: [[vid18-db-mirroring|Database Mirroring Concepts]]
+> - [ ] **CH03_VID19**: [[vid19-demo-database-mirroring|Demo Database Mirroring]]
+> - [ ] **CH03_VID20**: [[vid20-overview-of-ship-transaction-log|Transaction Log Shipping Mechanics]]
+> - [ ] **CH03_VID21**: [[vid21-steps-to-configure-sql-server-log-shipping|Steps to Configure SQL Server Log Shipping]]
+> - [ ] **CH03_VID22**: [[vid22-log-shipping-vs-mirroring|Log Shipping vs Mirroring vs Always On AGs]]
+> - [ ] **CH03_VID23**: [[vid23-assignment-03|Assignment 03: High-Availability & Partitioning]]
+
+> [!check] 🎯 Active Unfinished Tasks Across Chapter Notes
+> ```dataview
+> TASK
+> FROM "video-notes/ch03"
+> WHERE !completed
+> ```
 
 ---
 

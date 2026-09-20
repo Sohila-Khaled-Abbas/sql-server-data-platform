@@ -25,7 +25,7 @@ last_modified: 2026-09-19
 > 📌 **Chapter:** [CH01 — Database Creation and Management](../../chapters/ch01-readme.md) · **Official Lesson:** [MaharaTech 17520](https://maharatech.gov.eg/mod/hvp/view.php?id=17520)
 
 > [!todo] Mastery Progress Checklist
-> - [ ] 📺 **Watched** (Core mechanics & architectural nuances)
+> - [x] 📺 **Watched** (Core mechanics & architectural nuances)
 > - [ ] 💻 **Reproduced** (Hands-on execution in SQL Server 2022 / SSMS)
 > - [ ] 🧪 **Modified** (Tested boundary conditions, failure states & edge cases)
 > - [ ] 📝 **Documented & Explained** (Grounding without hand-waving)
@@ -75,9 +75,9 @@ LOG ON (NAME = N'DemoDB_Log', FILENAME = N'C:\SQLData\DemoDB.ldf', SIZE = 25MB, 
 ## 6. Definition of Done Checklist
 
 > [!check] Validation Checklist
-> - [ ] I can define the feature in one sentence.
+> - [x] I can define the feature in one sentence.
 > - [ ] I can explain why it exists.
-> - [ ] I reproduced the basic example successfully.
+> - [x] I reproduced the basic example successfully.
 > - [ ] I tested at least one edge case.
 > - [ ] I can explain one performance/operational trade-off.
 > - [ ] I linked the final script from my learning repo.

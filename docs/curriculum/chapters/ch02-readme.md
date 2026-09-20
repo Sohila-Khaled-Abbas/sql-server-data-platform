@@ -50,23 +50,42 @@ The following production scripts in the repository implement the patterns covere
 
 ## 3. Lesson Index & Study Notes (15 Modules)
 
-| Lesson Code | Topic & Study Note | Status | Note Link |
-| :--- | :--- | :---: | :--- |
-| `CH02_VID01` | [Variables](../video-notes/ch02/vid01-variables.md) | ☐ | [note](../video-notes/ch02/vid01-variables.md) |
-| `CH02_VID02` | [Local Variables](../video-notes/ch02/vid02-local-variables.md) | ☐ | [note](../video-notes/ch02/vid02-local-variables.md) |
-| `CH02_VID03` | [Global Variables](../video-notes/ch02/vid03-global-variables.md) | ☐ | [note](../video-notes/ch02/vid03-global-variables.md) |
-| `CH02_VID04` | [Control of Flow_Part(1)](../video-notes/ch02/vid04-control-of-flow-part-1.md) | ☐ | [note](../video-notes/ch02/vid04-control-of-flow-part-1.md) |
-| `CH02_VID05` | [Control of Flow_Part(2)](../video-notes/ch02/vid05-control-of-flow-part-2.md) | ☐ | [note](../video-notes/ch02/vid05-control-of-flow-part-2.md) |
-| `CH02_VID06` | [Functions](../video-notes/ch02/vid06-functions.md) | ☐ | [note](../video-notes/ch02/vid06-functions.md) |
-| `CH02_VID07` | [Scalar Function](../video-notes/ch02/vid07-scalar-function.md) | ☐ | [note](../video-notes/ch02/vid07-scalar-function.md) |
-| `CH02_VID08` | [Inline Statement Table-Valued Functions](../video-notes/ch02/vid08-inline-statement-table-valued-functions.md) | ☐ | [note](../video-notes/ch02/vid08-inline-statement-table-valued-functions.md) |
-| `CH02_VID09` | [Multi-Statement Table-Valued Functions](../video-notes/ch02/vid09-multi-statement-table-valued-functions.md) | ☐ | [note](../video-notes/ch02/vid09-multi-statement-table-valued-functions.md) |
-| `CH02_VID10` | [System databases](../video-notes/ch02/vid10-system-databases.md) | ☐ | [note](../video-notes/ch02/vid10-system-databases.md) |
-| `CH02_VID11` | [Types of Table](../video-notes/ch02/vid11-types-of-table.md) | ☐ | [note](../video-notes/ch02/vid11-types-of-table.md) |
-| `CH02_VID12` | [Script & Batch](../video-notes/ch02/vid12-script-batch.md) | ☐ | [note](../video-notes/ch02/vid12-script-batch.md) |
-| `CH02_VID13` | [Types of Transactions](../video-notes/ch02/vid13-types-of-transactions.md) | ☐ | [note](../video-notes/ch02/vid13-types-of-transactions.md) |
-| `CH02_VID14` | [Demo on Transactions](../video-notes/ch02/vid14-demo-on-transactions.md) | ☐ | [note](../video-notes/ch02/vid14-demo-on-transactions.md) |
-| `CH02_VID15` | [Assignment 02](../video-notes/ch02/vid15-assignment-02.md) | ☐ | [note](../video-notes/ch02/vid15-assignment-02.md) |
+> [!tip] 🔄 Dynamic Course Content Matrix (Auto-queries note frontmatter)
+> ```dataview
+> TABLE WITHOUT ID
+>   file.link AS "Lesson Note",
+>   choice(status = "completed", "✅ Completed", choice(status = "in-progress", "🔄 In Progress", "⏳ Planned")) AS "Status",
+>   code_reference AS "Production Code",
+>   last_modified AS "Modified"
+> FROM "video-notes/ch02"
+> SORT file.name ASC
+> ```
+
+### 📋 Interactive Course Content Checklist
+
+> [!todo] Clickable Lesson Progress Checklist (Updates in real-time)
+> - [ ] **CH02_VID01**: [[vid01-variables|Variables]] · `src/03_programmability_and_elt/01_user_defined_functions.sql`
+> - [ ] **CH02_VID02**: [[vid02-local-variables|Local Variables]] · `src/03_programmability_and_elt/01_user_defined_functions.sql`
+> - [ ] **CH02_VID03**: [[vid03-global-variables|Global Variables]] · `src/03_programmability_and_elt/01_user_defined_functions.sql`
+> - [ ] **CH02_VID04**: [[vid04-control-of-flow-part-1|Control of Flow Part 1]] · `src/03_programmability_and_elt/01_user_defined_functions.sql`
+> - [ ] **CH02_VID05**: [[vid05-control-of-flow-part-2|Control of Flow Part 2]] · `src/03_programmability_and_elt/01_user_defined_functions.sql`
+> - [ ] **CH02_VID06**: [[vid06-functions|Functions Overview]] · `src/03_programmability_and_elt/01_user_defined_functions.sql`
+> - [ ] **CH02_VID07**: [[vid07-scalar-function|Scalar Functions]] · `src/03_programmability_and_elt/01_user_defined_functions.sql`
+> - [ ] **CH02_VID08**: [[vid08-inline-statement-table-valued-functions|Inline Table-Valued Functions (iTVF)]] · `src/03_programmability_and_elt/01_user_defined_functions.sql`
+> - [ ] **CH02_VID09**: [[vid09-multi-statement-table-valued-functions|Multi-Statement Table-Valued Functions (mTVF)]] · `src/03_programmability_and_elt/01_user_defined_functions.sql`
+> - [ ] **CH02_VID10**: [[vid10-system-databases|System Databases (master, msdb, tempdb, model)]]
+> - [ ] **CH02_VID11**: [[vid11-types-of-table|Types of Tables (#Temp, ##Global, @Table)]]
+> - [ ] **CH02_VID12**: [[vid12-script-batch|Scripts, Batches & GO Delimiters]]
+> - [ ] **CH02_VID13**: [[vid13-types-of-transactions|Types of Transactions & ACID Isolation]] · `src/03_programmability_and_elt/03_stored_procedures_etl.sql`
+> - [ ] **CH02_VID14**: [[vid14-demo-on-transactions|Demo on Transactions & Rollbacks]] · `src/03_programmability_and_elt/03_stored_procedures_etl.sql`
+> - [ ] **CH02_VID15**: [[vid15-assignment-02|Assignment 02: Transactional Pipeline Engineering]]
+
+> [!check] 🎯 Active Unfinished Tasks Across Chapter Notes
+> ```dataview
+> TASK
+> FROM "video-notes/ch02"
+> WHERE !completed
+> ```
 
 ---
 

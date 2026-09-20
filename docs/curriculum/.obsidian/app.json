@@ -1,0 +1,21 @@
+{
+  "promptDelete": false,
+  "openBehavior": "daily",
+  "showLineNumber": false,
+  "trashOption": "system",
+  "deleteUnlinkedAttachments": "always",
+  "showUnsupportedFiles": true,
+  "alwaysUpdateLinks": true,
+  "attachmentFolderPath": "./assets",
+  "newFileLocation": "folder",
+  "newFileFolderPath": "assets",
+  "pdfExportSettings": {
+    "includeName": true,
+    "pageSize": "A4",
+    "landscape": false,
+    "margin": "0",
+    "downscalePercent": 100
+  },
+  "strictLineBreaks": false,
+  "readableLineLength": false
+}

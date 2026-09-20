@@ -1,0 +1,10 @@
+{
+  "id": "note-status-checkbox",
+  "name": "Note Status Checkbox",
+  "version": "0.1.0",
+  "minAppVersion": "1.4.0",
+  "description": "Show configurable, colored icons next to internal links based on frontmatter properties.",
+  "author": "Vincenzo Petrucci",
+  "authorUrl": "https://github.com/nahime0",
+  "isDesktopOnly": false
+}

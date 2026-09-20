@@ -1,0 +1,13 @@
+{
+  "cssTheme": "Catppuccin",
+  "theme": "obsidian",
+  "baseFontSize": 16,
+  "enabledCssSnippets": [
+    "metadata-icon-auto-gen"
+  ],
+  "nativeMenus": false,
+  "monospaceFontFamily": "Source Code Pro",
+  "textFontFamily": "Inter",
+  "interfaceFontFamily": "Inter",
+  "showRibbon": true
+}

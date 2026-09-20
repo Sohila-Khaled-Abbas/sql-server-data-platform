@@ -8,3 +8,16 @@ __pycache__/
 *.pyc
 .idea/
 .vscode/
+
+# Obsidian Root (keep vault in docs/curriculum/ tracked)
+/.obsidian/
+
+# Obsidian Vault Runtime & Local Cache
+docs/curriculum/.obsidian/workspace.json
+docs/curriculum/.obsidian/workspace-mobile.json
+docs/curriculum/.obsidian/cache/
+docs/curriculum/.obsidian/graph.json
+.smart-env/
+docs/curriculum/.smart-env/
+.trash/
+docs/curriculum/.trash/

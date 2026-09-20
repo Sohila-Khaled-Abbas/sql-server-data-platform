@@ -55,6 +55,9 @@ html {
   scroll-behavior: smooth;
   color-scheme: dark;
   font-size: 16px;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 body {
@@ -62,12 +65,21 @@ body {
   background-color: var(--bg-deep);
   color: var(--text-primary);
   line-height: 1.65;
+  width: 100%;
+  max-width: 100%;
   overflow-x: hidden;
   background-image: 
     radial-gradient(ellipse 80% 50% at 50% -20%, rgba(225, 29, 72, 0.08), transparent),
     radial-gradient(circle at 10% 30%, rgba(56, 189, 248, 0.03), transparent),
     radial-gradient(circle at 90% 70%, rgba(139, 92, 246, 0.03), transparent);
   background-attachment: fixed;
+}
+
+.portfolio-app-root {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  position: relative;
 }
 
 /* Subtle Technical Grid Overlay */
@@ -85,9 +97,10 @@ body {
 /* ── Layout & Typography ────────────────────────────────────────────────── */
 .container {
   width: 100%;
-  max-width: 1240px;
+  max-width: 1280px;
   margin: 0 auto;
-  padding: 0 1.5rem;
+  padding: 0 clamp(1rem, 3vw, 2rem);
+  box-sizing: border-box;
   position: relative;
   z-index: 1;
 }
@@ -146,15 +159,16 @@ body {
 }
 
 .nav-container {
-  max-width: 1400px;
+  max-width: 1280px;
   width: 100%;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0 clamp(1rem, 2.5vw, 2rem);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1.5rem;
+  gap: 1rem;
   height: 4.25rem;
+  box-sizing: border-box;
 }
 
 .nav-brand {
@@ -307,11 +321,38 @@ body {
 
 .nav-mobile-toggle {
   display: none;
-  background: transparent;
-  border: none;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
   color: var(--text-primary);
   cursor: pointer;
-  padding: 0.5rem;
+  padding: 0.45rem;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.nav-mobile-toggle:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+@media (max-width: 1180px) {
+  .nav-links {
+    display: none !important;
+  }
+  .nav-mobile-toggle {
+    display: flex !important;
+  }
+}
+
+@media (max-width: 520px) {
+  .nav-status-pill {
+    display: none !important;
+  }
+  .nav-brand-badge {
+    display: none !important;
+  }
 }
 
 /* ── Buttons & Links ────────────────────────────────────────────────────── */
@@ -381,13 +422,14 @@ body {
 
 .hero-title {
   font-family: var(--font-heading);
-  font-size: 3.5rem;
+  font-size: clamp(2.2rem, 5vw, 3.5rem);
   font-weight: 800;
   line-height: 1.15;
   letter-spacing: -0.03em;
   color: #fff;
   margin-bottom: 1.5rem;
   max-width: 900px;
+  word-break: break-word;
 }
 
 .hero-title span {
@@ -448,14 +490,31 @@ body {
   position: relative;
   overflow: hidden;
   box-shadow: var(--shadow-glass);
+  box-sizing: border-box;
 }
 
 .hero-pipeline-track {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 1.25rem;
   position: relative;
-  align-items: center;
+  align-items: stretch;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 1180px) {
+  .hero-pipeline-track {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-pipeline-track {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
 }
 
 .hero-node {
@@ -466,6 +525,8 @@ body {
   text-align: center;
   position: relative;
   transition: all 0.3s ease;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 .hero-node:hover {
@@ -994,20 +1055,24 @@ body {
 /* ── Deep Dive Cards ────────────────────────────────────────────────────── */
 .deep-dive-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.75rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
   align-items: stretch;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 1200px) {
   .deep-dive-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
   }
 }
 
 @media (max-width: 768px) {
   .deep-dive-grid {
     grid-template-columns: 1fr;
+    gap: 1.25rem;
   }
 }
 
@@ -1015,7 +1080,7 @@ body {
   background: var(--bg-card);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
-  padding: 1.85rem 2rem;
+  padding: 1.6rem 1.65rem;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   display: flex;
   flex-direction: column;
@@ -1023,6 +1088,10 @@ body {
   height: 100%;
   box-sizing: border-box;
   position: relative;
+  min-width: 0;
+  overflow: hidden;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .deep-dive-card:hover {
@@ -1035,6 +1104,9 @@ body {
   display: flex;
   flex-direction: column;
   flex: 1;
+  min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .deep-dive-pillar-badge {
@@ -1061,6 +1133,8 @@ body {
   color: #fff;
   margin-bottom: 0.4rem;
   line-height: 1.35;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .deep-dive-concept {
@@ -1069,10 +1143,13 @@ body {
   color: #fb7185;
   margin-bottom: 1.35rem;
   line-height: 1.45;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .deep-dive-block {
   margin-bottom: 1.25rem;
+  min-width: 0;
 }
 
 .deep-dive-tag {
@@ -1105,13 +1182,17 @@ body {
   color: var(--text-secondary);
   line-height: 1.6;
   margin: 0;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .deep-dive-action-box {
   margin-top: auto;
-  padding-top: 1.35rem;
+  padding-top: 1.25rem;
   border-top: 1px solid var(--border-subtle);
   width: 100%;
+  box-sizing: border-box;
+  min-width: 0;
 }
 
 .deep-dive-action-btn {
@@ -1265,19 +1346,23 @@ body {
 /* ── Tech Stack Grid ────────────────────────────────────────────────────── */
 .tech-stack-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.75rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 1200px) {
   .tech-stack-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
   }
 }
 
 @media (max-width: 680px) {
   .tech-stack-grid {
     grid-template-columns: 1fr;
+    gap: 1.25rem;
   }
 }
 
@@ -1285,10 +1370,13 @@ body {
   background: var(--bg-card);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
-  padding: 1.75rem;
+  padding: 1.6rem 1.65rem;
   display: flex;
   flex-direction: column;
   transition: all 0.25s ease;
+  min-width: 0;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .stack-category-card:hover {
@@ -1455,9 +1543,6 @@ body {
 
 /* ── Responsive Queries ─────────────────────────────────────────────────── */
 @media (max-width: 1024px) {
-  .hero-pipeline-track {
-    grid-template-columns: repeat(3, 1fr);
-  }
   .overview-grid {
     grid-template-columns: 1fr;
   }
@@ -1473,27 +1558,17 @@ body {
 }
 
 @media (max-width: 768px) {
-  .hero-title {
-    font-size: 2.5rem;
-  }
   .section-title {
-    font-size: 2rem;
-  }
-  .nav-links {
-    display: none;
-  }
-  .nav-mobile-toggle {
-    display: block;
-  }
-  .hero-pipeline-track {
-    grid-template-columns: 1fr;
+    font-size: clamp(1.8rem, 4vw, 2.2rem);
   }
   .flow-step-card {
     grid-template-columns: 1fr;
+    gap: 1rem;
   }
   .creator-card {
     grid-template-columns: 1fr;
     text-align: center;
+    padding: 2rem 1.5rem;
   }
   .creator-avatar-box {
     margin: 0 auto;
