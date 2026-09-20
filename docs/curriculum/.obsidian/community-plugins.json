@@ -7,12 +7,13 @@
   "obsidian-admonition",
   "obsidian-linter",
   "quickadd",
-  "calendar",
   "obsidian-kanban",
   "tag-wrangler",
   "templater-obsidian",
   "obsidian-outliner",
   "note-status-checkbox",
   "obsidian-checklist-plugin",
-  "buttons"
+  "buttons",
+  "homepage",
+  "calendar"
 ]

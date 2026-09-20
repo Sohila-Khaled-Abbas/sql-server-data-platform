@@ -24,27 +24,27 @@ last_modified: 2026-09-19
 > ⬅️ **Previous:** [CH01_VID10 — Demo on Index](vid10-demo-on-index.md) | 📑 **Index:** [102 Video Index](../../VIDEO_INDEX.md) | ➡️ **Next:** [CH01_VID12 — Backup Database Using Wizard](vid12-backup-database-using-wizard.md)  
 > 📌 **Chapter:** [CH01 — Database Creation and Management](../../chapters/ch01-readme.md) · **Official Lesson:** [MaharaTech 17530](https://maharatech.gov.eg/mod/hvp/view.php?id=17530)
 
-> [!todo] Mastery Progress Checklist
-> - [ ] 📺 **Watched** (Core mechanics & architectural nuances)
-> - [ ] 💻 **Reproduced** (Hands-on execution in SQL Server 2022 / SSMS)
-> - [ ] 🧪 **Modified** (Tested boundary conditions, failure states & edge cases)
-> - [ ] 📝 **Documented & Explained** (Grounding without hand-waving)
+## 🎯 Engineering Mastery Checklist
+- [ ] 📺 **Architectural Concept** · Core engine mechanics, internals, and storage allocation
+- [ ] 💻 **Hands-On Execution** · Script executed and validated against SQL Server 2022 / SSMS
+- [ ] 🧪 **Edge Case & Stress Testing** · Tested boundary limits, error traps (`XACT_ABORT`), and constraints
+- [ ] 🚀 **Production Code Verified** · Documented implementation tracked in `src/06_reliability_and_dr/01_backup_and_maintenance_jobs.sql`
 
 ---
 
-## 1. Learning Objectives
+## 1. Learning Objectives & Architectural Focus
 
 By the end of this lesson, I should be able to explain the core idea behind **Types of Backup**, write/reproduce a small working example, and describe when the feature is useful in a real SQL Server data platform.
 
-## 2. Core Architectural Concept
-
 > [!info] Architectural Principle
-> > > Know recovery objectives first. Full, differential, and log backups solve different recovery and storage problems and require an appropriate recovery model.
+> Know recovery objectives first. Full, differential, and log backups solve different recovery and storage problems and require an appropriate recovery model.
 
 > [!tip] 2026 Data Engineering & DBRE Lens
 > While watching, note which steps are product-specific UI actions versus durable SQL/database-engineering concepts. Your GitHub notes should preserve the latter.
 
-## 3. SQL Implementation Pattern
+---
+
+## 2. Production T-SQL Implementation Pattern
 
 ```sql
 BACKUP DATABASE SalesDB
@@ -52,7 +52,9 @@ TO DISK = 'D:\Backup\SalesDB_full.bak'
 WITH INIT, COMPRESSION;
 ```
 
-## 4. Production Engineering Evaluation Matrix
+---
+
+## 3. Production Engineering Evaluation Matrix
 
 | Dimension | Critical Engineering Evaluation |
 | :--- | :--- |
@@ -61,7 +63,9 @@ WITH INIT, COMPRESSION;
 | **Operations** | How does this behave under disaster recovery, failover, backup chains, and migration? |
 | **Maintainability** | Can another engineer easily diagnose, extend, or alter this object without breaking dependent callers? |
 
-## 5. Hands-on Reproduction & Modification Drill
+---
+
+## 4. Hands-on Reproduction & Edge Case Drill
 
 Rebuild the core pattern from memory in SSMS or Docker container. Test boundary conditions, edge cases, and failure modes.
 
@@ -72,31 +76,19 @@ TO DISK = 'D:\Backup\SalesDB_full.bak'
 WITH INIT, COMPRESSION;
 ```
 
-## 6. Definition of Done Checklist
+---
 
-> [!check] Validation Checklist
-> - [ ] I can define the feature in one sentence.
-> - [ ] I can explain why it exists.
-> - [ ] I reproduced the basic example successfully.
-> - [ ] I tested at least one edge case.
-> - [ ] I can explain one performance/operational trade-off.
-> - [ ] I linked the final script from my learning repo.
+## 5. Architectural Synthesis & Mentor Checkpoint
 
-## 7. Mentor Checkpoint & Interview Drill
-
-> [!question] Conceptual & Practical Challenge
+> [!question] Senior DBRE / Architect Challenge
 > **Explain without SQL:** What problem would this feature solve in a production data platform, and what would you use instead when the feature is the wrong tool?
->
-> *My Synthesis:*
-> <!-- Document your synthesized mental model and engineering decision here -->
->
-> *My Synthesis:*
-> <!-- Document your synthesized mental model and engineering decision here -->
->
-> *My Synthesis:*
-> <!-- Document your synthesized mental model and engineering decision here -->
 
-## 8. Observation & SSMS Notes
+*My Engineering Synthesis:*
+<!-- Document your synthesized mental model, architectural trade-offs, and operational lessons here -->
+
+---
+
+## 6. Observation & SSMS Notes
 
 - **Key demonstration observed:**
 - **Important SSMS / Engine setting:**
@@ -104,12 +96,9 @@ WITH INIT, COMPRESSION;
 - **Failure mode or trap avoided:**
 - **Research item for deeper inquiry:**
 
-## 9. Interview Drill & Trade-Off Analysis
+---
 
-> [!example] Production Scenario Question
-> [!example] Production Scenario Question
-
-## 10. Evidence & Production Artifact Links
+## 7. Evidence & Production Artifact Links
 
 * 🔗 **Official Course Module:** [MaharaTech Lesson 17530](https://maharatech.gov.eg/mod/hvp/view.php?id=17530)
 * 💾 **Production Script:** [`src/06_reliability_and_dr/01_backup_and_maintenance_jobs.sql`](../../../../src/06_reliability_and_dr/01_backup_and_maintenance_jobs.sql)
