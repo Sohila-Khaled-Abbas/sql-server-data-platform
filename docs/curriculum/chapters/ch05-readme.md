@@ -21,7 +21,19 @@ last_modified: 2026-09-19
 > [!abstract] Navigation & Chapter Overview
 > ⬅️ **Previous:** [CH04 — Procedures, Triggers, and SQL Automation](ch04-readme.md) | 📑 **Curriculum Overview:** [Curriculum README](../README.md)
 
-> Enterprise reporting and dimensional modeling: SQL Server Reporting Services (SSRS), matrix groupings, expressions, cascading parameters, OLTP 3NF vs OLAP Star Schema, Kimball dimensional modeling, and SCD Type 1 & 2 tracking.
+> [!info] 📊 Enterprise reporting and dimensional modeling: SQL Server Reporting Services (SSRS), matrix groupings, expressions, cascading parameters, OLTP 3NF vs OLAP Star Schema, Kimball dimensional modeling, and SCD Type 1 & 2 tracking.
+
+---
+
+## Learning Path Roadmap
+
+```mermaid
+graph LR
+    A["SSRS Server & Datasets"] --> B["Matrix Grouping & Expressions"]
+    B --> C["Parameters & RDLC Reports"]
+    C --> D["OLTP vs OLAP Foundations"]
+    D --> E["Kimball Star Schema Mart"]
+```
 
 ---
 
@@ -50,12 +62,13 @@ last_modified: 2026-09-19
 
 ---
 
-## Progress
+## Progress Dashboard
 
 ```dataview
 TABLE WITHOUT ID
   file.link AS "Lesson",
-  choice(status = "completed", "✅", choice(status = "in-progress", "🔄", "⏳")) AS "Status"
+  choice(status = "completed", "✅", choice(status = "in-progress", "🔄", "⏳")) AS "Status",
+  code_reference AS "Code"
 FROM "video-notes/ch05"
 SORT file.name ASC
 ```
@@ -69,3 +82,15 @@ WHERE !completed
 GROUP BY file.link
 LIMIT 15
 ```
+
+---
+
+## Links
+
+| Resource | Link |
+| :--- | :--- |
+| Curriculum Overview | [README](../README.md) |
+| Learning Tracker | [Tracker](../LEARNING_TRACKER.md) |
+| 8-Week Plan | [Study Plan](../8-WEEK-STUDY-PLAN.md) |
+| Live Platform Target | [OmniFlow Dimensional Star Schema](https://sohila-khaled-abbas.github.io/sql-server-data-platform/#database-design) |
+| Platform Curriculum | [OmniFlow Curriculum & Second Brain](https://sohila-khaled-abbas.github.io/sql-server-data-platform/#curriculum) |

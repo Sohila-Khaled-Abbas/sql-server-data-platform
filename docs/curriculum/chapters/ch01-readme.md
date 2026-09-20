@@ -21,7 +21,19 @@ last_modified: 2026-09-20
 > [!abstract] Navigation & Chapter Overview
 > 📑 **Curriculum Overview:** [Curriculum README](../README.md) | ➡️ **Next:** [CH02 — SQL Programming Essentials](ch02-readme.md)
 
-> Physical storage architecture, 8 KB pages, 64 KB extents, multi-filegroup I/O isolation, relational constraints, B-Tree indexes, backup chains, and sparse database snapshots.
+> [!info] 🏗️ Physical storage architecture, 8 KB pages, 64 KB extents, multi-filegroup I/O isolation, relational constraints, B-Tree indexes, backup chains, and sparse database snapshots.
+
+---
+
+## Learning Path Roadmap
+
+```mermaid
+graph LR
+    A["MDF/LDF/NDF Storage & Filegroups"] --> B["Declarative Constraints & Rules"]
+    B --> C["Clustered & Non-Clustered Indexes"]
+    C --> D["Full, Diff & Log Backup Chains"]
+    D --> E["NTFS Sparse Database Snapshots"]
+```
 
 ---
 
@@ -46,12 +58,13 @@ last_modified: 2026-09-20
 
 ---
 
-## Progress
+## Progress Dashboard
 
 ```dataview
 TABLE WITHOUT ID
   file.link AS "Lesson",
-  choice(status = "completed", "✅", choice(status = "in-progress", "🔄", "⏳")) AS "Status"
+  choice(status = "completed", "✅", choice(status = "in-progress", "🔄", "⏳")) AS "Status",
+  code_reference AS "Code"
 FROM "video-notes/ch01"
 SORT file.name ASC
 ```
@@ -65,3 +78,15 @@ WHERE !completed
 GROUP BY file.link
 LIMIT 15
 ```
+
+---
+
+## Links
+
+| Resource | Link |
+| :--- | :--- |
+| Curriculum Overview | [README](../README.md) |
+| Learning Tracker | [Tracker](../LEARNING_TRACKER.md) |
+| 8-Week Plan | [Study Plan](../8-WEEK-STUDY-PLAN.md) |
+| Live Platform Target | [OmniFlow Physical Storage Architecture](https://sohila-khaled-abbas.github.io/sql-server-data-platform/#architecture) |
+| Platform Curriculum | [OmniFlow Curriculum & Second Brain](https://sohila-khaled-abbas.github.io/sql-server-data-platform/#curriculum) |

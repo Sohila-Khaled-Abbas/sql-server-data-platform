@@ -7,6 +7,7 @@ import DatabaseDesign from './components/DatabaseDesign.jsx';
 import DataFlowSection from './components/DataFlowSection.jsx';
 import SqlEngineeringSection from './components/SqlEngineeringSection.jsx';
 import InteractivePlayground from './components/InteractivePlayground.jsx';
+import CurriculumSection from './components/CurriculumSection.jsx';
 import TechnicalDeepDive from './components/TechnicalDeepDive.jsx';
 import ProjectHighlights from './components/ProjectHighlights.jsx';
 import RepositoryExplorer from './components/RepositoryExplorer.jsx';
@@ -49,7 +50,10 @@ export default function App() {
       {/* 8. Interactive Live Query Execution Simulator */}
       <InteractivePlayground />
 
-      {/* 9. Technical Deep Dive */}
+      {/* 9. Curriculum & Obsidian Second Brain (102 Lessons) */}
+      <CurriculumSection />
+
+      {/* 10. Technical Deep Dive */}
       <TechnicalDeepDive />
 
       {/* 10. Project Highlights */}

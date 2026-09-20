@@ -58,7 +58,8 @@ SORT last_modified DESC
 
 ## Links
 
-- [OmniFlow Web App](https://sohila-khaled-abbas.github.io/sql-server-data-platform/)
+- [OmniFlow Live Platform](https://sohila-khaled-abbas.github.io/sql-server-data-platform/)
+- [OmniFlow Curriculum & Second Brain Hub](https://sohila-khaled-abbas.github.io/sql-server-data-platform/#curriculum)
 - [Learning Tracker](LEARNING_TRACKER.md)
 - [102 Video Index](VIDEO_INDEX.md)
 - [8-Week Study Plan](8-WEEK-STUDY-PLAN.md)

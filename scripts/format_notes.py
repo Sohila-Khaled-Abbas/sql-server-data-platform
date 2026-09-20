@@ -2,7 +2,89 @@ import os
 import re
 import glob
 
-def simplify_note(filepath):
+PLATFORM_URL = "https://sohila-khaled-abbas.github.io/sql-server-data-platform/"
+REPO_URL = "https://github.com/Sohila-Khaled-Abbas/sql-server-data-platform"
+
+CHAPTER_THEMES = {
+    "CH01": {
+        "domain": "Storage & Physical Architecture",
+        "icon": "🏗️",
+        "eval": "How does this affect page allocation, filegroup isolation, or backup chain integrity?",
+        "platform_anchor": "#architecture",
+        "platform_title": "OmniFlow Physical Storage Architecture",
+        "roadmap": """```mermaid
+graph LR
+    A["MDF/LDF/NDF Storage & Filegroups"] --> B["Declarative Constraints & Rules"]
+    B --> C["Clustered & Non-Clustered Indexes"]
+    C --> D["Full, Diff & Log Backup Chains"]
+    D --> E["NTFS Sparse Database Snapshots"]
+```"""
+    },
+    "CH02": {
+        "domain": "T-SQL Programming & ACID",
+        "icon": "⚙️",
+        "eval": "How does this affect variable scope, transaction isolation, or batch execution?",
+        "platform_anchor": "#sql-engineering",
+        "platform_title": "OmniFlow SQL Engineering Showcase",
+        "roadmap": """```mermaid
+graph LR
+    A["Variable Scopes & Types"] --> B["Control-of-Flow Logic"]
+    B --> C["Scalar & Table-Valued UDFs"]
+    C --> D["System Catalogs & Temp Tables"]
+    D --> E["Batches, Transactions & ACID"]
+```"""
+    },
+    "CH03": {
+        "domain": "Views, XML & High Availability",
+        "icon": "🔄",
+        "eval": "How does this affect query abstraction, data partitioning, or failover topology?",
+        "platform_anchor": "#data-flow",
+        "platform_title": "OmniFlow High-Throughput Data Flow",
+        "roadmap": """```mermaid
+graph LR
+    A["Standard & Indexed Views"] --> B["Horizontal Table Partitioning"]
+    B --> C["XML Parsing & Shredding"]
+    C --> D["Hierarchical CTEs & TVPs"]
+    D --> E["Log Shipping & DB Mirroring"]
+```"""
+    },
+    "CH04": {
+        "domain": "Programmability & Automation",
+        "icon": "🤖",
+        "eval": "How does this affect procedural encapsulation, audit trail integrity, or CLR safety?",
+        "platform_anchor": "#deep-dive",
+        "platform_title": "OmniFlow Technical Deep Dive & Governance",
+        "roadmap": """```mermaid
+graph LR
+    A["Stored Procedures & Dynamic SQL"] --> B["DML & DDL Event Triggers"]
+    B --> C["Audit Trail & OUTPUT Clause"]
+    C --> D["Cursor Workflows vs Set-Based"]
+    D --> E["C# SQL CLR & PowerShell SMO"]
+```"""
+    },
+    "CH05": {
+        "domain": "Reporting & Data Warehousing",
+        "icon": "📊",
+        "eval": "How does this affect report rendering, dimensional modeling, or ETL pipeline design?",
+        "platform_anchor": "#database-design",
+        "platform_title": "OmniFlow Dimensional Star Schema",
+        "roadmap": """```mermaid
+graph LR
+    A["SSRS Server & Datasets"] --> B["Matrix Grouping & Expressions"]
+    B --> C["Parameters & RDLC Reports"]
+    C --> D["OLTP vs OLAP Foundations"]
+    D --> E["Kimball Star Schema Mart"]
+```"""
+    },
+}
+
+
+def get_chapter_key(fm):
+    m = re.search(r'chapter:\s*"?(CH\d+)', fm)
+    return m.group(1) if m else "CH01"
+
+
+def enrich_note(filepath):
     with open(filepath, 'r', encoding='utf-8') as f:
         text = f.read()
 
@@ -13,54 +95,36 @@ def simplify_note(filepath):
     fm = fm_match.group(1)
     body = text[fm_match.end():]
 
-    # Extract key fields from frontmatter
     def fm_val(key):
         m = re.search(rf'{key}:\s*"?([^\n"]+)"?', fm)
         return m.group(1).strip() if m else ''
 
     title = fm_val('title')
-    status = fm_val('status').split('#')[0].strip().strip('"')
     course_url = fm_val('course_url')
     code_ref = fm_val('code_reference')
+    ch_key = get_chapter_key(fm)
+    theme = CHAPTER_THEMES.get(ch_key, CHAPTER_THEMES["CH01"])
 
-    # Extract navigation callout (keep as-is, it's useful)
-    nav_match = re.search(r'(> \[!abstract\] Navigation.*?\n(?:> .*\n)*)', body)
+    topic = title.split('—')[-1].strip() if '—' in title else title
+
+    nav_match = re.search(r'(> \[!abstract\].*?\n(?:> .*\n)*)', body)
     nav = nav_match.group(1).rstrip() if nav_match else ''
 
-    # Extract checklist states from body
-    w = 'x' if re.search(r'\[[xX]\]\s*📺', body) else ' '
-    r = 'x' if re.search(r'\[[xX]\]\s*💻', body) else ' '
-    m = 'x' if re.search(r'\[[xX]\]\s*🧪', body) else ' '
-    d = 'x' if re.search(r'\[[xX]\]\s*🚀', body) else ' '
+    w = 'x' if re.search(r'\[[xX]\]\s*Watched', body) else ' '
+    r = 'x' if re.search(r'\[[xX]\]\s*Reproduced', body) else ' '
+    m = 'x' if re.search(r'\[[xX]\]\s*Tested', body) else ' '
+    d = 'x' if re.search(r'\[[xX]\]\s*Documented', body) else ' '
 
-    # Extract the architectural principle (the one unique piece per note)
-    principle = ''
-    p_match = re.search(r'>\s*(?:\[!info\].*?\n)?>\s*(.+?)(?:\n|$)', body)
-    if p_match:
-        # Look for the actual principle text after [!info] Architectural Principle
-        p_match2 = re.search(r'\[!info\].*?\n>\s*(.+)', body)
-        if p_match2:
-            principle = p_match2.group(1).strip()
+    concept = ''
+    c_match = re.search(r'## Key Concept\s*\n\s*>\s*(?:\[!info\][^\n]*\n>\s*)?(.+)', body)
+    if c_match:
+        concept = c_match.group(1).strip()
 
-    # Extract SQL code block (first one only)
     sql_match = re.search(r'```sql\r?\n(.*?)```', body, re.DOTALL)
     sql_code = sql_match.group(1).strip() if sql_match else ''
 
-    # Trim frontmatter: keep only essential properties
-    new_fm_lines = []
-    for line in fm.split('\n'):
-        stripped = line.strip()
-        # Skip verbose/redundant properties
-        if stripped.startswith('aliases:') or stripped.startswith('- "CH') or stripped.startswith('- "'):
-            continue
-        new_fm_lines.append(line)
-    
-    # Actually, keep frontmatter as-is since Dataview queries depend on it
-    # Just simplify the body
-
-    # Build clean note
-    code_line = f'`{code_ref}`' if code_ref else ''
-    course_link = f'[MaharaTech]({course_url})' if course_url else ''
+    ch_folder = os.path.basename(os.path.dirname(filepath))
+    platform_target = f"{PLATFORM_URL}{theme['platform_anchor']}"
 
     output = f"""---
 {fm}
@@ -80,7 +144,8 @@ def simplify_note(filepath):
 
 ## Key Concept
 
-> {principle}
+> [!info] {theme['icon']} {theme['domain']}
+> {concept}
 
 ## SQL Pattern
 
@@ -88,14 +153,46 @@ def simplify_note(filepath):
 {sql_code}
 ```
 
-## Notes
+## Evaluation
 
-<!-- Write your observations, gotchas, and edge cases here -->
+| Aspect | Question |
+| :--- | :--- |
+| **Correctness** | What invariant or constraint does **{topic}** enforce? |
+| **Performance** | {theme['eval']} |
+| **Trade-offs** | When is this the wrong tool? What's the alternative? |
+
+## My Notes
+
+> [!note] Observations
+> <!-- What did you notice while reproducing this? -->
+
+> [!warning] Gotchas
+> <!-- Edge cases, silent failures, or unintuitive behavior -->
+
+> [!tip] Production Tip
+> <!-- How would you apply this in a real data platform? -->
+
+---
+
+## Related Lessons
+
+```dataview
+LIST
+FROM "video-notes/{ch_folder}"
+WHERE file.path != this.file.path
+SORT file.name ASC
+LIMIT 5
+```
 
 ## Links
 
-- {course_link}
-- {code_line}
+| Resource | Link |
+| :--- | :--- |
+| Official Lesson | [MaharaTech]({course_url}) |
+| Production Code | `{code_ref}` |
+| Live Platform | [{theme['platform_title']}]({platform_target}) |
+| Platform Curriculum | [OmniFlow Curriculum Hub]({PLATFORM_URL}#curriculum) |
+| Source on GitHub | [Repository]({REPO_URL}/blob/master/{code_ref}) |
 """
 
     with open(filepath, 'w', encoding='utf-8') as f:
@@ -103,36 +200,38 @@ def simplify_note(filepath):
     return True
 
 
-def simplify_chapter(filepath):
+def enrich_chapter(filepath):
     with open(filepath, 'r', encoding='utf-8') as f:
         text = f.read()
 
     fm_match = re.match(r'^---\r?\n(.*?)\r?\n---\r?\n', text, re.DOTALL)
     if not fm_match:
         return False
-    
+
     fm = fm_match.group(1)
     body = text[fm_match.end():]
 
-    # Extract title
     title_match = re.search(r'^#\s+(.+)$', body, re.MULTILINE)
     title = title_match.group(1) if title_match else os.path.basename(filepath)
 
-    # Extract navigation callout
     nav_match = re.search(r'(> \[!abstract\].*?\n(?:> .*\n)*)', body)
     nav = nav_match.group(1).rstrip() if nav_match else ''
 
-    # Extract chapter focus
-    focus_match = re.search(r'> \[!info\] Chapter Focus.*?\n> (.+)', body)
+    focus_match = re.search(r'^>\s+(?!.*\[!)(.*\.)$', body, re.MULTILINE)
     focus = focus_match.group(1).strip() if focus_match else ''
+    if not focus:
+        f2 = re.search(r'> \[!info\] [^\n]*?\s+(.*\.)$', body, re.MULTILINE)
+        focus = f2.group(1).strip() if f2 else 'Enterprise database engineering patterns and mastery path.'
 
-    # Extract chapter number for dataview
     ch_match = re.search(r'ch(\d+)', filepath)
     ch_num = f"ch0{ch_match.group(1)}" if ch_match and len(ch_match.group(1)) == 1 else f"ch{ch_match.group(1)}" if ch_match else ''
+    ch_key = f"CH0{ch_match.group(1)}" if ch_match and len(ch_match.group(1)) == 1 else f"CH{ch_match.group(1)}" if ch_match else ''
+    theme = CHAPTER_THEMES.get(ch_key, CHAPTER_THEMES["CH01"])
 
-    # Extract the interactive checklist (keep all the `- [ ]` and `- [x]` lines with wikilinks)
     checklist_lines = re.findall(r'^- \[[xX ]\] .+$', body, re.MULTILINE)
-    checklist = '\n'.join(checklist_lines) if checklist_lines else ''
+    checklist = '\n'.join(checklist_lines)
+
+    platform_target = f"{PLATFORM_URL}{theme['platform_anchor']}"
 
     output = f"""---
 {fm}
@@ -142,7 +241,13 @@ def simplify_chapter(filepath):
 
 {nav}
 
-> {focus}
+> [!info] {theme['icon']} {focus}
+
+---
+
+## Learning Path Roadmap
+
+{theme['roadmap']}
 
 ---
 
@@ -152,12 +257,13 @@ def simplify_chapter(filepath):
 
 ---
 
-## Progress
+## Progress Dashboard
 
 ```dataview
 TABLE WITHOUT ID
   file.link AS "Lesson",
-  choice(status = "completed", "✅", choice(status = "in-progress", "🔄", "⏳")) AS "Status"
+  choice(status = "completed", "✅", choice(status = "in-progress", "🔄", "⏳")) AS "Status",
+  code_reference AS "Code"
 FROM "video-notes/{ch_num}"
 SORT file.name ASC
 ```
@@ -171,6 +277,18 @@ WHERE !completed
 GROUP BY file.link
 LIMIT 15
 ```
+
+---
+
+## Links
+
+| Resource | Link |
+| :--- | :--- |
+| Curriculum Overview | [README](../README.md) |
+| Learning Tracker | [Tracker](../LEARNING_TRACKER.md) |
+| 8-Week Plan | [Study Plan](../8-WEEK-STUDY-PLAN.md) |
+| Live Platform Target | [{theme['platform_title']}]({platform_target}) |
+| Platform Curriculum | [OmniFlow Curriculum & Second Brain]({PLATFORM_URL}#curriculum) |
 """
 
     with open(filepath, 'w', encoding='utf-8') as f:
@@ -179,21 +297,13 @@ LIMIT 15
 
 
 def main():
-    # Simplify all 102 video notes
     notes = glob.glob('docs/curriculum/video-notes/**/*.md', recursive=True)
-    count = 0
-    for n in notes:
-        if simplify_note(n):
-            count += 1
-    print(f"Simplified {count} video notes.")
+    count = sum(1 for n in notes if enrich_note(n))
+    print(f"Enriched {count} video notes.")
 
-    # Simplify chapter readmes
     chapters = glob.glob('docs/curriculum/chapters/ch*-readme.md')
-    ch_count = 0
-    for c in chapters:
-        if simplify_chapter(c):
-            ch_count += 1
-    print(f"Simplified {ch_count} chapter readmes.")
+    ch_count = sum(1 for c in chapters if enrich_chapter(c))
+    print(f"Enriched {ch_count} chapter readmes.")
 
 
 if __name__ == '__main__':

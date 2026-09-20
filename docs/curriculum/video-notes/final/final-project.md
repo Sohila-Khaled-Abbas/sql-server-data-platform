@@ -36,7 +36,8 @@ last_modified: 2026-09-19
 
 ## Key Concept
 
-> 
+> [!info] 🏗️ Storage & Physical Architecture
+> ## SQL Pattern
 
 ## SQL Pattern
 
@@ -44,11 +45,43 @@ last_modified: 2026-09-19
 
 ```
 
-## Notes
+## Evaluation
 
-<!-- Write your observations, gotchas, and edge cases here -->
+| Aspect | Question |
+| :--- | :--- |
+| **Correctness** | What invariant or constraint does **Integrated SQL Server Data Platform** enforce? |
+| **Performance** | How does this affect page allocation, filegroup isolation, or backup chain integrity? |
+| **Trade-offs** | When is this the wrong tool? What's the alternative? |
+
+## My Notes
+
+> [!note] Observations
+> <!-- What did you notice while reproducing this? -->
+
+> [!warning] Gotchas
+> <!-- Edge cases, silent failures, or unintuitive behavior -->
+
+> [!tip] Production Tip
+> <!-- How would you apply this in a real data platform? -->
+
+---
+
+## Related Lessons
+
+```dataview
+LIST
+FROM "video-notes/final"
+WHERE file.path != this.file.path
+SORT file.name ASC
+LIMIT 5
+```
 
 ## Links
 
-- [MaharaTech](https://maharatech.gov.eg/course/view.php?id=2305)
-- `deploy.ps1`
+| Resource | Link |
+| :--- | :--- |
+| Official Lesson | [MaharaTech](https://maharatech.gov.eg/course/view.php?id=2305) |
+| Production Code | `deploy.ps1` |
+| Live Platform | [OmniFlow Physical Storage Architecture](https://sohila-khaled-abbas.github.io/sql-server-data-platform/#architecture) |
+| Platform Curriculum | [OmniFlow Curriculum Hub](https://sohila-khaled-abbas.github.io/sql-server-data-platform/#curriculum) |
+| Source on GitHub | [Repository](https://github.com/Sohila-Khaled-Abbas/sql-server-data-platform/blob/master/deploy.ps1) |

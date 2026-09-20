@@ -21,7 +21,19 @@ last_modified: 2026-09-19
 > [!abstract] Navigation & Chapter Overview
 > ⬅️ **Previous:** [CH01 — Database Creation and Management](ch01-readme.md) | 📑 **Curriculum Overview:** [Curriculum README](../README.md) | ➡️ **Next:** [CH03 — Advanced Query Techniques and High Availability](ch03-readme.md)
 
-> Procedural T-SQL without row-by-row anti-patterns: variable scoping, control flow, functions (Scalar vs Inline TVF vs MSTVF), system databases, temporary tables, batches, and ACID transaction boundaries.
+> [!info] ⚙️ Procedural T-SQL without row-by-row anti-patterns: variable scoping, control flow, functions (Scalar vs Inline TVF vs MSTVF), system databases, temporary tables, batches, and ACID transaction boundaries.
+
+---
+
+## Learning Path Roadmap
+
+```mermaid
+graph LR
+    A["Variable Scopes & Types"] --> B["Control-of-Flow Logic"]
+    B --> C["Scalar & Table-Valued UDFs"]
+    C --> D["System Catalogs & Temp Tables"]
+    D --> E["Batches, Transactions & ACID"]
+```
 
 ---
 
@@ -45,12 +57,13 @@ last_modified: 2026-09-19
 
 ---
 
-## Progress
+## Progress Dashboard
 
 ```dataview
 TABLE WITHOUT ID
   file.link AS "Lesson",
-  choice(status = "completed", "✅", choice(status = "in-progress", "🔄", "⏳")) AS "Status"
+  choice(status = "completed", "✅", choice(status = "in-progress", "🔄", "⏳")) AS "Status",
+  code_reference AS "Code"
 FROM "video-notes/ch02"
 SORT file.name ASC
 ```
@@ -64,3 +77,15 @@ WHERE !completed
 GROUP BY file.link
 LIMIT 15
 ```
+
+---
+
+## Links
+
+| Resource | Link |
+| :--- | :--- |
+| Curriculum Overview | [README](../README.md) |
+| Learning Tracker | [Tracker](../LEARNING_TRACKER.md) |
+| 8-Week Plan | [Study Plan](../8-WEEK-STUDY-PLAN.md) |
+| Live Platform Target | [OmniFlow SQL Engineering Showcase](https://sohila-khaled-abbas.github.io/sql-server-data-platform/#sql-engineering) |
+| Platform Curriculum | [OmniFlow Curriculum & Second Brain](https://sohila-khaled-abbas.github.io/sql-server-data-platform/#curriculum) |

@@ -40,6 +40,7 @@ export default function Footer() {
           <a href="#database-design" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>Database Design</a>
           <a href="#data-flow" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>Data Flow</a>
           <a href="#sql-engineering" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>SQL Engineering</a>
+          <a href="#curriculum" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>Curriculum (102 Lessons)</a>
           <a href="#deep-dive" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>Deep Dive</a>
           <a href="#repository-explorer" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>Repository</a>
           <a href={REPO_METADATA.repoUrl} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent-red)', textDecoration: 'none' }}>GitHub &rarr;</a>

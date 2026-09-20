@@ -21,7 +21,19 @@ last_modified: 2026-09-19
 > [!abstract] Navigation & Chapter Overview
 > ⬅️ **Previous:** [CH02 — SQL Programming Essentials](ch02-readme.md) | 📑 **Curriculum Overview:** [Curriculum README](../README.md) | ➡️ **Next:** [CH04 — Procedures, Triggers, and SQL Automation](ch04-readme.md)
 
-> High-throughput data access and disaster recovery: standard and indexed views with SCHEMABINDING, horizontal table partitioning, XML shredding (nodes/value), recursive CTEs, sequences, TVPs, and Log Shipping / Mirroring.
+> [!info] 🔄 High-throughput data access and disaster recovery: standard and indexed views with SCHEMABINDING, horizontal table partitioning, XML shredding (nodes/value), recursive CTEs, sequences, TVPs, and Log Shipping / Mirroring.
+
+---
+
+## Learning Path Roadmap
+
+```mermaid
+graph LR
+    A["Standard & Indexed Views"] --> B["Horizontal Table Partitioning"]
+    B --> C["XML Parsing & Shredding"]
+    C --> D["Hierarchical CTEs & TVPs"]
+    D --> E["Log Shipping & DB Mirroring"]
+```
 
 ---
 
@@ -53,12 +65,13 @@ last_modified: 2026-09-19
 
 ---
 
-## Progress
+## Progress Dashboard
 
 ```dataview
 TABLE WITHOUT ID
   file.link AS "Lesson",
-  choice(status = "completed", "✅", choice(status = "in-progress", "🔄", "⏳")) AS "Status"
+  choice(status = "completed", "✅", choice(status = "in-progress", "🔄", "⏳")) AS "Status",
+  code_reference AS "Code"
 FROM "video-notes/ch03"
 SORT file.name ASC
 ```
@@ -72,3 +85,15 @@ WHERE !completed
 GROUP BY file.link
 LIMIT 15
 ```
+
+---
+
+## Links
+
+| Resource | Link |
+| :--- | :--- |
+| Curriculum Overview | [README](../README.md) |
+| Learning Tracker | [Tracker](../LEARNING_TRACKER.md) |
+| 8-Week Plan | [Study Plan](../8-WEEK-STUDY-PLAN.md) |
+| Live Platform Target | [OmniFlow High-Throughput Data Flow](https://sohila-khaled-abbas.github.io/sql-server-data-platform/#data-flow) |
+| Platform Curriculum | [OmniFlow Curriculum & Second Brain](https://sohila-khaled-abbas.github.io/sql-server-data-platform/#curriculum) |

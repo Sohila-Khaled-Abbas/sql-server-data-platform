@@ -21,7 +21,19 @@ last_modified: 2026-09-19
 > [!abstract] Navigation & Chapter Overview
 > ⬅️ **Previous:** [CH03 — Advanced Query Techniques and High Availability](ch03-readme.md) | 📑 **Curriculum Overview:** [Curriculum README](../README.md) | ➡️ **Next:** [CH05 — Reporting and Data Warehousing](ch05-readme.md)
 
-> Database-side logic and administration automation: transactional stored procedures, OUTPUT clauses, audit triggers (inserted/deleted), server DDL triggers with EVENTDATA(), C# SQL CLR assemblies, and PowerShell SMO scripting.
+> [!info] 🤖 Database-side logic and administration automation: transactional stored procedures, OUTPUT clauses, audit triggers (inserted/deleted), server DDL triggers with EVENTDATA(), C# SQL CLR assemblies, and PowerShell SMO scripting.
+
+---
+
+## Learning Path Roadmap
+
+```mermaid
+graph LR
+    A["Stored Procedures & Dynamic SQL"] --> B["DML & DDL Event Triggers"]
+    B --> C["Audit Trail & OUTPUT Clause"]
+    C --> D["Cursor Workflows vs Set-Based"]
+    D --> E["C# SQL CLR & PowerShell SMO"]
+```
 
 ---
 
@@ -57,12 +69,13 @@ last_modified: 2026-09-19
 
 ---
 
-## Progress
+## Progress Dashboard
 
 ```dataview
 TABLE WITHOUT ID
   file.link AS "Lesson",
-  choice(status = "completed", "✅", choice(status = "in-progress", "🔄", "⏳")) AS "Status"
+  choice(status = "completed", "✅", choice(status = "in-progress", "🔄", "⏳")) AS "Status",
+  code_reference AS "Code"
 FROM "video-notes/ch04"
 SORT file.name ASC
 ```
@@ -76,3 +89,15 @@ WHERE !completed
 GROUP BY file.link
 LIMIT 15
 ```
+
+---
+
+## Links
+
+| Resource | Link |
+| :--- | :--- |
+| Curriculum Overview | [README](../README.md) |
+| Learning Tracker | [Tracker](../LEARNING_TRACKER.md) |
+| 8-Week Plan | [Study Plan](../8-WEEK-STUDY-PLAN.md) |
+| Live Platform Target | [OmniFlow Technical Deep Dive & Governance](https://sohila-khaled-abbas.github.io/sql-server-data-platform/#deep-dive) |
+| Platform Curriculum | [OmniFlow Curriculum & Second Brain](https://sohila-khaled-abbas.github.io/sql-server-data-platform/#curriculum) |

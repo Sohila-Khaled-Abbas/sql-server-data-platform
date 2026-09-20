@@ -682,3 +682,79 @@ export const CREATOR_PROFILE = {
   repo: 'https://github.com/Sohila-Khaled-Abbas/sql-server-data-platform',
   curriculumRef: 'https://maharatech.gov.eg/course/view.php?id=2305'
 };
+
+export const CURRICULUM_CHAPTERS = [
+  {
+    id: 'CH01',
+    title: 'Database Creation & Storage Architecture',
+    lessons: 16,
+    icon: 'HardDrive',
+    color: '#38bdf8',
+    description: 'Physical storage layout, 8 KB data pages, 64 KB extents, multi-filegroups (PRIMARY, DATA_FG, INDEX_FG), declarative constraints, B-Tree indexes, and database snapshots.',
+    keyTopics: ['MDF / LDF / NDF Physical Layout', 'Declarative Constraints (PK/FK/CHECK/DEFAULT)', 'Clustered vs Non-Clustered Indexes', 'Backup Chains & Agent Jobs', 'NTFS Sparse Database Snapshots'],
+    githubReadme: 'docs/curriculum/chapters/ch01-readme.md',
+    platformAnchor: '#architecture',
+    codeFolder: 'src/01_storage_and_schema/'
+  },
+  {
+    id: 'CH02',
+    title: 'T-SQL Programming Essentials & ACID',
+    lessons: 15,
+    icon: 'Code2',
+    color: '#10b981',
+    description: 'Variable scoping, control-of-flow conditional logic, scalar and table-valued functions (MSTVFs vs Inline), system databases, script batches, and ACID transaction isolation.',
+    keyTopics: ['Local & Global Variables', 'IF...ELSE & WHILE Iteration', 'Scalar vs Inline vs Multi-Statement TVFs', 'System Databases (master, msdb, tempdb, model)', 'Transactions, Locks & Isolation Levels'],
+    githubReadme: 'docs/curriculum/chapters/ch02-readme.md',
+    platformAnchor: '#sql-engineering',
+    codeFolder: 'src/03_programmability_and_elt/'
+  },
+  {
+    id: 'CH03',
+    title: 'Views, Partitioning & High Availability',
+    lessons: 23,
+    icon: 'Layers',
+    color: '#8b5cf6',
+    description: 'Schema-bound indexed views, sliding window horizontal partitioning, FOR XML (RAW, AUTO, PATH) shredding, hierarchical CTEs, sequences, TVPs, and DR architectures.',
+    keyTopics: ['Standard & Indexed Materialized Views', 'RANGE RIGHT Table Partitioning Schemes', 'XML Generation & XQuery Shredding', 'Recursive Common Table Expressions (CTEs)', 'Log Shipping vs Database Mirroring'],
+    githubReadme: 'docs/curriculum/chapters/ch03-readme.md',
+    platformAnchor: '#data-flow',
+    codeFolder: 'src/02_indexing_and_performance/'
+  },
+  {
+    id: 'CH04',
+    title: 'Procedures, Triggers & CLR/SMO',
+    lessons: 27,
+    icon: 'Cpu',
+    color: '#f59e0b',
+    description: 'Enterprise stored procedures with output parameters, DML & DDL event triggers, inserted/deleted pseudo-tables, audit logging, cursors, C# SQL CLR extensions, and PowerShell SMO.',
+    keyTopics: ['Parameterized Procedures & Dynamic SQL', 'DML & Server/Database DDL Triggers', 'OUTPUT Clause Change Tracking', 'Cursor Workflows vs Set-Based Processing', 'C# SQL CLR Assemblies & PowerShell SMO'],
+    githubReadme: 'docs/curriculum/chapters/ch04-readme.md',
+    platformAnchor: '#deep-dive',
+    codeFolder: 'src/04_governance_and_audit/'
+  },
+  {
+    id: 'CH05',
+    title: 'SSRS & Kimball Data Warehousing',
+    lessons: 20,
+    icon: 'BarChart3',
+    color: '#ec4899',
+    description: 'Enterprise reporting with SSRS, matrix aggregation, drill-down actions, OLTP vs OLAP architecture, Kimball star schema dimensional modeling, and capstone platform implementation.',
+    keyTopics: ['SSRS Installation & Configuration', 'Interactive Sorting & Matrix Grouping', 'RDLC Custom Report Generation', 'OLTP 3NF vs OLAP Dimensional Marts', 'Kimball Star Schema (DimDate, FactSales, SCD2)'],
+    githubReadme: 'docs/curriculum/chapters/ch05-readme.md',
+    platformAnchor: '#database-design',
+    codeFolder: 'src/07_warehousing_and_reporting/'
+  }
+];
+
+export const OBSIDIAN_VAULT_METRICS = {
+  totalLessons: 102,
+  totalChapters: 5,
+  capstoneProjects: 1,
+  vaultPath: 'docs/curriculum',
+  theme: 'Catppuccin Mocha',
+  keyPlugins: ['Dataview', 'Obsidian Git', 'Tasks', 'Admonition', 'Checklist', 'Table Editor'],
+  studyPlanPath: 'docs/curriculum/8-WEEK-STUDY-PLAN.md',
+  trackerPath: 'docs/curriculum/LEARNING_TRACKER.md',
+  videoIndexPath: 'docs/curriculum/VIDEO_INDEX.md'
+};
+

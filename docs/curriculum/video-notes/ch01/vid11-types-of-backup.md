@@ -34,6 +34,7 @@ last_modified: 2026-09-19
 
 ## Key Concept
 
+> [!info] 🏗️ Storage & Physical Architecture
 > Know recovery objectives first. Full, differential, and log backups solve different recovery and storage problems and require an appropriate recovery model.
 
 ## SQL Pattern
@@ -44,11 +45,43 @@ TO DISK = 'D:\Backup\SalesDB_full.bak'
 WITH INIT, COMPRESSION;
 ```
 
-## Notes
+## Evaluation
 
-<!-- Write your observations, gotchas, and edge cases here -->
+| Aspect | Question |
+| :--- | :--- |
+| **Correctness** | What invariant or constraint does **Types of Backup** enforce? |
+| **Performance** | How does this affect page allocation, filegroup isolation, or backup chain integrity? |
+| **Trade-offs** | When is this the wrong tool? What's the alternative? |
+
+## My Notes
+
+> [!note] Observations
+> <!-- What did you notice while reproducing this? -->
+
+> [!warning] Gotchas
+> <!-- Edge cases, silent failures, or unintuitive behavior -->
+
+> [!tip] Production Tip
+> <!-- How would you apply this in a real data platform? -->
+
+---
+
+## Related Lessons
+
+```dataview
+LIST
+FROM "video-notes/ch01"
+WHERE file.path != this.file.path
+SORT file.name ASC
+LIMIT 5
+```
 
 ## Links
 
-- [MaharaTech](https://maharatech.gov.eg/mod/hvp/view.php?id=17530)
-- `src/06_reliability_and_dr/01_backup_and_maintenance_jobs.sql`
+| Resource | Link |
+| :--- | :--- |
+| Official Lesson | [MaharaTech](https://maharatech.gov.eg/mod/hvp/view.php?id=17530) |
+| Production Code | `src/06_reliability_and_dr/01_backup_and_maintenance_jobs.sql` |
+| Live Platform | [OmniFlow Physical Storage Architecture](https://sohila-khaled-abbas.github.io/sql-server-data-platform/#architecture) |
+| Platform Curriculum | [OmniFlow Curriculum Hub](https://sohila-khaled-abbas.github.io/sql-server-data-platform/#curriculum) |
+| Source on GitHub | [Repository](https://github.com/Sohila-Khaled-Abbas/sql-server-data-platform/blob/master/src/06_reliability_and_dr/01_backup_and_maintenance_jobs.sql) |

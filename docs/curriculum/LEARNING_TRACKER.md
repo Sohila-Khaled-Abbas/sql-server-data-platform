@@ -58,3 +58,16 @@ WHERE !completed
 GROUP BY file.link
 LIMIT 30
 ```
+
+---
+
+## Links
+
+| Resource | Link |
+| :--- | :--- |
+| Curriculum Overview | [README](README.md) |
+| 8-Week Study Plan | [8-Week Plan](8-WEEK-STUDY-PLAN.md) |
+| 102 Video Index | [Video Index](VIDEO_INDEX.md) |
+| Live Platform | [OmniFlow Web App](https://sohila-khaled-abbas.github.io/sql-server-data-platform/) |
+| Platform Curriculum | [OmniFlow Curriculum & Second Brain](https://sohila-khaled-abbas.github.io/sql-server-data-platform/#curriculum) |
+

@@ -12,6 +12,7 @@ export default function Navbar() {
     { label: 'Databases', href: '#database-design', badge: '3 DBs' },
     { label: 'Data Flow', href: '#data-flow' },
     { label: 'SQL Showcase', href: '#sql-engineering' },
+    { label: 'Curriculum', href: '#curriculum', badge: '102' },
     { label: 'Deep Dive', href: '#deep-dive' },
     { label: 'Repository', href: '#repository-explorer' },
     { label: 'Tech Stack', href: '#tech-stack' }
