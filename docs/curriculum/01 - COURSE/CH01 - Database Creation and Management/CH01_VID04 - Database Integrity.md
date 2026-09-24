@@ -24,7 +24,6 @@ tags:
   - type/video
   - chapter/ch01
   - domain/database
-  - status/not-started
 ---
 
 # CH01_VID04 — Database Integrity

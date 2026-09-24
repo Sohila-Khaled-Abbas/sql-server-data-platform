@@ -3,18 +3,16 @@ type: video
 course: SQL Server Data Platform
 chapter: CH01
 lesson_id: CH01_VID10
-title: "Demo on Index"
-status: not-started
+title: Demo on Index
+status: in_progress
 difficulty: medium
 confidence: 0
-practice: false
-implemented: false
-explained: false
+practice: true
+implemented: true
+explained: true
 estimated_minutes: 20
-source: "https://maharatech.gov.eg/mod/hvp/view.php?id=17529"
-code_reference: "src/05_indexing_and_performance/03_index_maintenance.sql"
-last_reviewed: 
-next_review: 
+source: https://maharatech.gov.eg/mod/hvp/view.php?id=17529
+code_reference: src/05_indexing_and_performance/03_index_maintenance.sql
 topics:
   - storage-physical-architecture
   - demo-on-index
@@ -26,7 +24,6 @@ tags:
   - type/video
   - chapter/ch01
   - domain/database
-  - status/not-started
 ---
 
 # CH01_VID10 — Demo on Index

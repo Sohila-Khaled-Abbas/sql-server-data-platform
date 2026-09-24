@@ -92,11 +92,12 @@ export const ARCHITECTURE_LAYERS = [
     id: 'academic',
     name: 'ITI & DB2 Integrity Engine',
     repoPath: 'src/01_storage_and_schema/',
-    description: 'Relational integrity constraints, UDDTs, global rules (sp_bindrule), and standalone defaults from MaharaTech CH01_VID05, CH01_VID06 & CH01_VID07.',
+    description: 'Relational integrity constraints, UDDTs, global rules (sp_bindrule), standalone defaults, and B+Tree indexes from MaharaTech CH01_VID05 to CH01_VID09.',
     components: [
       { name: 'dbo.Instructor (ITI)', role: 'Core entity with 16 rows, bound to global rule @x > 1000', file: 'ch01_vid06_constraints_rules_defaults.sql' },
       { name: 'dbo.Department (ITI)', role: 'Parent academic track entity (SD, Java, BI)', file: 'ch01_vid06_constraints_rules_defaults.sql' },
       { name: 'dbo.mydata & complexdt (ITI)', role: 'Custom UDDT with bound rule (@x > 1000) & default (5000) across 6 live rows', file: 'ch01_vid07_custom_data_types.sql' },
+      { name: 'dbo.student (ITI)', role: 'B+Tree indexing testbed with Clustered PK [id], Non-Clustered index i2 [name], and covering index i2_covering', file: 'ch01_vid09_nonclustered_index.sql' },
       { name: 'dbo.emps & depts (DB2)', role: 'Relational table with 8 explicit constraints c1-c8 & cascade rules', file: 'ch01_vid05_integrity_constraints.sql' },
       { name: 'Global Rule [myrule]', role: 'Reusable domain check rule bound to columns & UDDTs', file: 'ch01_vid06_constraints_rules_defaults.sql' }
     ]
@@ -123,6 +124,8 @@ export const REPO_FILES = [
   { path: 'src/01_storage_and_schema/ch01_vid05_integrity_constraints.sql', category: 'SQL', desc: 'Authentic DB2 database implementation with 8 constraints (c1-c8) and cascade rules.', lines: 185 },
   { path: 'src/01_storage_and_schema/ch01_vid06_constraints_rules_defaults.sql', category: 'SQL', desc: 'ITI Instructor schema, global check rules (myrule), cross-table binding & defaults.', lines: 210 },
   { path: 'src/01_storage_and_schema/ch01_vid07_custom_data_types.sql', category: 'SQL', desc: 'Custom data type (complexdt), rule (@x>1000) & default (5000) UDDT binding, mydata table.', lines: 185 },
+  { path: 'src/01_storage_and_schema/ch01_vid08_clustered_index.sql', category: 'SQL', desc: 'Clustered index B+Tree physical architecture, root/intermediate/leaf traversal, and index seek.', lines: 245 },
+  { path: 'src/01_storage_and_schema/ch01_vid09_nonclustered_index.sql', category: 'SQL', desc: 'Non-clustered index (i2 on name), row locators, key lookups, and covering index optimization.', lines: 250 },
   { path: 'src/02_indexing_and_performance/01_clustered_nonclustered.sql', category: 'SQL', desc: 'Clustered, covering non-clustered with INCLUDE, filtered & columnstore indexes.', lines: 112 },
   { path: 'src/02_indexing_and_performance/02_indexed_views.sql', category: 'SQL', desc: 'Materialized pre-aggregated views created with SCHEMABINDING.', lines: 75 },
   { path: 'src/02_indexing_and_performance/03_execution_plan_analysis.sql', category: 'SQL', desc: 'Comparative benchmark between RBAR cursors and set-based window queries.', lines: 154 },
@@ -261,12 +264,33 @@ export const SCHEMAS_ERD = {
   itiSchema: {
     name: 'ITI & DB2 (Academic & Relational Integrity Engine)',
     databaseName: 'ITI & DB2',
-    description: 'Relational schemas illustrating domain check rules, UDDTs, sp_bindrule, and standalone defaults from MaharaTech CH01_VID05, CH01_VID06, and CH01_VID07.',
-    scriptRef: 'src/01_storage_and_schema/ch01_vid07_custom_data_types.sql',
-    docRef: 'docs/ch01-vid07-custom-data-types-live.md',
+    description: 'Relational schemas illustrating domain check rules, UDDTs, sp_bindrule, standalone defaults, and B+Tree indexes from MaharaTech CH01_VID05 to CH01_VID09.',
+    scriptRef: 'src/01_storage_and_schema/ch01_vid09_nonclustered_index.sql',
+    docRef: 'docs/ch01-vid09-nonclustered-index-live.md',
+    clusteredScriptRef: 'src/01_storage_and_schema/ch01_vid08_clustered_index.sql',
+    clusteredDocRef: 'docs/ch01-vid08-clustered-index-live.md',
+    uddtScriptRef: 'src/01_storage_and_schema/ch01_vid07_custom_data_types.sql',
+    uddtDocRef: 'docs/ch01-vid07-custom-data-types-live.md',
     precedingScriptRef: 'src/01_storage_and_schema/ch01_vid06_constraints_rules_defaults.sql',
     precedingDocRef: 'docs/ch01-vid06-constraints-rules-defaults-live.md',
     tables: [
+      {
+        name: 'dbo.student (ITI)',
+        type: 'INDEXING B+TREE ENTITY',
+        grain: 'One row per student partitioned across B+Tree subtrees (13 Live Records matching MaharaTech slides)',
+        keys: ['id [PK, Clustered]'],
+        fks: [],
+        indexes: [
+          'PK_student_id [CLUSTERED, UNIQUE] ON (id)',
+          'i2 [NONCLUSTERED] ON (name) -> Row Locator to PK (id)',
+          'i2_covering [NONCLUSTERED] ON (name) INCLUDE (age) -> Zero Key Lookup'
+        ],
+        columns: [
+          'id [PK, INT, NOT NULL] (Clustering Key / Row Locator Target)',
+          'name [VARCHAR(20)] (Secondary Index Key in i2 B+Tree)',
+          'age [INT] (Payload Attribute / Included Column in i2_covering)'
+        ]
+      },
       {
         name: 'dbo.mydata (ITI)',
         type: 'CUSTOM UDDT ENTITY',

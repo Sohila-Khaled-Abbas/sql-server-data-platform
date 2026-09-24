@@ -85,8 +85,7 @@
         "course/sql-server",
         "type/video",
         "chapter/ch01",
-        "domain/database",
-        "status/not-started"
+        "domain/database"
       ],
       "source": "https://maharatech.gov.eg/mod/hvp/view.php?id=17520",
       "code_reference": "src/01_storage_and_schema/01_filegroups_and_files.sql",
@@ -120,8 +119,7 @@
         "course/sql-server",
         "type/video",
         "chapter/ch01",
-        "domain/database",
-        "status/not-started"
+        "domain/database"
       ],
       "source": "https://maharatech.gov.eg/mod/hvp/view.php?id=17521",
       "code_reference": "src/01_storage_and_schema/01_filegroups_and_files.sql",
@@ -155,8 +153,7 @@
         "course/sql-server",
         "type/video",
         "chapter/ch01",
-        "domain/database",
-        "status/not-started"
+        "domain/database"
       ],
       "source": "https://maharatech.gov.eg/mod/hvp/view.php?id=17522",
       "code_reference": "src/01_storage_and_schema/01_filegroups_and_files.sql",
@@ -190,8 +187,7 @@
         "course/sql-server",
         "type/video",
         "chapter/ch01",
-        "domain/database",
-        "status/not-started"
+        "domain/database"
       ],
       "source": "https://maharatech.gov.eg/mod/hvp/view.php?id=17523",
       "code_reference": "src/02_data_integrity_and_ddl/01_declarative_constraints.sql",
@@ -225,8 +221,7 @@
         "course/sql-server",
         "type/video",
         "chapter/ch01",
-        "domain/database",
-        "status/not-started"
+        "domain/database"
       ],
       "source": "https://maharatech.gov.eg/mod/hvp/view.php?id=17524",
       "code_reference": "src/02_data_integrity_and_ddl/01_declarative_constraints.sql",
@@ -260,8 +255,7 @@
         "course/sql-server",
         "type/video",
         "chapter/ch01",
-        "domain/database",
-        "status/not-started"
+        "domain/database"
       ],
       "source": "https://maharatech.gov.eg/mod/hvp/view.php?id=17525",
       "code_reference": "src/02_data_integrity_and_ddl/02_check_constraints_and_defaults.sql",
@@ -315,12 +309,13 @@
       "chapter_title": "Database Creation & Storage Architecture",
       "chapter_color": "#38bdf8",
       "lesson_number": 8,
-      "status": "not-started",
+      "status": "mastered",
       "difficulty": "hard",
-      "confidence": 0,
+      "confidence": 100,
       "topics": [
         "storage-physical-architecture",
-        "clustered-index"
+        "clustered-index",
+        "b-tree-indexes"
       ],
       "skills": [
         "T-SQL",
@@ -331,11 +326,11 @@
         "type/video",
         "chapter/ch01",
         "domain/database",
-        "status/not-started"
+        "status/mastered"
       ],
       "source": "https://maharatech.gov.eg/mod/hvp/view.php?id=17527",
-      "code_reference": "src/05_indexing_and_performance/01_clustered_indexes.sql",
-      "learning_goal": "Master the concepts, mechanics, and operational trade-offs of **Clustered Index** within the **Storage & Physical Architecture** domain, bridging relational database theory with practical data engineering implementations.",
+      "code_reference": "src/01_storage_and_schema/ch01_vid08_clustered_index.sql",
+      "learning_goal": "Master the concepts, internal architecture, and physical mechanics of **Clustered Indexes** and **B+Trees** within the **Storage & Physical Architecture** domain, bridging relational database theory with practical data engineering implementations.",
       "core_idea": "",
       "abilities": [],
       "relative_path": "docs/curriculum/01 - COURSE/CH01 - Database Creation and Management/CH01_VID08 - Clustered Index.md",
@@ -350,12 +345,14 @@
       "chapter_title": "Database Creation & Storage Architecture",
       "chapter_color": "#38bdf8",
       "lesson_number": 9,
-      "status": "not-started",
+      "status": "mastered",
       "difficulty": "hard",
-      "confidence": 0,
+      "confidence": 100,
       "topics": [
         "storage-physical-architecture",
-        "non-clustered-index"
+        "non-clustered-index",
+        "key-lookup",
+        "covering-index"
       ],
       "skills": [
         "T-SQL",
@@ -366,11 +363,11 @@
         "type/video",
         "chapter/ch01",
         "domain/database",
-        "status/not-started"
+        "status/mastered"
       ],
       "source": "https://maharatech.gov.eg/mod/hvp/view.php?id=17528",
-      "code_reference": "src/05_indexing_and_performance/02_nonclustered_indexes.sql",
-      "learning_goal": "Master the concepts, mechanics, and operational trade-offs of **Non-Clustered Index** within the **Storage & Physical Architecture** domain, bridging relational database theory with practical data engineering implementations.",
+      "code_reference": "src/01_storage_and_schema/ch01_vid09_nonclustered_index.sql",
+      "learning_goal": "Master the concepts, internal architecture, and query execution mechanics of **Non-Clustered Indexes**, **Row Locators**, and **Key Lookups (Bookmark Lookups)** within the **Storage & Physical Architecture** domain, bridging relational database theory with practical data engineering implementations.",
       "core_idea": "",
       "abilities": [],
       "relative_path": "docs/curriculum/01 - COURSE/CH01 - Database Creation and Management/CH01_VID09 - Non-Clustered Index.md",
@@ -385,7 +382,7 @@
       "chapter_title": "Database Creation & Storage Architecture",
       "chapter_color": "#38bdf8",
       "lesson_number": 10,
-      "status": "not-started",
+      "status": "in_progress",
       "difficulty": "medium",
       "confidence": 0,
       "topics": [
@@ -400,8 +397,7 @@
         "course/sql-server",
         "type/video",
         "chapter/ch01",
-        "domain/database",
-        "status/not-started"
+        "domain/database"
       ],
       "source": "https://maharatech.gov.eg/mod/hvp/view.php?id=17529",
       "code_reference": "src/05_indexing_and_performance/03_index_maintenance.sql",

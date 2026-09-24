@@ -76,6 +76,67 @@ The statement has been terminated.`,
     }
   },
   {
+    id: 'ch01_vid08',
+    database: 'ITI',
+    title: 'CH01_VID08: Clustered Index Seek (id=804) vs Scan (name=\'Omar\')',
+    desc: 'Simulate B+Tree traversal on dbo.student: comparing logarithmic seek on clustering key [id] against full clustered index scan on unindexed [name].',
+    sql: `-- 1. Clustered Index Seek on primary clustering key (2-3 page reads)
+SELECT id, name, age 
+FROM dbo.student 
+WHERE id = 804;
+
+-- 2. Clustered Index Scan (Forced to visit every leaf data page)
+SELECT id, name, age 
+FROM dbo.student 
+WHERE name = 'Omar';`,
+    stats: {
+      elapsed: '2 ms',
+      cpu: '0.5 ms',
+      reads: '2 logical reads (Seek) vs 14 logical reads (Scan)',
+      cost: '0.00328 (Clustered Index Seek) vs 0.01250 (Clustered Index Scan)'
+    },
+    outputType: 'table',
+    successResult: {
+      headers: ['id', 'name', 'age', 'Access_Method', 'BTree_Path'],
+      rows: [
+        ['804', 'Omar', '22', 'Clustered Index Seek', 'Root -> Right Intermediate (>=700) -> Leaf Page 800 -> Slot Array Binary Search']
+      ]
+    }
+  },
+  {
+    id: 'ch01_vid09',
+    database: 'ITI',
+    title: 'CH01_VID09: Non-Clustered Index i2 with Key Lookup & Covering INCLUDE',
+    desc: 'Simulate Non-Clustered Index seek on i2(name) triggering Key Lookup for age vs Covering Index i2_covering eliminating Key Lookup completely.',
+    sql: `-- 1. Non-Clustered Seek + Key Lookup (Follows yellow pointer down to Clustered Leaf)
+SELECT id, name, age 
+FROM dbo.student 
+WHERE name = 'Omar';
+
+-- 2. Index-Only Query (Zero Key Lookup - id is row locator in leaf)
+SELECT id, name 
+FROM dbo.student 
+WHERE name = 'Omar';
+
+-- 3. Modern Covering Index with INCLUDE (age)
+SELECT id, name, age 
+FROM dbo.student WITH (INDEX(i2_covering))
+WHERE name = 'Omar';`,
+    stats: {
+      elapsed: '3 ms',
+      cpu: '1 ms',
+      reads: '2 logical reads (Covered) vs 5 logical reads (Seek + Key Lookup)',
+      cost: '0.00328 (Index Seek Only) vs 0.00657 (Index Seek + Key Lookup)'
+    },
+    outputType: 'table',
+    successResult: {
+      headers: ['id', 'name', 'age', 'Index_Used', 'Lookup_Overhead'],
+      rows: [
+        ['804', 'Omar', '22', 'i2_covering ON (name) INCLUDE (age)', 'ZERO Key Lookups (Covered 100% in Leaf)']
+      ]
+    }
+  },
+  {
     id: 'kimball_agg',
     database: 'OmniFlowDW',
     title: 'Kimball DW: Aggregated Sales Performance by Quarter',
