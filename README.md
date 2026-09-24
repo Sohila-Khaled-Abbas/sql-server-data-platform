@@ -319,6 +319,7 @@ sql-server-data-platform/
 │   ├── architecture-diagram.md         # Visual Mermaid architecture & storage diagrams
 │   ├── ch01-case-study-erd-and-implementation.md # Chapter 1 Company ERD & relational breakdown
 │   ├── ch01-vid06-constraints-rules-defaults-live.md # Live SQL Server 2022 telemetry for rules & defaults
+│   ├── ch01-vid07-custom-data-types-live.md # Live SQL Server 2022 telemetry for custom UDDTs & rule/default binding
 │   ├── course-syllabus-mapping.md      # Full syllabus to platform competency mapping
 │   ├── curriculum/                     # Enterprise Obsidian Second Brain / PKM Vault (102 Lessons)
 │   │   ├── 00 - HOME/                  # Central launchpad, dynamic dashboards, roadmap, weekly review
@@ -357,7 +358,8 @@ sql-server-data-platform/
 │   │   ├── 04_partitioning_scheme.sql  # Partition functions & sliding window partition switching
 │   │   ├── 05_company_case_study_schema.sql # Canonical ITI Company ERD implementation
 │   │   ├── ch01_vid05_integrity_constraints.sql # DB2 DDL with 8 constraints (c1-c8) & cascade tests
-│   │   └── ch01_vid06_constraints_rules_defaults.sql # ITI rules (myrule), multi-table bindings (emps.overtime), unbinding & defaults (mydef)
+│   │   ├── ch01_vid06_constraints_rules_defaults.sql # ITI rules (myrule), multi-table bindings (emps.overtime), unbinding & defaults (mydef)
+│   │   └── ch01_vid07_custom_data_types.sql # Custom data type (complexdt), rule (@x>1000) & default (5000) bound to UDDT, mydata table
 │   ├── 02_indexing_and_performance/
 │   │   ├── 01_clustered_nonclustered.sql # Clustered, covering non-clustered, filtered & columnstore
 │   │   ├── 02_indexed_views.sql        # Materialized aggregation views with SCHEMABINDING
@@ -436,6 +438,7 @@ Explore our deep-dive handbooks located in [`/docs`](docs/):
 * 🏢 **[Company Case Study ERD & Relational Mapping](docs/ch01-case-study-erd-and-implementation.md)**: Peter Chen ERD mapping to 3NF relational schemas with integrity constraints.
 * 🛡️ **[Live Integrity Constraints Telemetry (DB2)](docs/db2-integrity-constraints-live.md)**: Live verification of constraints c1 through c8 with cascade rule behavior.
 * ⚙️ **[Constraints, Rules & Defaults Live Telemetry (ITI)](docs/ch01-vid06-constraints-rules-defaults-live.md)**: Live verification of `CREATE RULE`, multi-table binding (`emps.overtime`), unbinding (`sp_unbindrule`), and default teardown (`sp_unbindefault`, `DROP DEFAULT`) on SQL Server 2022.
+* 📦 **[Custom Data Types Live Telemetry (ITI)](docs/ch01-vid07-custom-data-types-live.md)**: Live verification of User-Defined Data Types (`complexdt`), binding rules (`sp_bindrule`) & defaults (`sp_bindefault`) to UDDTs, and table verification (`dbo.mydata`) on SQL Server 2022.
 * 📊 **[Data Dictionary](docs/data-dictionary.md)**: Full metadata specification for all transactional and dimensional schemas.
 * ⭐ **[Dimensional Model Bus Matrix](docs/dimensional-model.md)**: Kimball star schema grain definitions, conformed dimensions, and additive facts.
 * 🗺️ **[Full Course Syllabus Mapping](docs/course-syllabus-mapping.md)**: Video-by-video curriculum alignment with corresponding code modules.

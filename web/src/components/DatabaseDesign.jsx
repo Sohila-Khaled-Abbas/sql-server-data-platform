@@ -205,7 +205,7 @@ export default function DatabaseDesign() {
               >
                 <FileText size={20} style={{ color: 'var(--accent-emerald)', flexShrink: 0 }} />
                 <div>
-                  <div style={{ color: '#fff', fontSize: '0.9rem', fontWeight: 600 }}>Live Telemetry Specification</div>
+                  <div style={{ color: '#fff', fontSize: '0.9rem', fontWeight: 600 }}>CH01_VID06 Rules &amp; Defaults Telemetry</div>
                   <div style={{ color: 'var(--text-muted)', fontSize: '0.75rem', fontFamily: 'var(--font-mono)' }}>
                     docs/ch01-vid06-constraints-rules-defaults-live.md &nearr;
                   </div>
@@ -213,7 +213,32 @@ export default function DatabaseDesign() {
               </a>
 
               <a
-                href="https://github.com/Sohila-Khaled-Abbas/sql-server-data-platform/blob/master/src/01_storage_and_schema/ch01_vid06_constraints_rules_defaults.sql"
+                href="https://github.com/Sohila-Khaled-Abbas/sql-server-data-platform/blob/master/docs/ch01-vid07-custom-data-types-live.md"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.75rem',
+                  background: 'rgba(16, 185, 129, 0.05)',
+                  border: '1px solid rgba(16, 185, 129, 0.3)',
+                  padding: '1rem 1.25rem',
+                  borderRadius: 'var(--radius-md)',
+                  textDecoration: 'none',
+                  transition: 'all 0.2s ease'
+                }}
+              >
+                <FileText size={20} style={{ color: 'var(--accent-emerald)', flexShrink: 0 }} />
+                <div>
+                  <div style={{ color: '#fff', fontSize: '0.9rem', fontWeight: 600 }}>CH01_VID07 Custom UDDT Telemetry</div>
+                  <div style={{ color: 'var(--text-muted)', fontSize: '0.75rem', fontFamily: 'var(--font-mono)' }}>
+                    docs/ch01-vid07-custom-data-types-live.md &nearr;
+                  </div>
+                </div>
+              </a>
+
+              <a
+                href="https://github.com/Sohila-Khaled-Abbas/sql-server-data-platform/blob/master/src/01_storage_and_schema/ch01_vid07_custom_data_types.sql"
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{
@@ -230,9 +255,9 @@ export default function DatabaseDesign() {
               >
                 <FileCode size={20} style={{ color: 'var(--accent-cyan)', flexShrink: 0 }} />
                 <div>
-                  <div style={{ color: '#fff', fontSize: '0.9rem', fontWeight: 600 }}>T-SQL Implementation Script</div>
+                  <div style={{ color: '#fff', fontSize: '0.9rem', fontWeight: 600 }}>CH01_VID07 UDDT T-SQL Script</div>
                   <div style={{ color: 'var(--text-muted)', fontSize: '0.75rem', fontFamily: 'var(--font-mono)' }}>
-                    src/01_storage_and_schema/ch01_vid06_constraints_rules_defaults.sql &nearr;
+                    src/01_storage_and_schema/ch01_vid07_custom_data_types.sql &nearr;
                   </div>
                 </div>
               </a>

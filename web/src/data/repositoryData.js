@@ -92,10 +92,11 @@ export const ARCHITECTURE_LAYERS = [
     id: 'academic',
     name: 'ITI & DB2 Integrity Engine',
     repoPath: 'src/01_storage_and_schema/',
-    description: 'Relational integrity constraints, UDDTs, global rules (sp_bindrule), and standalone defaults from MaharaTech CH01_VID05 & CH01_VID06.',
+    description: 'Relational integrity constraints, UDDTs, global rules (sp_bindrule), and standalone defaults from MaharaTech CH01_VID05, CH01_VID06 & CH01_VID07.',
     components: [
       { name: 'dbo.Instructor (ITI)', role: 'Core entity with 16 rows, bound to global rule @x > 1000', file: 'ch01_vid06_constraints_rules_defaults.sql' },
       { name: 'dbo.Department (ITI)', role: 'Parent academic track entity (SD, Java, BI)', file: 'ch01_vid06_constraints_rules_defaults.sql' },
+      { name: 'dbo.mydata & complexdt (ITI)', role: 'Custom UDDT with bound rule (@x > 1000) & default (5000) across 6 live rows', file: 'ch01_vid07_custom_data_types.sql' },
       { name: 'dbo.emps & depts (DB2)', role: 'Relational table with 8 explicit constraints c1-c8 & cascade rules', file: 'ch01_vid05_integrity_constraints.sql' },
       { name: 'Global Rule [myrule]', role: 'Reusable domain check rule bound to columns & UDDTs', file: 'ch01_vid06_constraints_rules_defaults.sql' }
     ]
@@ -121,6 +122,7 @@ export const REPO_FILES = [
   { path: 'src/01_storage_and_schema/05_company_case_study_schema.sql', category: 'SQL', desc: 'Canonical Peter Chen Company ERD implementation in 3NF with circular FKs.', lines: 340 },
   { path: 'src/01_storage_and_schema/ch01_vid05_integrity_constraints.sql', category: 'SQL', desc: 'Authentic DB2 database implementation with 8 constraints (c1-c8) and cascade rules.', lines: 185 },
   { path: 'src/01_storage_and_schema/ch01_vid06_constraints_rules_defaults.sql', category: 'SQL', desc: 'ITI Instructor schema, global check rules (myrule), cross-table binding & defaults.', lines: 210 },
+  { path: 'src/01_storage_and_schema/ch01_vid07_custom_data_types.sql', category: 'SQL', desc: 'Custom data type (complexdt), rule (@x>1000) & default (5000) UDDT binding, mydata table.', lines: 185 },
   { path: 'src/02_indexing_and_performance/01_clustered_nonclustered.sql', category: 'SQL', desc: 'Clustered, covering non-clustered with INCLUDE, filtered & columnstore indexes.', lines: 112 },
   { path: 'src/02_indexing_and_performance/02_indexed_views.sql', category: 'SQL', desc: 'Materialized pre-aggregated views created with SCHEMABINDING.', lines: 75 },
   { path: 'src/02_indexing_and_performance/03_execution_plan_analysis.sql', category: 'SQL', desc: 'Comparative benchmark between RBAR cursors and set-based window queries.', lines: 154 },
@@ -145,6 +147,7 @@ export const REPO_FILES = [
   { path: 'docs/curriculum/8-WEEK-STUDY-PLAN.md', category: 'Docs', desc: 'Structured 8-week engineering study plan and milestone tracker.', lines: 95 },
   { path: 'docs/ch01-case-study-erd-and-implementation.md', category: 'Docs', desc: 'Peter Chen ERD mapping rules into 3NF normalized physical schemas.', lines: 450 },
   { path: 'docs/ch01-vid06-constraints-rules-defaults-live.md', category: 'Docs', desc: 'Live SQL Server 2022 telemetry verifying CREATE RULE, sp_bindrule & WITH NOCHECK.', lines: 165 },
+  { path: 'docs/ch01-vid07-custom-data-types-live.md', category: 'Docs', desc: 'Live SQL Server 2022 telemetry verifying custom UDDT complexdt, rules & defaults binding.', lines: 170 },
   { path: 'docs/db2-integrity-constraints-live.md', category: 'Docs', desc: 'Live DB2 telemetry for constraints c1-c8 and referential cascade behaviors.', lines: 140 },
   { path: 'docs/dimensional-model.md', category: 'Docs', desc: 'Kimball star schema bus matrix, grain definitions, and surrogate key design.', lines: 110 },
   { path: 'docs/disaster-recovery-runbook.md', category: 'Docs', desc: 'Emergency tail-log recovery runbook, RPO/RTO calculations, and VLF tuning.', lines: 215 },
@@ -258,12 +261,26 @@ export const SCHEMAS_ERD = {
   itiSchema: {
     name: 'ITI & DB2 (Academic & Relational Integrity Engine)',
     databaseName: 'ITI & DB2',
-    description: 'Relational schemas illustrating domain check rules, UDDTs, sp_bindrule, and standalone defaults from MaharaTech CH01_VID05 and CH01_VID06.',
-    scriptRef: 'src/01_storage_and_schema/ch01_vid06_constraints_rules_defaults.sql',
-    docRef: 'docs/ch01-vid06-constraints-rules-defaults-live.md',
-    precedingScriptRef: 'src/01_storage_and_schema/ch01_vid05_integrity_constraints.sql',
-    precedingDocRef: 'docs/db2-integrity-constraints-live.md',
+    description: 'Relational schemas illustrating domain check rules, UDDTs, sp_bindrule, and standalone defaults from MaharaTech CH01_VID05, CH01_VID06, and CH01_VID07.',
+    scriptRef: 'src/01_storage_and_schema/ch01_vid07_custom_data_types.sql',
+    docRef: 'docs/ch01-vid07-custom-data-types-live.md',
+    precedingScriptRef: 'src/01_storage_and_schema/ch01_vid06_constraints_rules_defaults.sql',
+    precedingDocRef: 'docs/ch01-vid06-constraints-rules-defaults-live.md',
     tables: [
+      {
+        name: 'dbo.mydata (ITI)',
+        type: 'CUSTOM UDDT ENTITY',
+        grain: 'One row per record utilizing custom data type complexdt (6 Live Records)',
+        keys: ['id [INT]'],
+        fks: [],
+        rules: ['CREATE RULE myrule AS @x > 1000 (Bound directly to complexdt via sp_bindrule)'],
+        defaults: ['CREATE DEFAULT mydef AS 5000 (Bound directly to complexdt via sp_bindefault)'],
+        columns: [
+          'id [INT]',
+          'name [VARCHAR(20)]',
+          'salary [complexdt] (Bound to mydef: 5000 & myrule: @x > 1000)'
+        ]
+      },
       {
         name: 'dbo.Instructor (ITI)',
         type: 'CORE ENTITY',
@@ -340,6 +357,14 @@ export const SCHEMAS_ERD = {
       { id: 14, name: 'Amena', degree: 'NULL', salary: '7200.0000', gender: 'F', dept: 30, valid: true },
       { id: 15, name: 'Ghada', degree: 'NULL', salary: '4320.0000', gender: 'F', dept: 30, valid: true },
       { id: 666, name: 'ahmed', degree: 'NULL', salary: 'NULL', gender: 'NULL', dept: null, valid: true, anomaly: 'Sparse audit test row (All attributes NULL)' }
+    ],
+    mydataLiveRows: [
+      { id: 1, name: 'NULL', salary: 5000, note: 'Defaulted via bound [mydef] (5000)' },
+      { id: 2, name: 'NULL', salary: 5000, note: 'Defaulted via bound [mydef] (5000)' },
+      { id: 3, name: 'NULL', salary: 5000, note: 'Defaulted via bound [mydef] (5000)' },
+      { id: 4, name: 'NULL', salary: 5000, note: 'Defaulted via bound [mydef] (5000)' },
+      { id: 5, name: 'NULL', salary: 6000, note: 'Explicit value (> 1000, complies with myrule)' },
+      { id: 6, name: 'NULL', salary: 4000, note: 'Explicit value (> 1000, complies with myrule)' }
     ]
   }
 };

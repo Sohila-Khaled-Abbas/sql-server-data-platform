@@ -44,6 +44,38 @@ The statement has been terminated.`,
     }
   },
   {
+    id: 'ch01_vid07',
+    database: 'ITI',
+    title: 'CH01_VID07: Custom UDDT (complexdt) with Rule & Default Binding',
+    desc: 'Simulate inserting into [ITI].[dbo].[mydata] with omitted salary (triggering default 5000) vs salary = 500 (triggering rule violation Msg 513).',
+    sql: `-- 1. Attempt invalid INSERT with Salary = 500 (Violates myrule: @x > 1000 bound to complexdt)
+INSERT INTO dbo.mydata (id, name, salary)
+VALUES (7, 'BadRecord', 500);
+
+-- 2. Insert record omitting salary (Inherits bound default mydef = 5000)
+INSERT INTO dbo.mydata (id, name)
+VALUES (7, 'GoodRecord');
+
+-- 3. Verify inserted record with auto-populated salary
+SELECT id, name, salary FROM dbo.mydata WHERE id = 7;`,
+    stats: {
+      elapsed: '11 ms',
+      cpu: '1 ms',
+      reads: '3 logical reads',
+      cost: '0.00312 (Heap Insert)'
+    },
+    outputType: 'error_and_success',
+    errorMsg: `Msg 513, Level 16, State 0, Line 2
+A column insert or update conflicts with a rule imposed by a previous CREATE RULE statement. The statement was terminated. The conflict occurred in database 'ITI', table 'dbo.mydata', column 'salary'.
+The statement has been terminated.`,
+    successResult: {
+      headers: ['id', 'name', 'salary', 'Default_Provenance', 'Rule_Evaluation'],
+      rows: [
+        ['7', 'GoodRecord', '5000', 'Injected by [mydef] (5000)', 'PASSED (@x > 1000)']
+      ]
+    }
+  },
+  {
     id: 'kimball_agg',
     database: 'OmniFlowDW',
     title: 'Kimball DW: Aggregated Sales Performance by Quarter',

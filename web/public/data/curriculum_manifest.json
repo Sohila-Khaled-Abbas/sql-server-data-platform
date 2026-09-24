@@ -280,9 +280,9 @@
       "chapter_title": "Database Creation & Storage Architecture",
       "chapter_color": "#38bdf8",
       "lesson_number": 7,
-      "status": "in-progress",
+      "status": "mastered",
       "difficulty": "medium",
-      "confidence": 0,
+      "confidence": 100,
       "topics": [
         "storage-physical-architecture",
         "creating-a-custom-data-type"
@@ -296,11 +296,11 @@
         "type/video",
         "chapter/ch01",
         "domain/database",
-        "status/not-started"
+        "status/mastered"
       ],
       "source": "https://maharatech.gov.eg/mod/hvp/view.php?id=17526",
-      "code_reference": "src/01_storage_and_schema/04_user_defined_types.sql",
-      "learning_goal": "Master the concepts, mechanics, and operational trade-offs of **Creating a Custom Data Type** within the **Storage & Physical Architecture** domain, bridging relational database theory with practical data engineering implementations.",
+      "code_reference": "src/01_storage_and_schema/ch01_vid07_custom_data_types.sql",
+      "learning_goal": "Master the concepts, mechanics, and operational trade-offs of **Creating a Custom Data Type (UDDT)** within the **Storage & Physical Architecture** domain, bridging relational database theory with practical data engineering implementations.",
       "core_idea": "",
       "abilities": [],
       "relative_path": "docs/curriculum/01 - COURSE/CH01 - Database Creation and Management/CH01_VID07 - Creating a Custom Data Type.md",

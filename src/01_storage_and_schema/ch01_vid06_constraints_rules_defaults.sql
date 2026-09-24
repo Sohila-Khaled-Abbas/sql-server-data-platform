@@ -329,3 +329,13 @@ PRINT '=========================================================================
 PRINT 'CH01_VID06 execution completed successfully with 100% database fidelity.';
 PRINT '============================================================================';
 GO
+
+-- ----------------------------------------------------------------------------
+-- Continuation Module Reference:
+-- For the next module demonstrating User-Defined Data Types (UDDTs) bound to
+-- standalone rules and defaults, see:
+--   Script: src/01_storage_and_schema/ch01_vid07_custom_data_types.sql
+--   Live Telemetry: docs/ch01-vid07-custom-data-types-live.md
+-- ----------------------------------------------------------------------------
+GO
+

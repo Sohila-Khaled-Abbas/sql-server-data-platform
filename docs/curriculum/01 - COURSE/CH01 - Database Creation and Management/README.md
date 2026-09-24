@@ -21,6 +21,7 @@ Physical storage architecture, data pages, extents, multi-filegroups (PRIMARY, D
 > [!tip] Verified Live Telemetry
 > - [Live DB2 Integrity Constraints Telemetry (CH01_VID05)](../../../../docs/db2-integrity-constraints-live.md)
 > - [Live ITI Rules & Defaults Telemetry (CH01_VID06)](../../../../docs/ch01-vid06-constraints-rules-defaults-live.md)
+> - [Live ITI Custom Data Types Telemetry (CH01_VID07)](../../../../docs/ch01-vid07-custom-data-types-live.md)
 
 ---
 
@@ -33,8 +34,8 @@ Physical storage architecture, data pages, extents, multi-filegroups (PRIMARY, D
 | 03 | Create Database Using Code | [CH01_VID03 - Create Database Using Code.md](CH01_VID03%20-%20Create%20Database%20Using%20Code.md) | In Progress |
 | 04 | Database Integrity | [CH01_VID04 - Database Integrity.md](CH01_VID04%20-%20Database%20Integrity.md) | In Progress |
 | 05 | Integrity constraints | [CH01_VID05 - Integrity constraints.md](CH01_VID05%20-%20Integrity%20constraints.md) | In Progress |
-| 06 | Constraints, Rules, and Default Values | [CH01_VID06 - Constraints, Rules, and Default Values.md](CH01_VID06%20-%20Constraints,%20Rules,%20and%20Default%20Values.md) | In Progress |
-| 07 | Creating a Custom Data Type | [CH01_VID07 - Creating a Custom Data Type.md](CH01_VID07%20-%20Creating%20a%20Custom%20Data%20Type.md) | In Progress |
+| 06 | Constraints, Rules, and Default Values | [CH01_VID06 - Constraints, Rules, and Default Values.md](CH01_VID06%20-%20Constraints,%20Rules,%20and%20Default%20Values.md) | Completed |
+| 07 | Creating a Custom Data Type | [CH01_VID07 - Creating a Custom Data Type.md](CH01_VID07%20-%20Creating%20a%20Custom%20Data%20Type.md) | Completed |
 | 08 | Clustered Index | [CH01_VID08 - Clustered Index.md](CH01_VID08%20-%20Clustered%20Index.md) | In Progress |
 | 09 | Non-Clustered Index | [CH01_VID09 - Non-Clustered Index.md](CH01_VID09%20-%20Non-Clustered%20Index.md) | In Progress |
 | 10 | Demo on Index | [CH01_VID10 - Demo on Index.md](CH01_VID10%20-%20Demo%20on%20Index.md) | In Progress |
