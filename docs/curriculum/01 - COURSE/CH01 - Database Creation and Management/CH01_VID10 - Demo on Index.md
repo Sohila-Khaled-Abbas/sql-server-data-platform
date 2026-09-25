@@ -82,13 +82,13 @@ In **MaharaTech Course 2305** (*Implementing & Developing SQL Server Objects* - 
 ### A. Execution Plan Comparisons
 
 #### 1. Clustered Index Seek on `dbo.Student` (`WHERE St_Id = 1`)
-![Clustered Index Seek on Student.PK_Student](../../../docs/assets/ch01_vid10/01_clustered_index_seek_student.png)
+![Clustered Index Seek on Student.PK_Student](assets/01_clustered_index_seek_student.png)
 
 > [!tip] Execution Insight
 > Because `St_Id` is the clustered primary key, SQL Server traverses directly down the B+Tree root and intermediate branches to the exact data page containing `St_Id = 1`. No row scans or residual predicates occur.
 
 #### 2. Table Scan on `dbo.mydata` (`WHERE id = 1`)
-![Table Scan on mydata heap](../../../docs/assets/ch01_vid10/02_table_scan_mydata_heap.png)
+![Table Scan on mydata heap](assets/02_table_scan_mydata_heap.png)
 
 > [!warning] Heap Table Bottleneck
 > `mydata` has no clustered index. Without a B+Tree, the storage engine must initiate an **Index Allocation Map (IAM)** scan and inspect every allocated data page in the heap to evaluate `id = 1`.
@@ -98,10 +98,10 @@ In **MaharaTech Course 2305** (*Implementing & Developing SQL Server Objects* - 
 ### B. Profiler & Database Engine Tuning Advisor (DTA)
 
 #### SSMS Tools Menu: SQL Server Profiler & DTA
-![SSMS Tools Menu: Profiler & DTA](../../../docs/assets/ch01_vid10/03_ssms_tools_profiler_dta_menu.png)
+![SSMS Tools Menu: Profiler & DTA](assets/03_ssms_tools_profiler_dta_menu.png)
 
 #### SQL Server Profiler: Real-Time Workload Capture (`ITI (localhost)`)
-![SQL Server Profiler Trace Window](../../../docs/assets/ch01_vid10/04_sql_server_profiler_trace_window.png)
+![SQL Server Profiler Trace Window](assets/04_sql_server_profiler_trace_window.png)
 
 > **Trace File Artifact**:
 > - Host Location: `D:\courses\Data Science\Data Engineering\MaharaTech\Implementing and Developing SQL server objects\CH01\VID10.trc`
@@ -109,10 +109,10 @@ In **MaharaTech Course 2305** (*Implementing & Developing SQL Server Objects* - 
 > - Read via T-SQL: `SELECT * FROM sys.fn_trace_gettable('VID10.trc', DEFAULT);`
 
 #### Database Engine Tuning Advisor (DTA) Configuration
-![DTA Workload Configuration](../../../docs/assets/ch01_vid10/05_dta_workload_configuration.png)
+![DTA Workload Configuration](assets/05_dta_workload_configuration.png)
 
 #### DTAEngine Storage Bound Error Popup
-![DTAEngine Storage Space Exceeded Error](../../../docs/assets/ch01_vid10/06_dta_storage_space_error_popup.png)
+![DTAEngine Storage Space Exceeded Error](assets/06_dta_storage_space_error_popup.png)
 
 ```text
 The minimum storage space required for the selected physical design structures exceeds the default storage space selected by Database Engine Tuning Advisor. Either keep fewer physical design structures, or increase the default storage space to be larger than at least 4MB. Use one of the following methods to increase storage space:
