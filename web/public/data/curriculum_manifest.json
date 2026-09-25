@@ -382,12 +382,16 @@
       "chapter_title": "Database Creation & Storage Architecture",
       "chapter_color": "#38bdf8",
       "lesson_number": 10,
-      "status": "in_progress",
+      "status": "mastered",
       "difficulty": "medium",
-      "confidence": 0,
+      "confidence": 100,
       "topics": [
         "storage-physical-architecture",
-        "demo-on-index"
+        "demo-on-index",
+        "clustered-index-limitations",
+        "non-clustered-index-creation",
+        "key-lookup",
+        "execution-plan-analysis"
       ],
       "skills": [
         "T-SQL",
@@ -397,11 +401,12 @@
         "course/sql-server",
         "type/video",
         "chapter/ch01",
-        "domain/database"
+        "domain/database",
+        "status/mastered"
       ],
       "source": "https://maharatech.gov.eg/mod/hvp/view.php?id=17529",
-      "code_reference": "src/05_indexing_and_performance/03_index_maintenance.sql",
-      "learning_goal": "Master the concepts, mechanics, and operational trade-offs of **Demo on Index** within the **Storage & Physical Architecture** domain, bridging relational database theory with practical data engineering implementations.",
+      "code_reference": "src/01_storage_and_schema/ch01_vid10_demo_on_index.sql",
+      "learning_goal": "Master the practical implementation, execution plan interpretation, and engine constraints of **Clustered vs Non-Clustered Indexes** in SQL Server Management Studio (SSMS), bridging storage theory with observable query performance metrics.",
       "core_idea": "",
       "abilities": [],
       "relative_path": "docs/curriculum/01 - COURSE/CH01 - Database Creation and Management/CH01_VID10 - Demo on Index.md",

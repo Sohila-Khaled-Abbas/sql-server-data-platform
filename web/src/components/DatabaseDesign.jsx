@@ -361,6 +361,56 @@ export default function DatabaseDesign() {
                   </div>
                 </div>
               </a>
+
+              <a
+                href="https://github.com/Sohila-Khaled-Abbas/sql-server-data-platform/blob/master/docs/ch01-vid10-demo-on-index-live.md"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.75rem',
+                  background: 'rgba(16, 185, 129, 0.05)',
+                  border: '1px solid rgba(16, 185, 129, 0.3)',
+                  padding: '1rem 1.25rem',
+                  borderRadius: 'var(--radius-md)',
+                  textDecoration: 'none',
+                  transition: 'all 0.2s ease'
+                }}
+              >
+                <FileText size={20} style={{ color: 'var(--accent-emerald)', flexShrink: 0 }} />
+                <div>
+                  <div style={{ color: '#fff', fontSize: '0.9rem', fontWeight: 600 }}>CH01_VID10 Index Demo Telemetry</div>
+                  <div style={{ color: 'var(--text-muted)', fontSize: '0.75rem', fontFamily: 'var(--font-mono)' }}>
+                    docs/ch01-vid10-demo-on-index-live.md &nearr;
+                  </div>
+                </div>
+              </a>
+
+              <a
+                href="https://github.com/Sohila-Khaled-Abbas/sql-server-data-platform/blob/master/src/01_storage_and_schema/ch01_vid10_demo_on_index.sql"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.75rem',
+                  background: 'rgba(56, 189, 248, 0.05)',
+                  border: '1px solid rgba(56, 189, 248, 0.3)',
+                  padding: '1rem 1.25rem',
+                  borderRadius: 'var(--radius-md)',
+                  textDecoration: 'none',
+                  transition: 'all 0.2s ease'
+                }}
+              >
+                <FileCode size={20} style={{ color: 'var(--accent-cyan)', flexShrink: 0 }} />
+                <div>
+                  <div style={{ color: '#fff', fontSize: '0.9rem', fontWeight: 600 }}>CH01_VID10 Index Demo T-SQL</div>
+                  <div style={{ color: 'var(--text-muted)', fontSize: '0.75rem', fontFamily: 'var(--font-mono)' }}>
+                    src/01_storage_and_schema/ch01_vid10_demo_on_index.sql &nearr;
+                  </div>
+                </div>
+              </a>
             </div>
 
             {/* Visual Architectural Comparison: Constraint vs Rule vs Default */}

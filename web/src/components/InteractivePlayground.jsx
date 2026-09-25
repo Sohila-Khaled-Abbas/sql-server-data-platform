@@ -137,6 +137,37 @@ WHERE name = 'Omar';`,
     }
   },
   {
+    id: 'ch01_vid10',
+    database: 'ITI',
+    title: 'CH01_VID10: Single Clustered Constraint (Msg 1902) & Non-Clustered i2',
+    desc: 'Simulate attempting a second clustered index on Student(st_fname) triggering Msg 1902 vs creating non-clustered index i2 and testing Seek + Key Lookup.',
+    sql: `-- 1. Attempt creating second clustered index on Student (Engine Rejection)
+CREATE CLUSTERED INDEX i2 ON dbo.Student(st_fname);
+
+-- 2. Create non-clustered index i2 on Student (Succeeds)
+CREATE NONCLUSTERED INDEX i2 ON dbo.Student(st_fname);
+
+-- 3. Execute Seek + Key Lookup on Student
+SELECT St_Id, St_Fname, St_Lname, St_Address, St_Age 
+FROM dbo.Student 
+WHERE St_Fname = N'Ahmed';`,
+    stats: {
+      elapsed: '2 ms',
+      cpu: '0.8 ms',
+      reads: '2 logical reads (i2 Seek) + 2 logical reads (PK Key Lookup)',
+      cost: '0.00328 (Index Seek) + 0.00328 (Key Lookup)'
+    },
+    outputType: 'error_and_success',
+    errorMsg: `Msg 1902, Level 16, State 1, Line 2
+Cannot create more than one clustered index on table 'dbo.Student'. Drop the existing clustered index 'PK_Student' before creating another.`,
+    successResult: {
+      headers: ['St_Id', 'St_Fname', 'St_Lname', 'St_Address', 'St_Age', 'Access_Method'],
+      rows: [
+        ['1', 'Ahmed', 'Hassan', 'Cairo', '22', 'Index Seek (i2) + Key Lookup (PK_Student)']
+      ]
+    }
+  },
+  {
     id: 'kimball_agg',
     database: 'OmniFlowDW',
     title: 'Kimball DW: Aggregated Sales Performance by Quarter',
