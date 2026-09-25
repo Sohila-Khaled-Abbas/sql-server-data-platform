@@ -127,7 +127,8 @@ export const REPO_FILES = [
   { path: 'src/01_storage_and_schema/ch01_vid07_custom_data_types.sql', category: 'SQL', desc: 'Custom data type (complexdt), rule (@x>1000) & default (5000) UDDT binding, mydata table.', lines: 185 },
   { path: 'src/01_storage_and_schema/ch01_vid08_clustered_index.sql', category: 'SQL', desc: 'Clustered index B+Tree physical architecture, root/intermediate/leaf traversal, and index seek.', lines: 245 },
   { path: 'src/01_storage_and_schema/ch01_vid09_nonclustered_index.sql', category: 'SQL', desc: 'Non-clustered index (i2 on name), row locators, key lookups, and covering index optimization.', lines: 250 },
-  { path: 'src/01_storage_and_schema/ch01_vid10_demo_on_index.sql', category: 'SQL', desc: 'SSMS Indexing demo: single clustered index constraint (Msg 1902), non-clustered index i2, Seek + Key Lookup.', lines: 220 },
+  { path: 'src/01_storage_and_schema/ch01_vid10_demo_on_index.sql', category: 'SQL', desc: 'SSMS Indexing demo: single clustered index constraint (Msg 1902), non-clustered index i2, Seek vs Scan, DTA tuning.', lines: 250 },
+  { path: 'src/01_storage_and_schema/traces/VID10.trc', category: 'Database', desc: 'Binary SQL Server Profiler trace file capturing real-time ITI database workload queries.', lines: 125 },
   { path: 'src/02_indexing_and_performance/01_clustered_nonclustered.sql', category: 'SQL', desc: 'Clustered, covering non-clustered with INCLUDE, filtered & columnstore indexes.', lines: 112 },
   { path: 'src/02_indexing_and_performance/02_indexed_views.sql', category: 'SQL', desc: 'Materialized pre-aggregated views created with SCHEMABINDING.', lines: 75 },
   { path: 'src/02_indexing_and_performance/03_execution_plan_analysis.sql', category: 'SQL', desc: 'Comparative benchmark between RBAR cursors and set-based window queries.', lines: 154 },
@@ -153,6 +154,7 @@ export const REPO_FILES = [
   { path: 'docs/ch01-case-study-erd-and-implementation.md', category: 'Docs', desc: 'Peter Chen ERD mapping rules into 3NF normalized physical schemas.', lines: 450 },
   { path: 'docs/ch01-vid06-constraints-rules-defaults-live.md', category: 'Docs', desc: 'Live SQL Server 2022 telemetry verifying CREATE RULE, sp_bindrule & WITH NOCHECK.', lines: 165 },
   { path: 'docs/ch01-vid07-custom-data-types-live.md', category: 'Docs', desc: 'Live SQL Server 2022 telemetry verifying custom UDDT complexdt, rules & defaults binding.', lines: 170 },
+  { path: 'docs/ch01-vid10-demo-on-index-live.md', category: 'Docs', desc: 'Live SQL Server 2022 telemetry verifying single clustered index invariant, non-clustered indexes, and DTA tuning.', lines: 200 },
   { path: 'docs/db2-integrity-constraints-live.md', category: 'Docs', desc: 'Live DB2 telemetry for constraints c1-c8 and referential cascade behaviors.', lines: 140 },
   { path: 'docs/dimensional-model.md', category: 'Docs', desc: 'Kimball star schema bus matrix, grain definitions, and surrogate key design.', lines: 110 },
   { path: 'docs/disaster-recovery-runbook.md', category: 'Docs', desc: 'Emergency tail-log recovery runbook, RPO/RTO calculations, and VLF tuning.', lines: 215 },
@@ -287,16 +289,38 @@ export const SCHEMAS_ERD = {
         indexes: [
           'PK_Student [CLUSTERED, UNIQUE] ON (St_Id)',
           'i2 [NONCLUSTERED] ON (St_Fname) -> Row Locator to PK (St_Id)',
-          'i2_covering [NONCLUSTERED] ON (St_Fname) INCLUDE (St_Address, St_Age)'
+          'i3 [NONCLUSTERED] ON (St_Address) -> Secondary Non-Clustered B+Tree',
+          'i2_covering [NONCLUSTERED] ON (St_Fname) INCLUDE (St_Address, St_Age)',
+          'i7 [NONCLUSTERED] ON (St_Age) -> Non-unique index allowing duplicate age 21'
         ],
         columns: [
           'St_Id [PK, INT, NOT NULL] (Clustering Key)',
           'St_Fname [NVARCHAR(50)] (Secondary Index Key in i2)',
           'St_Lname [NCHAR(10)]',
-          'St_Address [NVARCHAR(100)] (Included in i2_covering)',
-          'St_Age [INT] (Included in i2_covering)',
+          'St_Address [NVARCHAR(100)] (Key in i3 / Included in i2_covering)',
+          'St_Age [INT] (Key in i7 / Included in i2_covering)',
           'Dept_Id [FK, INT]',
           'St_super [FK, INT]'
+        ]
+      },
+      {
+        name: 'dbo.mytest (ITI)',
+        type: 'CONSTRAINT-TO-INDEX ENTITY',
+        grain: 'Demonstration table for constraint-to-index mapping laws',
+        keys: ['SSN [PK, Clustered]'],
+        fks: [],
+        indexes: [
+          'PK__mytest [CLUSTERED, UNIQUE] ON (SSN) -> Primary Key rule',
+          'UQ__mytest_salary [NONCLUSTERED, UNIQUE] ON (salary) -> Unique Constraint rule',
+          'UQ__mytest_overtime [NONCLUSTERED, UNIQUE] ON (overtime) -> Unique Constraint rule'
+        ],
+        columns: [
+          'id [INT IDENTITY]',
+          'SSN [PK, INT] (Clustering Key)',
+          'name [VARCHAR(20)]',
+          'salary [INT UNIQUE] (Generates Unique Non-Clustered Index)',
+          'overtime [INT UNIQUE] (Generates Unique Non-Clustered Index)',
+          'CHECK c100 (overtime > 100)'
         ]
       },
       {

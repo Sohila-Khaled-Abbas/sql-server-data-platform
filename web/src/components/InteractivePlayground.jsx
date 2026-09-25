@@ -139,31 +139,49 @@ WHERE name = 'Omar';`,
   {
     id: 'ch01_vid10',
     database: 'ITI',
-    title: 'CH01_VID10: Single Clustered Constraint (Msg 1902) & Non-Clustered i2',
-    desc: 'Simulate attempting a second clustered index on Student(st_fname) triggering Msg 1902 vs creating non-clustered index i2 and testing Seek + Key Lookup.',
-    sql: `-- 1. Attempt creating second clustered index on Student (Engine Rejection)
+    title: 'CH01_VID10: Clustered vs Non-Clustered, Constraints & DTA Lab',
+    desc: 'Simulate single clustered invariant (Msg 1902), seek vs scan execution plans, constraints-to-indexes (mytest), duplicate key rejection (Msg 1505), and DTA storage bounds.',
+    sql: `-- 1. Attempt creating second clustered index (Engine Rejection Msg 1902)
 CREATE CLUSTERED INDEX i2 ON dbo.Student(st_fname);
 
--- 2. Create non-clustered index i2 on Student (Succeeds)
+-- 2. Create non-clustered indexes i2 and i3 (Succeeds)
 CREATE NONCLUSTERED INDEX i2 ON dbo.Student(st_fname);
+CREATE NONCLUSTERED INDEX i3 ON dbo.Student(st_address);
 
--- 3. Execute Seek + Key Lookup on Student
-SELECT St_Id, St_Fname, St_Lname, St_Address, St_Age 
-FROM dbo.Student 
-WHERE St_Fname = N'Ahmed';`,
+-- 3. Execution Plan: Clustered Seek vs Heap Table Scan
+SELECT * FROM dbo.Student WHERE St_Id = 1; -- Clustered Index Seek (PK_Student)
+SELECT * FROM dbo.mydata WHERE id = 1;      -- Table Scan (Heap)
+
+-- 4. Constraint-to-Index Mapping Laws
+-- Primary Key constraint -> CLUSTERED Index
+-- Unique constraint      -> NONCLUSTERED Index
+CREATE TABLE dbo.mytest (
+    id INT IDENTITY,
+    SSN INT PRIMARY KEY,
+    salary INT UNIQUE,
+    overtime INT UNIQUE
+);
+
+-- 5. Unique Index Violation (Msg 1505) & Fix
+CREATE UNIQUE INDEX i7 ON dbo.Student(st_age); -- Rejection: Duplicate key (21)
+CREATE INDEX i7 ON dbo.Student(st_age);        -- Success: Regular non-unique index`,
     stats: {
-      elapsed: '2 ms',
-      cpu: '0.8 ms',
-      reads: '2 logical reads (i2 Seek) + 2 logical reads (PK Key Lookup)',
-      cost: '0.00328 (Index Seek) + 0.00328 (Key Lookup)'
+      elapsed: '3 ms',
+      cpu: '1.2 ms',
+      reads: '2 logical reads (Student Seek) vs 1 logical read (mydata Scan)',
+      cost: '0.00328 (Clustered Seek) vs 0.00312 (Heap Table Scan)'
     },
     outputType: 'error_and_success',
-    errorMsg: `Msg 1902, Level 16, State 1, Line 2
-Cannot create more than one clustered index on table 'dbo.Student'. Drop the existing clustered index 'PK_Student' before creating another.`,
+    errorMsg: `Msg 1902, Level 16, State 1: Cannot create more than one clustered index on table 'dbo.Student'. Drop existing 'PK_Student'.
+Msg 1505, Level 16, State 1: CREATE UNIQUE INDEX terminated because duplicate key (21) was found for object 'dbo.Student', index 'i7'.`,
     successResult: {
-      headers: ['St_Id', 'St_Fname', 'St_Lname', 'St_Address', 'St_Age', 'Access_Method'],
+      headers: ['Scenario_Step', 'Target_Table', 'Physical_Operator', 'Engine_Behavior', 'DTA_Recommendation'],
       rows: [
-        ['1', 'Ahmed', 'Hassan', 'Cairo', '22', 'Index Seek (i2) + Key Lookup (PK_Student)']
+        ['1. Clustered Seek', 'dbo.Student', 'Clustered Index Seek', 'Direct B+Tree traversal via PK_Student', 'Optimal Seek (Cost 0%)'],
+        ['2. Heap Table Scan', 'dbo.mydata', 'Table Scan', 'IAM allocation chain scan (No B+Tree)', 'Add Clustered Index on id'],
+        ['3. Constraint Mapping', 'dbo.mytest', 'Index Allocations', 'SSN -> CLUSTERED, salary/overtime -> NONCLUSTERED', 'Enforced by Storage Engine'],
+        ['4. Unique Index Fix', 'dbo.Student', 'Index Creation (i7)', 'Standard non-unique index allows duplicate age 21', 'Index on Student(st_age) Created'],
+        ['5. DTA Workload Tuning', 'dbo.Instructor', 'Clustered Index Scan', 'Trace VID10.trc analyzed with -B 50 storage buffer', 'Recommended Index on Instructor(Salary)']
       ]
     }
   },
