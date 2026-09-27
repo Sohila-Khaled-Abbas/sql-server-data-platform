@@ -172,3 +172,54 @@ RESTORE DATABASE OmniFlowDB FILEGROUP = 'ARCHIVE_FG'
 FROM DISK = 'D:\...\OmniFlowDB_Archive.bak'
 WITH RECOVERY;
 ```
+
+---
+
+### Procedure E: Restoring from Multi-Set Media Files (`WITH FILE = N`)
+When restoring from a single physical backup file that contains multiple appended backup sets (Full, Differential, Transaction Log generated via SSMS Wizard or `WITH NOINIT`):
+
+```sql
+USE master;
+GO
+
+DECLARE @BakPath NVARCHAR(500) = N'D:\courses\Data Science\Data Engineering\MaharaTech\Implementing and Developing SQL server objects\CH01\Mydb\test.bak';
+
+-- 1. Inspect sets and determine positions
+RESTORE HEADERONLY FROM DISK = @BakPath;
+
+-- 2. Restore Full Database from Position 1 (Leave in Restoring state)
+RESTORE DATABASE [testbackup_Restored]
+FROM DISK = @BakPath
+WITH FILE = 1,
+     NORECOVERY,
+     REPLACE,
+     MOVE N'testbackup' TO N'D:\SQL Server\MSSQL16.MSSQLSERVER\MSSQL\DATA\testbackup_restored.mdf',
+     MOVE N'testbackup_log' TO N'D:\SQL Server\MSSQL16.MSSQLSERVER\MSSQL\DATA\testbackup_restored_log.ldf';
+
+-- 3. Restore Cumulative Differential from Position 2 (Leave in Restoring state)
+RESTORE DATABASE [testbackup_Restored]
+FROM DISK = @BakPath
+WITH FILE = 2,
+     NORECOVERY;
+
+-- 4. Restore Transaction Log from Position 3 (Bring Online)
+RESTORE LOG [testbackup_Restored]
+FROM DISK = @BakPath
+WITH FILE = 3,
+     RECOVERY;
+GO
+```
+
+---
+
+## 5. Architectural References & Live Verification Telemetry
+
+* **Live Backup Types & PITR Verification Telemetry**: [`docs/ch01-vid11-types-of-backup-live.md`](ch01-vid11-types-of-backup-live.md)
+* **Live SSMS Wizard & Multi-Set Backup Telemetry**: [`docs/ch01-vid12-backup-database-wizard-live.md`](ch01-vid12-backup-database-wizard-live.md)
+* **Interactive T-SQL Disaster Recovery Lab (Types)**: [`src/01_storage_and_schema/ch01_vid11_types_of_backup.sql`](../src/01_storage_and_schema/ch01_vid11_types_of_backup.sql)
+* **Interactive T-SQL Wizard & Multi-Set Lab**: [`src/01_storage_and_schema/ch01_vid12_backup_database_wizard.sql`](../src/01_storage_and_schema/ch01_vid12_backup_database_wizard.sql)
+* **Production SQL Agent Automated Maintenance**: [`src/06_reliability_and_dr/01_backup_and_maintenance_jobs.sql`](../src/06_reliability_and_dr/01_backup_and_maintenance_jobs.sql)
+* **Curriculum Mastery Companions**:
+  * [`docs/curriculum/01 - COURSE/CH01 - Database Creation and Management/CH01_VID11 - Types of Backup.md`](curriculum/01%20-%20COURSE/CH01%20-%20Database%20Creation%20and%20Management/CH01_VID11%20-%20Types%20of%20Backup.md)
+  * [`docs/curriculum/01 - COURSE/CH01 - Database Creation and Management/CH01_VID12 - Backup Database Using Wizard.md`](curriculum/01%20-%20COURSE/CH01%20-%20Database%20Creation%20and%20Management/CH01_VID12%20-%20Backup%20Database%20Using%20Wizard.md)
+

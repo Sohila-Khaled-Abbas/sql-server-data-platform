@@ -426,27 +426,37 @@
       "chapter_title": "Database Creation & Storage Architecture",
       "chapter_color": "#38bdf8",
       "lesson_number": 11,
-      "status": "not-started",
+      "status": "mastered",
       "difficulty": "medium",
-      "confidence": 0,
+      "confidence": 100,
       "topics": [
         "storage-physical-architecture",
-        "types-of-backup"
+        "types-of-backup",
+        "full-backup",
+        "differential-backup",
+        "transaction-log-backup",
+        "dcm-differential-changed-map",
+        "log-sequence-numbers",
+        "recovery-models",
+        "point-in-time-recovery",
+        "tail-log-backup"
       ],
       "skills": [
         "T-SQL",
-        "Database Engineering"
+        "Database Reliability Engineering",
+        "Disaster Recovery",
+        "Backup Architecture"
       ],
       "tags": [
         "course/sql-server",
         "type/video",
         "chapter/ch01",
         "domain/database",
-        "status/not-started"
+        "status/mastered"
       ],
       "source": "https://maharatech.gov.eg/mod/hvp/view.php?id=17530",
-      "code_reference": "src/06_reliability_and_dr/01_backup_and_maintenance_jobs.sql",
-      "learning_goal": "Master the concepts, mechanics, and operational trade-offs of **Types of Backup** within the **Storage & Physical Architecture** domain, bridging relational database theory with practical data engineering implementations.",
+      "code_reference": "src/01_storage_and_schema/ch01_vid11_types_of_backup.sql",
+      "learning_goal": "Master the physical mechanics, storage file layout (`.mdf` vs `.ldf`), change-tracking algorithms (Differential Changed Map / DCM), unbroken LSN chaining, and point-in-time recovery (PITR) across the three primary SQL Server backup tiers: **Full Database Backup**, **Differential Backup**, and **Transaction Log Backup**.",
       "core_idea": "",
       "abilities": [],
       "relative_path": "docs/curriculum/01 - COURSE/CH01 - Database Creation and Management/CH01_VID11 - Types of Backup.md",
@@ -461,27 +471,36 @@
       "chapter_title": "Database Creation & Storage Architecture",
       "chapter_color": "#38bdf8",
       "lesson_number": 12,
-      "status": "not-started",
+      "status": "mastered",
       "difficulty": "easy",
-      "confidence": 0,
+      "confidence": 100,
       "topics": [
         "storage-physical-architecture",
-        "backup-database-using-wizard"
+        "ssms-backup-wizard",
+        "backup-gui-to-tsql",
+        "multi-set-backup-files",
+        "backup-media-family",
+        "backup-positions",
+        "restore-headeronly",
+        "restore-with-file",
+        "point-in-time-recovery"
       ],
       "skills": [
         "T-SQL",
-        "Database Engineering"
+        "Database Administration",
+        "Disaster Recovery",
+        "SSMS Tooling"
       ],
       "tags": [
         "course/sql-server",
         "type/video",
         "chapter/ch01",
         "domain/database",
-        "status/not-started"
+        "status/mastered"
       ],
       "source": "https://maharatech.gov.eg/mod/hvp/view.php?id=17531",
-      "code_reference": "src/06_reliability_and_dr/01_backup_and_maintenance_jobs.sql",
-      "learning_goal": "Master the concepts, mechanics, and operational trade-offs of **Backup Database Using Wizard** within the **Storage & Physical Architecture** domain, bridging relational database theory with practical data engineering implementations.",
+      "code_reference": "src/01_storage_and_schema/ch01_vid12_backup_database_wizard.sql",
+      "learning_goal": "Master the operational mechanics of the **SQL Server Management Studio (SSMS) Backup Database Wizard** (`Tasks -> Back Up...`), translate GUI selections into deterministic T-SQL engine commands, dissect the internal architecture of **Multi-Set Backup Media Files** (`WITH NOINIT` vs `WITH FORMAT, INIT`), inspect embedded backup headers via `RESTORE HEADERONLY`, and execute multi-position recovery sequences using `WITH FILE = N`.",
       "core_idea": "",
       "abilities": [],
       "relative_path": "docs/curriculum/01 - COURSE/CH01 - Database Creation and Management/CH01_VID12 - Backup Database Using Wizard.md",
@@ -496,7 +515,7 @@
       "chapter_title": "Database Creation & Storage Architecture",
       "chapter_color": "#38bdf8",
       "lesson_number": 13,
-      "status": "not-started",
+      "status": "in-progress",
       "difficulty": "medium",
       "confidence": 0,
       "topics": [

@@ -131,7 +131,7 @@ The minimum storage space required for the selected physical design structures e
 
 ---
 
-## 🔧 Complete T-SQL Lecture Syntax
+## 🔧 SQL Syntax
 
 ```sql
 USE ITI;
@@ -247,6 +247,7 @@ You are running Database Engine Tuning Advisor across an operational database wi
 - **Problem**: How do you automate this tuning session via PowerShell/CLI without SSMS GUI interaction while ensuring DTA does not abort?
 > [!hint] 🧠 Mentor Hint
 > Use `dta.exe` with the `-B` parameter specifying maximum storage space (e.g. `dta.exe -S . -D ITI -if "VID10.trc" -B 200 -s "ProdTuning" -of "recommendations.sql"`).
+
 > [!check] ✅ Expected Evidence
 > Automated execution script passing `-B 200` to allocate sufficient recommendation storage space.
 

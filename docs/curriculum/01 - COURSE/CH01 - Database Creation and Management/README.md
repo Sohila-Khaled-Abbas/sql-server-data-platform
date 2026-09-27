@@ -25,6 +25,8 @@ Physical storage architecture, data pages, extents, multi-filegroups (PRIMARY, D
 > - [Live ITI Clustered Index Telemetry (CH01_VID08)](../../../../docs/ch01-vid08-clustered-index-live.md)
 > - [Live ITI Non-Clustered Index Telemetry (CH01_VID09)](../../../../docs/ch01-vid09-nonclustered-index-live.md)
 > - [Live ITI Index Demo Telemetry (CH01_VID10)](../../../../docs/ch01-vid10-demo-on-index-live.md)
+> - [Live Types of Backup Telemetry (CH01_VID11)](../../../../docs/ch01-vid11-types-of-backup-live.md)
+> - [Live Backup Database Using Wizard Telemetry (CH01_VID12)](../../../../docs/ch01-vid12-backup-database-wizard-live.md)
 
 ---
 
@@ -42,8 +44,8 @@ Physical storage architecture, data pages, extents, multi-filegroups (PRIMARY, D
 | 08 | Clustered Index | [CH01_VID08 - Clustered Index.md](CH01_VID08%20-%20Clustered%20Index.md) | Completed |
 | 09 | Non-Clustered Index | [CH01_VID09 - Non-Clustered Index.md](CH01_VID09%20-%20Non-Clustered%20Index.md) | Completed |
 | 10 | Demo on Index | [CH01_VID10 - Demo on Index.md](CH01_VID10%20-%20Demo%20on%20Index.md) | Completed |
-| 11 | Types of Backup | [CH01_VID11 - Types of Backup.md](CH01_VID11%20-%20Types%20of%20Backup.md) | In Progress |
-| 12 | Backup Database Using Wizard | [CH01_VID12 - Backup Database Using Wizard.md](CH01_VID12%20-%20Backup%20Database%20Using%20Wizard.md) | In Progress |
+| 11 | Types of Backup | [CH01_VID11 - Types of Backup.md](CH01_VID11%20-%20Types%20of%20Backup.md) | Completed |
+| 12 | Backup Database Using Wizard | [CH01_VID12 - Backup Database Using Wizard.md](CH01_VID12%20-%20Backup%20Database%20Using%20Wizard.md) | Completed |
 | 13 | Backup & SQL server agent jobs | [CH01_VID13 - Backup & SQL server agent jobs.md](CH01_VID13%20-%20Backup%20&%20SQL%20server%20agent%20jobs.md) | In Progress |
 | 14 | Snapshot DB | [CH01_VID14 - Snapshot DB.md](CH01_VID14%20-%20Snapshot%20DB.md) | In Progress |
 | 15 | Demo on Snapshot | [CH01_VID15 - Demo on Snapshot.md](CH01_VID15%20-%20Demo%20on%20Snapshot.md) | In Progress |

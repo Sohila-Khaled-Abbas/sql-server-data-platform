@@ -101,7 +101,7 @@ VIDEOS_SPEC = [
         "title": "Types of Backup (Full, Differential, Log)",
         "dur": "21 mins", "level": "Intermediate",
         "skills": ["Full Database Backups", "Differential LSN Basing", "Transaction Log Backup Chains", "Recovery Models (Full/Simple/Bulk-Logged)"],
-        "repo": "src/06_reliability_and_dr/01_backup_and_maintenance_jobs.sql",
+        "repo": "src/01_storage_and_schema/ch01_vid11_types_of_backup.sql",
         "ms_title": "Backup Overview (SQL Server)",
         "ms_url": "https://learn.microsoft.com/en-us/sql/relational-databases/backup-restore/backup-overview-sql-server"
     },
@@ -109,8 +109,8 @@ VIDEOS_SPEC = [
         "id": "ch01-vid12", "chap": 1, "code": "CH01_VID12", "m_id": 17531,
         "title": "Backup Database Using Wizard & SSMS Tasks",
         "dur": "18 mins", "level": "Foundational",
-        "skills": ["SSMS Backup Dialog", "Media Sets & Backup Families", "Verify Backup Integrity", "Compression Settings"],
-        "repo": "src/06_reliability_and_dr/01_backup_and_maintenance_jobs.sql",
+        "skills": ["SSMS Backup Dialog", "Media Sets & Backup Families", "Multi-Set Media Files", "RESTORE HEADERONLY", "WITH FILE = N", "Compression & Checksums"],
+        "repo": "src/01_storage_and_schema/ch01_vid12_backup_database_wizard.sql",
         "ms_title": "Create a Full Database Backup (SSMS Wizard)",
         "ms_url": "https://learn.microsoft.com/en-us/sql/relational-databases/backup-restore/create-a-full-database-backup"
     },
@@ -1015,6 +1015,18 @@ def generate_js():
                           "-- Enforce custom business rules via transactional Stored Procedure\\n"
                           "EXEC dbo.usp_HireEmployee @ename = N'Kareem Tarek', @salary = 4500.00, @dnum = 10, @hiredate = '2026-03-01';")
             att_doc = "docs/ch01-case-study-erd-and-implementation.md"
+        elif v_id == "ch01-vid11":
+            desc = "Foundational DBRE architecture and disaster recovery strategies on SQL Server 2022. Master the physical mechanics of .mdf and .ldf, the 3 backup tiers (Full, Cumulative Differential via DCM pages, and Transaction Log VLF truncation), recovery models (Full, Simple, Bulk-Logged), and Point-in-Time Recovery (PITR) with STOPAT."
+            sample_sql = ("-- 3-Tier Enterprise Disaster Recovery & Point-in-Time Restore Path\\n"
+                          "-- Step 1: Restore Baseline Full Backup\\n"
+                          "RESTORE DATABASE ITI_BackupLab FROM DISK = 'ITI_Full_Baseline.bak' WITH NORECOVERY;\\n\\n"
+                          "-- Step 2: Restore Latest Cumulative Differential (Diff 1 skipped!)\\n"
+                          "RESTORE DATABASE ITI_BackupLab FROM DISK = 'ITI_Diff_2.bak' WITH NORECOVERY;\\n\\n"
+                          "-- Step 3: Restore Transaction Log T1\\n"
+                          "RESTORE LOG ITI_BackupLab FROM DISK = 'ITI_Log_T1.trn' WITH NORECOVERY;\\n\\n"
+                          "-- Step 4: Restore Tail Log up to exact failure millisecond\\n"
+                          "RESTORE LOG ITI_BackupLab FROM DISK = 'ITI_TailLog.trn' WITH STOPAT = '2026-09-27 16:00:00', RECOVERY;")
+            att_doc = "docs/ch01-vid11-types-of-backup-live.md"
         else:
             sample_sql = f"-- T-SQL Demo: {v_title}\\n-- Video Code: {v_code}\\nSELECT '{v_code}' AS VideoCode, '{v_title}' AS ModuleTitle, GETDATE() AS ExecutedAt;"
             att_doc = "docs/ch01-case-study-erd-and-implementation.md"

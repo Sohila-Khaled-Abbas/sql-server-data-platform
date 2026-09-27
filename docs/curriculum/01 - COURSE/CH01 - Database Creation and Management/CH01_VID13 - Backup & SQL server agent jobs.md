@@ -3,18 +3,16 @@ type: video
 course: SQL Server Data Platform
 chapter: CH01
 lesson_id: CH01_VID13
-title: "Backup & SQL server agent jobs"
-status: not-started
+title: Backup & SQL server agent jobs
+status: in-progress
 difficulty: medium
 confidence: 0
-practice: false
+practice: true
 implemented: false
 explained: false
 estimated_minutes: 20
-source: "https://maharatech.gov.eg/mod/hvp/view.php?id=17532"
-code_reference: "src/06_reliability_and_dr/01_backup_and_maintenance_jobs.sql"
-last_reviewed: 
-next_review: 
+source: https://maharatech.gov.eg/mod/hvp/view.php?id=17532
+code_reference: src/06_reliability_and_dr/01_backup_and_maintenance_jobs.sql
 topics:
   - storage-physical-architecture
   - backup-&-sql-server-agent-jobs
