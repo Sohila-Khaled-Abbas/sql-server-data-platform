@@ -71,7 +71,7 @@ LESSONS_RAW = [
     ("CH01", "CH01_VID10", "Demo on Index", "17529", "src/01_storage_and_schema/ch01_vid10_demo_on_index.sql", "medium", 20),
     ("CH01", "CH01_VID11", "Types of Backup", "17530", "src/01_storage_and_schema/ch01_vid11_types_of_backup.sql", "medium", 21),
     ("CH01", "CH01_VID12", "Backup Database Using Wizard", "17531", "src/01_storage_and_schema/ch01_vid12_backup_database_wizard.sql", "easy", 15),
-    ("CH01", "CH01_VID13", "Backup & SQL server agent jobs", "17532", "src/06_reliability_and_dr/01_backup_and_maintenance_jobs.sql", "medium", 20),
+    ("CH01", "CH01_VID13", "Backup & SQL server agent jobs", "17532", "src/01_storage_and_schema/ch01_vid13_backup_sql_agent_jobs.sql", "medium", 24),
     ("CH01", "CH01_VID14", "Snapshot DB", "17533", "src/06_reliability_and_dr/02_snapshot_lifecycle.sql", "hard", 20),
     ("CH01", "CH01_VID15", "Demo on Snapshot", "17534", "src/06_reliability_and_dr/02_snapshot_lifecycle.sql", "medium", 15),
     ("CH01", "CH01_VID16", "Assignment 01", "17535", "src/01_storage_and_schema/05_company_case_study_schema.sql", "hard", 30),

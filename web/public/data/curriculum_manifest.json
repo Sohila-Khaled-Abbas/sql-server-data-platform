@@ -515,27 +515,38 @@
       "chapter_title": "Database Creation & Storage Architecture",
       "chapter_color": "#38bdf8",
       "lesson_number": 13,
-      "status": "in-progress",
+      "status": "mastered",
       "difficulty": "medium",
-      "confidence": 0,
+      "confidence": 100,
       "topics": [
         "storage-physical-architecture",
-        "backup-&-sql-server-agent-jobs"
+        "sql-server-agent",
+        "scheduled-backups",
+        "agent-jobs",
+        "agent-steps",
+        "agent-schedules",
+        "agent-alerts",
+        "performance-condition-alerts",
+        "agent-operators",
+        "msdb-architecture"
       ],
       "skills": [
         "T-SQL",
-        "Database Engineering"
+        "SQL Server Agent",
+        "Database Reliability Engineering",
+        "Alerting & Monitoring",
+        "Disaster Recovery"
       ],
       "tags": [
         "course/sql-server",
         "type/video",
         "chapter/ch01",
         "domain/database",
-        "status/not-started"
+        "status/mastered"
       ],
       "source": "https://maharatech.gov.eg/mod/hvp/view.php?id=17532",
-      "code_reference": "src/06_reliability_and_dr/01_backup_and_maintenance_jobs.sql",
-      "learning_goal": "Master the concepts, mechanics, and operational trade-offs of **Backup & SQL server agent jobs** within the **Storage & Physical Architecture** domain, bridging relational database theory with practical data engineering implementations.",
+      "code_reference": "src/01_storage_and_schema/ch01_vid13_backup_sql_agent_jobs.sql",
+      "learning_goal": "Master the architecture, operational mechanics, and enterprise lifecycle of **SQL Server Agent**, translating manual database maintenance and backup commands into automated, resilient scheduled workflows. Understand the foundational relationships between **Jobs**, **Steps**, **Schedules**, **Alerts** (Events, Performance Conditions, WMI), and **Operators** within the `msdb` system repository.",
       "core_idea": "",
       "abilities": [],
       "relative_path": "docs/curriculum/01 - COURSE/CH01 - Database Creation and Management/CH01_VID13 - Backup & SQL server agent jobs.md",
@@ -565,8 +576,7 @@
         "course/sql-server",
         "type/video",
         "chapter/ch01",
-        "domain/database",
-        "status/not-started"
+        "domain/database"
       ],
       "source": "https://maharatech.gov.eg/mod/hvp/view.php?id=17533",
       "code_reference": "src/06_reliability_and_dr/02_snapshot_lifecycle.sql",

@@ -212,14 +212,72 @@ GO
 
 ---
 
+### Procedure F: Automated Scheduling & Alert-Driven Maintenance via SQL Server Agent
+In production 24/7 database operations, backups and disaster recovery health checks must execute autonomously via **SQL Server Agent** with operator alerts and reactive performance triggers:
+
+```sql
+USE msdb;
+GO
+
+-- 1. Create On-Call Operator
+EXEC msdb.dbo.sp_add_operator 
+    @name = N'ahmed', 
+    @enabled = 1, 
+    @email_address = N'ahmed@gmail.com';
+
+-- 2. Create Automated Maintenance Job
+EXEC msdb.dbo.sp_add_job 
+    @job_name = N'ITIbackupJob', 
+    @enabled = 1, 
+    @notify_level_email = 1,
+    @notify_email_operator_name = N'ahmed';
+
+-- 3. Add T-SQL Backup Step
+EXEC msdb.dbo.sp_add_jobstep 
+    @job_name = N'ITIbackupJob', 
+    @step_name = N'Q1', 
+    @subsystem = N'TSQL', 
+    @command = N'backup database ITI to disk=''D:\courses\...\CH01\Mydb\iti.bak''', 
+    @database_name = N'master';
+
+-- 4. Attach Recurring Daily Schedule (sch1 at 12:00 AM)
+EXEC msdb.dbo.sp_add_schedule 
+    @schedule_name = N'sch1', 
+    @enabled = 1, 
+    @freq_type = 4, 
+    @freq_interval = 1, 
+    @active_start_time = 0;
+
+EXEC msdb.dbo.sp_attach_schedule 
+    @job_name = N'ITIbackupJob', 
+    @schedule_name = N'sch1';
+
+-- 5. Create Reactive Performance Condition Alert (User Connections > 10)
+EXEC msdb.dbo.sp_add_alert 
+    @name = N'alert1', 
+    @performance_condition = N'General Statistics|User Connections||>|10', 
+    @job_name = N'ITIbackupJob';
+
+EXEC msdb.dbo.sp_add_notification 
+    @alert_name = N'alert1', 
+    @operator_name = N'ahmed', 
+    @notification_method = 1;
+GO
+```
+
+---
+
 ## 5. Architectural References & Live Verification Telemetry
 
 * **Live Backup Types & PITR Verification Telemetry**: [`docs/ch01-vid11-types-of-backup-live.md`](ch01-vid11-types-of-backup-live.md)
 * **Live SSMS Wizard & Multi-Set Backup Telemetry**: [`docs/ch01-vid12-backup-database-wizard-live.md`](ch01-vid12-backup-database-wizard-live.md)
+* **Live SQL Server Agent Jobs & Alerts Telemetry**: [`docs/ch01-vid13-backup-sql-agent-jobs-live.md`](ch01-vid13-backup-sql-agent-jobs-live.md)
 * **Interactive T-SQL Disaster Recovery Lab (Types)**: [`src/01_storage_and_schema/ch01_vid11_types_of_backup.sql`](../src/01_storage_and_schema/ch01_vid11_types_of_backup.sql)
 * **Interactive T-SQL Wizard & Multi-Set Lab**: [`src/01_storage_and_schema/ch01_vid12_backup_database_wizard.sql`](../src/01_storage_and_schema/ch01_vid12_backup_database_wizard.sql)
+* **Interactive T-SQL Agent Automation Lab**: [`src/01_storage_and_schema/ch01_vid13_backup_sql_agent_jobs.sql`](../src/01_storage_and_schema/ch01_vid13_backup_sql_agent_jobs.sql)
 * **Production SQL Agent Automated Maintenance**: [`src/06_reliability_and_dr/01_backup_and_maintenance_jobs.sql`](../src/06_reliability_and_dr/01_backup_and_maintenance_jobs.sql)
 * **Curriculum Mastery Companions**:
   * [`docs/curriculum/01 - COURSE/CH01 - Database Creation and Management/CH01_VID11 - Types of Backup.md`](curriculum/01%20-%20COURSE/CH01%20-%20Database%20Creation%20and%20Management/CH01_VID11%20-%20Types%20of%20Backup.md)
   * [`docs/curriculum/01 - COURSE/CH01 - Database Creation and Management/CH01_VID12 - Backup Database Using Wizard.md`](curriculum/01%20-%20COURSE/CH01%20-%20Database%20Creation%20and%20Management/CH01_VID12%20-%20Backup%20Database%20Using%20Wizard.md)
+  * [`docs/curriculum/01 - COURSE/CH01 - Database Creation and Management/CH01_VID13 - Backup & SQL server agent jobs.md`](curriculum/01%20-%20COURSE/CH01%20-%20Database%20Creation%20and%20Management/CH01_VID13%20-%20Backup%20&%20SQL%20server%20agent%20jobs.md)
 

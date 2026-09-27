@@ -27,6 +27,7 @@ Physical storage architecture, data pages, extents, multi-filegroups (PRIMARY, D
 > - [Live ITI Index Demo Telemetry (CH01_VID10)](../../../../docs/ch01-vid10-demo-on-index-live.md)
 > - [Live Types of Backup Telemetry (CH01_VID11)](../../../../docs/ch01-vid11-types-of-backup-live.md)
 > - [Live Backup Database Using Wizard Telemetry (CH01_VID12)](../../../../docs/ch01-vid12-backup-database-wizard-live.md)
+> - [Live Backup & SQL Server Agent Jobs Telemetry (CH01_VID13)](../../../../docs/ch01-vid13-backup-sql-agent-jobs-live.md)
 
 ---
 
@@ -46,7 +47,7 @@ Physical storage architecture, data pages, extents, multi-filegroups (PRIMARY, D
 | 10 | Demo on Index | [CH01_VID10 - Demo on Index.md](CH01_VID10%20-%20Demo%20on%20Index.md) | Completed |
 | 11 | Types of Backup | [CH01_VID11 - Types of Backup.md](CH01_VID11%20-%20Types%20of%20Backup.md) | Completed |
 | 12 | Backup Database Using Wizard | [CH01_VID12 - Backup Database Using Wizard.md](CH01_VID12%20-%20Backup%20Database%20Using%20Wizard.md) | Completed |
-| 13 | Backup & SQL server agent jobs | [CH01_VID13 - Backup & SQL server agent jobs.md](CH01_VID13%20-%20Backup%20&%20SQL%20server%20agent%20jobs.md) | In Progress |
+| 13 | Backup & SQL server agent jobs | [CH01_VID13 - Backup & SQL server agent jobs.md](CH01_VID13%20-%20Backup%20&%20SQL%20server%20agent%20jobs.md) | Completed |
 | 14 | Snapshot DB | [CH01_VID14 - Snapshot DB.md](CH01_VID14%20-%20Snapshot%20DB.md) | In Progress |
 | 15 | Demo on Snapshot | [CH01_VID15 - Demo on Snapshot.md](CH01_VID15%20-%20Demo%20on%20Snapshot.md) | In Progress |
 | 16 | Assignment 01 | [CH01_VID16 - Assignment 01.md](CH01_VID16%20-%20Assignment%2001.md) | In Progress |

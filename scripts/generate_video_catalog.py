@@ -118,8 +118,8 @@ VIDEOS_SPEC = [
         "id": "ch01-vid13", "chap": 1, "code": "CH01_VID13", "m_id": 17532,
         "title": "Backup & SQL Server Agent Jobs Automation",
         "dur": "24 mins", "level": "Intermediate",
-        "skills": ["SQL Server Agent", "Scheduled Backup Jobs", "Job Steps & Alerts", "Maintenance Plans"],
-        "repo": "src/05_automation_and_smo/smo_scripts/BackupDatabase.ps1",
+        "skills": ["SQL Server Agent", "Job & Steps Architecture", "Recurring Schedules", "Performance Condition Alerts", "Operator Notifications"],
+        "repo": "src/01_storage_and_schema/ch01_vid13_backup_sql_agent_jobs.sql",
         "ms_title": "Automate Backup Tasks with SQL Server Agent",
         "ms_url": "https://learn.microsoft.com/en-us/sql/ssms/agent/create-a-job"
     },

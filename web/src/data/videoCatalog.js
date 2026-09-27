@@ -365,21 +365,21 @@ export const COURSE_VIDEOS = [
     title: "Backup & SQL Server Agent Jobs Automation",
     duration: "24 mins",
     level: "Intermediate",
-    skillsConnected: ["SQL Server Agent", "Scheduled Backup Jobs", "Job Steps & Alerts", "Maintenance Plans"],
+    skillsConnected: ["SQL Server Agent", "Job & Steps Architecture", "Recurring Schedules", "Performance Condition Alerts", "Operator Notifications"],
     objectives: [
       "Master sql server agent in SQL Server.",
-      "Master scheduled backup jobs in SQL Server.",
-      "Master job steps & alerts in SQL Server.",
+      "Master job & steps architecture in SQL Server.",
+      "Master recurring schedules in SQL Server.",
       "Complete the practical exercise for Backup & SQL Server Agent Jobs Automation."
     ],
     description: "Eng. Rami Mohamed Abonagi presents 'Backup & SQL Server Agent Jobs Automation' as part of Chapter 1: Database Creation and Management. Master core concepts, practical implementation in SSMS, and production database patterns.",
     sampleSql: `-- T-SQL Demo: Backup & SQL Server Agent Jobs Automation\n-- Video Code: CH01_VID13\nSELECT 'CH01_VID13' AS VideoCode, 'Backup & SQL Server Agent Jobs Automation' AS ModuleTitle, GETDATE() AS ExecutedAt;`,
-    repoPath: "src/05_automation_and_smo/smo_scripts/BackupDatabase.ps1",
+    repoPath: "src/01_storage_and_schema/ch01_vid13_backup_sql_agent_jobs.sql",
     challengeId: "ch-1",
     erdEntity: "Database",
     attachments: [
       { id: "att-ch01-vid13-1", name: "Backup & SQL Server Agent Jobs Automation Technical Guide", type: "DOC", path: "docs/ch01-case-study-erd-and-implementation.md" },
-      { id: "att-ch01-vid13-2", name: "Solution DDL / Script", type: "SQL", path: "src/05_automation_and_smo/smo_scripts/BackupDatabase.ps1" }
+      { id: "att-ch01-vid13-2", name: "Solution DDL / Script", type: "SQL", path: "src/01_storage_and_schema/ch01_vid13_backup_sql_agent_jobs.sql" }
     ],
     maharatechUrl: "https://maharatech.gov.eg/mod/hvp/view.php?id=17532",
     microsoftDocTitle: "Automate Backup Tasks with SQL Server Agent",
