@@ -1,23 +1,19 @@
+# Dependency manifests verified against the repository tree on 2026-11-01.
+# Only configure ecosystems with actual manifests; a missing directory causes recurring bot failures.
 version: 2
 updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
+    open-pull-requests-limit: 5
     commit-message:
       prefix: "ci"
       include: "scope"
 
-  - package-ecosystem: "docker"
-    directory: "/docker"
-    schedule:
-      interval: "weekly"
-    commit-message:
-      prefix: "docker"
-      include: "scope"
-
+  # pyproject.toml lives in the repository root, not in /src/05_automation_and_smo/smo_scripts.
   - package-ecosystem: "pip"
-    directory: "/src/05_automation_and_smo/smo_scripts"
+    directory: "/"
     schedule:
       interval: "monthly"
     commit-message:
