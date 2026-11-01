@@ -62,7 +62,7 @@ jobs:
           /opt/mssql-tools18/bin/sqlcmd -S localhost,1433 -U sa -P 'Password123!Secure' -C -I -i tests/tSQLt/test_stored_procedures.sql
 
       - name: Setup Python for DBRE Tooling
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: '3.11'
 
